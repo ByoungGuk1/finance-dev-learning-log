@@ -1,6 +1,7 @@
 *
 
 !.gitignore
+!.gitattributes
 !README.md
 
 !work/
@@ -59,11 +60,3 @@
 # OS
 **/.DS_Store
 **/Thumbs.db
-
-# Private notes
-**/private/
-**/_private/
-**/raw/
-**/lecture-materials/
-**/class-materials/
-**/screenshots/private/
