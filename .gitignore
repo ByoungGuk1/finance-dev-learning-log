@@ -6,6 +6,7 @@
 
 !work/
 !work/**
+work/**/response/
 
 !docs/
 !docs/**
