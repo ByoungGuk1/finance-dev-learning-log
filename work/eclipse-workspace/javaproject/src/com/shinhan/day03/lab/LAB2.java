@@ -31,20 +31,20 @@ public class LAB2 {
 	}
 
 	private static String myReplace(String str, char oldChar, char newChar) {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		for(int i = 0; i < str.length(); i++) {
 			if(str.charAt(i) == oldChar) {
-				result += newChar;
+				result.append(newChar);
 			} else {
-				result += str.charAt(i);				
+				result.append(str.charAt(i));
 			}
 		}
-		return result;
+		return result.toString();
 	}
 
 	private static String[] split(String str, char separator) {
 		String[] result = null;
-		String  data = "";
+		StringBuilder  data = new StringBuilder();
 		int arrSize = 1;
 		int index = 0;
 
@@ -58,13 +58,13 @@ public class LAB2 {
 
 		for(int i = 0; i < str.length(); i++) {
 			if(str.charAt(i) != separator) {
-				data += str.charAt(i);
+				data.append(str.charAt(i));
 			} else {
-				result[index++] = data;
-				data = "";
+				result[index++] = data.toString();
+				data = new StringBuilder();
 			}
 		}
-		result[index] = data;
+		result[index] = data.toString();
 
 		return result;
 	}

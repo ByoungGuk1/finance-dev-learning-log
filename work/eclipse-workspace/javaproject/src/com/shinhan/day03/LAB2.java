@@ -45,7 +45,7 @@ public class LAB2 {
 		Scanner sc = new Scanner(System.in);
 		
 		int inputNumber = sc.nextInt();
-		boolean isTrue = true;
+		boolean isPrime = true;
 		
 		if(inputNumber < 2 || inputNumber > 100) {
 			System.out.println("입력 값을 다시 확인해주세요");
@@ -53,14 +53,14 @@ public class LAB2 {
 			return;
 		}
 		
-		for (int i = 2; i < inputNumber / 2; i++) {
-			isTrue = inputNumber % i == 0 ? false : true;
-			if(isTrue == false) {
+		for (int i = 2; i <= (inputNumber / 2); i++) {
+			isPrime = inputNumber % i == 0 ? false : true;
+			if(isPrime == false) {
 				break;
 			}
 		}
 
-		if(isTrue) {
+		if(isPrime) {
 			System.out.println("소수입니다");
 		} else {
 			System.out.println("소수가 아닙니다.");
