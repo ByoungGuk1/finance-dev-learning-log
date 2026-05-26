@@ -282,10 +282,10 @@ class PushNotification extends Notification {
     //   "알림: title — message (50자 이내)"
 	@Override
 	public void deliver(String formattedMessage) {
-		message = message.length() > 50 ? message.substring(0,50)+"..." : message;
+		String shortMessage = formattedMessage.length() > 50 ? formattedMessage.substring(0, 50) + "..." : message;
 		System.out.println("[앱 푸시 발송]");
 		System.out.println("앱: "+appName+" | 디바이스: "+deviceToken.substring(0, 8)+"***");
-		System.out.println("알림: "+title+" — "+message);
+		System.out.println("알림: "+title+" — "+shortMessage);
 	}
 
 

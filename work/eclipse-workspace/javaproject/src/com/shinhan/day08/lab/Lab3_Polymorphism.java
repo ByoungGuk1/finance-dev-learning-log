@@ -147,6 +147,7 @@ class FixedDeposit extends Account {
     // 만기 이자 = 잔액 × 연이율/100 × 약정개월/12
     // 출력: "[만기이자] 김철수(정기예금 12개월) → 이자: 150,000원, 만기수령액: 3,150,000원"
     // 반환: 이자 (int)
+	@Override
 	public int calculateInterest() {
 		int result = (int)(balance * interestRate/100 * termMonths/12);
 		System.out.println("[만기이자] "+ownerName+"("+getAccountType()+") → 이자: "+result+"원, 만기수령액: "+(balance+result)+"원");
