@@ -188,7 +188,7 @@ class Manager extends Employee {
 // =====================================================
 // Lab1Main — 실행 및 결과 확인
 // =====================================================
-public class Lab1_Inheritence {
+public class Lab1_Inheritance {
 
     public static void main(String[] args) {
 
