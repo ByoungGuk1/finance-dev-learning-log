@@ -45,11 +45,11 @@ sealed abstract class BankEvent permits DepositEvent, WithdrawEvent, TransferEve
 //   → 모든 필드 초기화
 //   → "[이벤트생성] eventId | accountId | N원" 출력
 	public BankEvent(String eventId, String accountId, String ownerName, int amount) {
-		super();
 		this.eventId = eventId;
 		this.accountId = accountId;
 		this.ownerName = ownerName;
 		this.amount = amount;
+		System.out.println("[이벤트생성] " + eventId + " | " + accountId + " | " + amount + "원");
 	}
 
 // 추상 메서드:
@@ -201,7 +201,7 @@ non-sealed class TransferEvent extends BankEvent {
 //   - fromAccountId : String (출금 계좌, private)
 //   - toAccountId   : String (입금 계좌, private)
 //   - toOwnerName   : String (수신자명, private)
-	private String formAccountId;
+	private String fromAccountId;
 	private String toAccountId;
 	private String toOwnerName;
 
@@ -214,10 +214,10 @@ non-sealed class TransferEvent extends BankEvent {
 				toOwner);
 	}
 
-	public TransferEvent(String eventId, String accountId, String ownerName, int amount, String formAccountId,
+	public TransferEvent(String eventId, String accountId, String ownerName, int amount, String fromAccountId,
 			String toAccountId, String toOwnerName) {
 		super(eventId, accountId, ownerName, amount);
-		this.formAccountId = formAccountId;
+		this.fromAccountId = fromAccountId;
 		this.toAccountId = toAccountId;
 		this.toOwnerName = toOwnerName;
 	}
@@ -231,12 +231,12 @@ non-sealed class TransferEvent extends BankEvent {
 // getDescription() → "fromOwner(fromAccountId) → toOwner(toAccountId) N원"
 	@Override
 	public String getDescription() {
-		return ownerName + "(" + formAccountId + ") → " + toOwnerName + "(" + toAccountId + ") " + amount + "원";
+		return ownerName + "(" + fromAccountId + ") → " + toOwnerName + "(" + toAccountId + ") " + amount + "원";
 	}
 
 // Getter: getFromAccountId(), getToAccountId(), getToOwnerName()
-	public String getFormAccountId() {
-		return formAccountId;
+	public String getfromAccountId() {
+		return fromAccountId;
 	}
 
 	public String getToAccountId() {
@@ -470,7 +470,7 @@ class EventBus {
 			return;
 		}
 		processors[processorCount++] = processor;
-		System.out.println("[등록] " + processor.processorName + " 처리기 등록됨");
+		System.out.println("[등록] " + processor.processorName + " 등록됨");
 	}
 
 // TODO [★★★] publish(BankEvent event) (6분)
