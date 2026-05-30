@@ -6,7 +6,7 @@ package com.shinhan.day07;
  * 설명	: Account
  */
 public /*final*/ class Account {	//	final을 사용하면 상속이 제한된다.
-	private String accNo;
+	public String accNo;
 	protected String owner;
 	private int balance;
 	
