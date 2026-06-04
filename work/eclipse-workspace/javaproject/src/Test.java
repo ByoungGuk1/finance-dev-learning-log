@@ -23,39 +23,40 @@ public class Test {
 			int[] answer = {};
 
 			String newString = s;
-//			while (!newString.equals("1")) {
-			char[] chArr = newString.toCharArray();
-			System.out.println("charr : " + Arrays.toString(chArr));
-			newString = "";
-			int zeroCount = 0;
-			int oneCount = 0;
-			for (char ch : chArr) {
-				if (ch == '0') {
-					zeroCount++;
+			while (!newString.equals("1")) {
+				char[] chArr = newString.toCharArray();
+				System.out.println("charr : " + Arrays.toString(chArr));
+				newString = "";
+				int zeroCount = 0;
+				int oneCount = 0;
+				for (char ch : chArr) {
+					if (ch == '0') {
+						zeroCount++;
+					}
+					if (ch == '1') {
+						oneCount++;
+					}
 				}
-				if (ch == '1') {
-					oneCount++;
-				}
-			}
 
-			int[] newAnswer = new int[answer.length + 1];
-			for (int i = 0; i < newAnswer.length; i++) {
-				if (i == newAnswer.length - 1) {
-					newAnswer[i] = zeroCount;
-					break;
+				int[] newAnswer = new int[answer.length + 1];
+				for (int i = 0; i < newAnswer.length; i++) {
+					if (i == newAnswer.length - 1) {
+						newAnswer[i] = zeroCount;
+						break;
+					}
+					newAnswer[i] = answer[i];
 				}
-				newAnswer[i] = answer[i];
+				System.out.println("newAnswer : " + Arrays.toString(newAnswer));
+
+				newString = Integer.toBinaryString(oneCount);
+				answer = newAnswer;
 			}
-			System.out.println("newAnswer : " + Arrays.toString(newAnswer));
-//			oneCount를 바이트로 바꾸기
-//				answer = newAnswer;
-//			}
 			return answer;
 		}
 	}
 
 	public static void main(String[] args) {
 		Solution s = new Test().new Solution();
-		s.solution("0111010");
+		s.solution("1111111");
 	}
 }
