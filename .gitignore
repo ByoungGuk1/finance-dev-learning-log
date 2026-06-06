@@ -31,6 +31,14 @@ work/**/response/
 **/.project
 **/.factorypath
 
+# DBeaver
+work/**/DBeaver/**
+work/**/drivers/**
+!work/**/DBeaver/**/
+!work/**/DBeaver/**/Scripts/
+!work/**/DBeaver/**/Scripts/day*/
+!work/**/DBeaver/**/Scripts/day*/**/*.sql
+
 # IntelliJ
 **/.idea/
 **/*.iml
