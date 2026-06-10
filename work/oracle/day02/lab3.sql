@@ -27,7 +27,7 @@ SELECT e.first_name, j.job_title, d.department_name
 FROM employees e
 JOIN jobs j ON e.job_id = j.job_id
 JOIN departments d ON e.department_id = d.department_id
-WHERE LOWER(j.job_title) LIKE '%manager%'; 
+WHERE j.job_title LIKE '%'|| INITCAP('manager%'); 
 
 
 --5. 직원들의 이름, 입사일, 부서명을 조회하시오.
@@ -40,7 +40,7 @@ JOIN departments d ON e.department_id = d.department_id;
 --단, 부서가 없는 직원이 있다면 그 직원정보도 출력결과에 포함시킨다.
 SELECT e.first_name, e.hire_date, d.department_name
 FROM employees e
-LEFT JOIN departments d ON e.department_id = d.department_id;
+LEFT OUTER JOIN departments d ON e.department_id = d.department_id;
 
 
 --7. 직원의 이름과 직책(job_title)을 출력하시오.
@@ -49,3 +49,12 @@ SELECT e.first_name, j.job_title
 FROM employees e
 RIGHT JOIN jobs j ON e.job_id = j.job_id;
 
+INSERT INTO jobs
+VALUES('play', '매일놀기', 20000, 30000);
+COMMIT;
+
+select JOB_ID, JOB_TITLE, MIN_SALARY, MAX_SALARY
+from jobs;
+
+UPDATE jobs SET max_salary = 50000 WHERE job_id LIKE 'play';
+COMMIT;
