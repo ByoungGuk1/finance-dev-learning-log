@@ -1,0 +1,17 @@
+--실습 과제 13-1  |  인덱스 생성·조회 (★★☆  응용)
+--① transactions 테이블에 아래 인덱스를 생성하세요:
+--   - account_id 단일 인덱스 (idx_txn_account)
+--   - txn_date + txn_type 복합 인덱스 (idx_txn_date_type)
+--
+--② USER_INDEXES, USER_IND_COLUMNS로 생성된 인덱스를 확인하세요.
+--③ 아래 쿼리의 실행 계획을 EXPLAIN PLAN으로 확인하고 인덱스 사용 여부를 보세요:
+--   SELECT * FROM transactions WHERE account_id = 100001;
+   
+--실습 과제 13-2  |  시퀀스 · 뷰 실습 (★★☆  응용)
+--① seq_txn_id 시퀀스를 START WITH 1, INCREMENT BY 1, NOCACHE로 생성하세요.
+--② transactions 테이블에 seq_txn_id.NEXTVAL을 PK로 사용하여 3건 INSERT하세요.
+--③ 아래 조건으로 뷰를 생성하세요:
+--   CREATE VIEW vw_account_summary AS
+--   account_test와 transactions를 JOIN하여
+--   고객명, 계좌번호, 잔액, 총 거래횟수, 마지막 거래일을 출력하는 뷰
+--④ vw_account_summary를 SELECT로 조회하세요.
