@@ -2,6 +2,7 @@ package com.shinhan.day04;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -22,6 +23,12 @@ public class EmpController {
 			case "3" -> f_insert();
 			case "4" -> f_update();
 			case "5" -> f_delete();
+			case "6" -> f_selectByDeptId();
+			case "7" -> f_selectByJobId();
+			case "8" -> f_selectByCondition();
+			case "9" -> f_storedProcedure();
+			case "10" -> f_joinTable();
+			case "11" -> f_joinTableToClass();
 			case "0" -> isStop = true;
 			default -> {
 				System.out.println("다시 입력해주세요");
@@ -29,6 +36,63 @@ public class EmpController {
 			}
 		}
 		System.out.println("프로그램 종료");
+	}
+
+	private static void f_joinTableToClass() {
+		System.out.print("조회할 dept_id > ");
+		int deptId = sc.nextInt();
+		sc.nextLine();
+		List<EmpJoinDTO> datas = empService.joinEmpDeptJobToClass(deptId);
+		EmpView.printJoinDTOs(datas);
+	}
+
+	private static void f_joinTable() {
+		System.out.print("조회할 dept_id > ");
+		int deptId = sc.nextInt();
+		sc.nextLine();
+		List<Map<String, Object>> datas = empService.joinEmpDeptJob(deptId);
+		EmpView.printMap(datas);
+	}
+
+	private static void f_storedProcedure() {
+		System.out.print("급여를 수정할 직원의 id > ");
+		int emplId = sc.nextInt();
+		sc.nextLine();
+		System.out.print("커미션 > ");
+		double commition = sc.nextDouble();
+		sc.nextLine();
+		int result = empService.spcall_raise_salary(emplId, commition);
+		EmpView.print("급여인상", result);
+	}
+
+	private static void f_selectByCondition() {
+		System.out.print("조회할 dept_id > ");
+		int deptId = sc.nextInt();
+		sc.nextLine();
+		System.out.print("조회할 job_id > ");
+		String jobId = sc.nextLine().trim();
+		System.out.print("조회할 salary > ");
+		double salary = sc.nextDouble();
+		sc.nextLine();
+		System.out.print("조회할 hire_date > ");
+		Date hireDate = Date.valueOf(sc.nextLine().trim());
+		List<EmpVO> empList = empService.selectByConditionService(deptId, jobId, salary, hireDate);
+		EmpView.print(empList);
+	}
+
+	private static void f_selectByJobId() {
+		System.out.print("조회할 job_id > ");
+		String jobId = sc.nextLine().trim();
+		List<EmpVO> empList = empService.selectByJobIdService(jobId);
+		EmpView.print(empList);
+	}
+
+	private static void f_selectByDeptId() {
+		System.out.print("조회할 dept_id > ");
+		int deptId = sc.nextInt();
+		sc.nextLine();
+		List<EmpVO> empList = empService.selectByDeptIdService(deptId);
+		EmpView.print(empList);
 	}
 
 	private static void f_selectAll() {
@@ -59,7 +123,7 @@ public class EmpController {
 
 	private static void f_delete() {
 		int empId = 0;
-		System.out.println("삭제할 직원 번호 입력 > ");
+		System.out.print("삭제할 직원 번호 입력 > ");
 		empId = sc.nextInt();
 		sc.nextLine();
 		int result = empService.deleteService(empId);
@@ -67,28 +131,28 @@ public class EmpController {
 	}
 
 	private static EmpVO inputEmp() {
-		System.out.println("직원 번호 입력 (필수) > ");
+		System.out.print("직원 번호 입력 (필수) > ");
 		int empId = Integer.parseInt(sc.nextLine().trim());
-		System.out.println("직원 fisrtName 입력 > ");
+		System.out.print("직원 fisrtName 입력 > ");
 		String firstName = sc.nextLine().trim();
-		System.out.println("직원 lastName 입력 (필수) > ");
+		System.out.print("직원 lastName 입력 (필수) > ");
 		String lastName = sc.nextLine().trim();
-		System.out.println("직원 email 입력 (필수) > ");
+		System.out.print("직원 email 입력 (필수) > ");
 		String email = sc.nextLine().trim();
-		System.out.println("직원 phoneNumber 입력 > ");
+		System.out.print("직원 phoneNumber 입력 > ");
 		String phoneNumber = sc.nextLine().trim();
 
 //		Date.valueOf("2026-01-02")
 
-		System.out.println("직원 salary 입력 > ");
+		System.out.print("직원 salary 입력 > ");
 		double salary = sc.nextDouble();
 		sc.nextLine();
-		System.out.println("직원 commissionPct 입력 > ");
+		System.out.print("직원 commissionPct 입력 > ");
 		double commissionPct = sc.nextDouble();
 		sc.nextLine();
-		System.out.println("직원 managerId 입력 > ");
+		System.out.print("직원 managerId 입력 > ");
 		int managerId = Integer.parseInt(sc.nextLine().trim());
-		System.out.println("직원 departmentId 입력 > ");
+		System.out.print("직원 departmentId 입력 > ");
 		int departmentId = Integer.parseInt(sc.nextLine().trim());
 
 		EmpVO emp = EmpVO.builder() //

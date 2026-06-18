@@ -1,12 +1,16 @@
 package com.shinhan.day04;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.shinhan.util.DBUtil;
 
@@ -18,6 +22,172 @@ public class EmpDAO {
 	PreparedStatement pst = null;
 	Statement st = null;
 	ResultSet rs = null;
+
+//	부서, 직원 조인 조회
+
+	public List<EmpJoinDTO> joinEmpDeptJobToClass(int deptId) {
+		String sql = """
+				select e.first_name, e.last_name, e.salary, d.department_name, j.job_title
+				from employees e
+				join departments d on e.department_id = d.department_id
+				join jobs j on e.job_id = j.job_id
+				where d.department_id = ?
+				""";
+		List<EmpJoinDTO> joinList = new ArrayList<>();
+		conn = DBUtil.dbConnect();
+
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, deptId);
+			rs = pst.executeQuery();
+
+			while (rs.next()) {
+				joinList.add(EmpJoinDTO.builder().firstName(rs.getString(1)).lastName(rs.getString(2))
+						.salary(rs.getDouble(3)).departmentName(rs.getString(4)).jobTitle(rs.getString(5)).build());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.dbDisConnect(conn, pst, rs);
+		}
+
+		return joinList;
+	}
+
+	public List<Map<String, Object>> joinEmpDeptJob(int deptId) {
+		String sql = """
+				select e.first_name, e.last_name, e.salary, d.department_name, j.job_title
+				from employees e
+				join departments d on e.department_id = d.department_id
+				join jobs j on e.job_id = j.job_id
+				where d.department_id = ?
+				""";
+		List<Map<String, Object>> datas = new ArrayList<>();
+		conn = DBUtil.dbConnect();
+
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, deptId);
+			rs = pst.executeQuery();
+
+			while (rs.next()) {
+				Map<String, Object> data = new HashMap<>();
+				data.put("first_name", rs.getObject("first_name"));
+				data.put("last_name", rs.getObject("last_name"));
+				data.put("salary", rs.getObject("salary"));
+				data.put("department_name", rs.getObject("department_name"));
+				data.put("job_title", rs.getObject("job_title"));
+				datas.add(data);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.dbDisConnect(conn, pst, rs);
+		}
+
+		return datas;
+	}
+
+//	sp호출
+	public int spcall_raise_salary(int emplId, double commition) {
+		int result = 0;
+		CallableStatement cst = null;
+		String sql = """
+				{call raise_salary(?,?)}
+				""";
+		conn = DBUtil.dbConnect();
+		try {
+			cst = conn.prepareCall(sql);
+			cst.setInt(1, emplId);
+			cst.setDouble(2, commition);
+			result += cst.execute() ? 1 : 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.dbDisConnect(conn, cst, rs);
+		}
+
+		return result;
+	}
+
+//	여러 조건으로 직원들을 조회( 부서, 직책, 급여 >=, 입사일>= )
+	public List<EmpVO> selectByCondition(int deptId, String jobId, double salary, Date hireDate) {
+		List<EmpVO> empList = new ArrayList<>();
+		String sql = """
+				select * from employees
+				where
+					DEPARTMENT_ID = ?
+					and job_id = upper(?)
+					and salary >= ?
+					and hire_date >= ?
+				""";
+		conn = DBUtil.dbConnect();
+
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, deptId);
+			pst.setString(2, jobId);
+			pst.setDouble(3, salary);
+			pst.setDate(4, hireDate);
+
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				empList.add(buildVO(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.dbDisConnect(conn, pst, rs);
+		}
+
+		return empList;
+	}
+
+//	jobId로 직원 조회
+	public List<EmpVO> selectByJobId(String jobId) {
+		List<EmpVO> empList = new ArrayList<>();
+		String sql = """
+				select * from employees where job_id = upper(?)
+				""";
+
+		conn = DBUtil.dbConnect();
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, jobId);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				empList.add(buildVO(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.dbDisConnect(conn, pst, rs);
+		}
+		return empList;
+	}
+
+//	특정 부서의 직원 조회
+	public List<EmpVO> selectByDepartmentId(int deptId) {
+		List<EmpVO> empList = new ArrayList<>();
+		String sql = """
+				select * from employees where department_id = ?
+				""";
+
+		conn = DBUtil.dbConnect();
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, deptId);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				empList.add(buildVO(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.dbDisConnect(conn, pst, rs);
+		}
+		return empList;
+	}
 
 	public List<EmpVO> selectAll() {
 		List<EmpVO> empList = new ArrayList<>();
@@ -135,7 +305,7 @@ public class EmpDAO {
 	public int delete(int empId) {
 		int result = 0;
 		String sql = """
-				delete from employees where employee_id = ? cascading
+				delete from employees where employee_id = ?
 				""";
 
 		conn = DBUtil.dbConnect();
