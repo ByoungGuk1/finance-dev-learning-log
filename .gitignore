@@ -7,9 +7,14 @@
 !work/
 !work/**
 work/**/response/
+work/**/Servers/
+work/**/resources/
 
 !docs/
 !docs/**
+
+!금융스터디/
+!금융스터디/**
 
 # Env / Secrets
 **/.env
