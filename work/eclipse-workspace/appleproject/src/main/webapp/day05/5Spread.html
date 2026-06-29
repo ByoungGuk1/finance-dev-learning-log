@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>구조분해할당</title>
+<script>
+const user = {
+	 name: '홍길동',
+	 age:  25,
+	 address: { city:'서울', district:'강남구' },
+	 greet() { return `안녕 ${this.name}`; }
+};
+
+console.log(user.greet());
+
+const {name, age} = user;
+console.log(name, age);
+
+const arr = [1,2,3,4,5,6,7,8,9];
+
+const [a,b, ...c] = arr;
+console.log(a,b,c);
+
+const newArr = [...arr,10,11];
+console.log(newArr);
+
+let name1 = "이순신";
+let age1 = 20;
+
+let obj = {name1, age1}; // 단축구문 -> 객체의 키값이 변수명과 동일하다면 축약해서 작성 가능
+console.log(obj);
+
+//고차함수
+// 함수를 받거나
+function call() {
+	console.log("call 호출");
+}
+
+function call2(f){
+	console.log("매개변수로 함수를 받음");
+	for(let i = 0; i < 2; i++){
+		f();
+	}
+}
+
+call2(call);
+
+// 함수를 반환
+//  클로저 = 함수를 받는다.
+function call3(f) {
+	// 지역변수를 담는 함수가 return되면 함수가 종료되어도 지역변수가 남아있다.
+	let count = 100;
+	console.log("call3()");
+	return {
+		call : () => {call; console.log(count++)},
+		call2 : () => {call2; console.log(count)}
+	}
+}
+
+call3(call);
+call3(call2);
+
+//고차함수 — 함수를 받거나 반환
+const applyDiscount = (rate) => (price) => price * (1 - rate);
+
+const sale10 = applyDiscount(0.1);
+const sale30 = applyDiscount(0.3);
+
+console.log(sale10(89000));  // 80100
+console.log(sale30(89000));  // 62300
+
+// 클로저 — 함수 + 함수가 선언된 환경(변수)을 기억하는 것
+function makeCounter(start = 0) {
+  let count = start;         // 이 변수를 내부 함수가 기억
+  return {
+    inc: () => ++count,
+    dec: () => --count,
+    get: () => count,
+  };
+}
+
+const cart = makeCounter(0);
+cart.inc();  // 1
+cart.inc();  // 2
+cart.dec();  // 1
+console.log(cart.get());  // 1
+// count는 외부 직접 접근 불가 → 캡슐화!
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

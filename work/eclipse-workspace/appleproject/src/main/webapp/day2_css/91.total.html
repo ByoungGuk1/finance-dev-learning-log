@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShopMall — Day 2 종합 LAB</title>
+  <style>
+    /* ════════════════════════════
+       CSS 변수
+    ════════════════════════════ */
+    :root {
+      --primary:      #1D9E75;
+      --primary-dark: #085041;
+      --accent:       #D85A30;
+      --radius:       8px;
+      --shadow:       0 2px 8px rgba(0,0,0,0.08);
+      --speed:        0.2s;
+    }
+
+    /* ════════════════════════════
+       전역 설정
+    ════════════════════════════ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #f3f4f6;
+      color: #1a1a1a;
+    }
+
+    /* ════════════════════════════
+       헤더 — Flexbox
+    ════════════════════════════ */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      height: 64px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .menu {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+
+    /* 링크: text-decoration none + hover 색상 변화 */
+    .menu a {
+      text-decoration: none;
+      color: #374151;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      transition: color var(--speed), background var(--speed);
+    }
+    .menu a:hover {
+      color: var(--primary);
+      background: #f0fdf4;
+    }
+
+    .cart {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+    }
+
+    /* ════════════════════════════
+       전체 레이아웃 — Grid
+    ════════════════════════════ */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;   /* 모바일: 1열 */
+      gap: 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    @media (min-width: 768px) {
+      .layout {
+        grid-template-columns: 180px 1fr;  /* 데스크탑: 사이드바 + 상품목록 */
+        gap: 24px;
+      }
+    }
+
+    /* ════════════════════════════
+       사이드바
+    ════════════════════════════ */
+    .sidebar {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      height: fit-content;
+    }
+
+    .sidebar h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1F3864;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    /* 링크: text-decoration none + hover */
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: #374151;
+      font-size: 0.9rem;
+      padding: 10px 4px;
+      transition: color var(--speed), padding-left var(--speed);
+    }
+    .sidebar a:hover {
+      color: var(--primary);
+      padding-left: 8px;
+    }
+
+    /* ════════════════════════════
+       상품 목록 영역
+    ════════════════════════════ */
+    .main { display: flex; flex-direction: column; gap: 24px; }
+
+    /* 상품 카드 그리드 */
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 480px) {
+      .product-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 1024px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ════════════════════════════
+       상품 카드
+       padding, border, border-radius, box-shadow
+    ════════════════════════════ */
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+      transition: transform var(--speed), box-shadow var(--speed);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 160px;
+      background: #e0e7ff;
+    }
+    .card-img.c2 { background: #d1fae5; }
+    .card-img.c3 { background: #fde68a; }
+    .card-img.c4 { background: #fce7f3; }
+    .card-img.c5 { background: #ddd6fe; }
+    .card-img.c6 { background: #fed7aa; }
+
+    .card-body { padding: 16px; }
+
+    .card-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .card-price {
+      font-size: 0.88rem;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .card-price s { color: #9ca3af; }
+
+    .card-price strong {
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .btn-cart {
+      width: 100%;
+      padding: 10px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: calc(var(--radius) - 2px);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background var(--speed);
+    }
+    .btn-cart:hover { background: var(--primary-dark); }
+
+    /* ════════════════════════════
+       표 — border-collapse, 헤더색상, 홀짝 줄무늬
+    ════════════════════════════ */
+    .table-wrap {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    .table-wrap h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1F3864;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;   /* 셀 테두리 합치기 */
+      font-size: 0.88rem;
+    }
+
+    th {
+      background: var(--primary);  /* 헤더 색상 */
+      color: #fff;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      color: #374151;
+    }
+
+    /* 홀짝 줄무늬 */
+    tr:nth-child(even) td { background: #f9fafb; }
+    tr:hover td { background: #f0fdf4; }
+
+    /* ════════════════════════════
+       푸터
+    ════════════════════════════ */
+    .footer {
+      margin-top: 40px;
+      background: #1F3864;
+      color: #94a3b8;
+      text-align: center;
+      padding: 24px;
+      font-size: 0.85rem;
+      line-height: 1.8;
+    }
+
+    .footer a {
+      text-decoration: none;
+      color: #94a3b8;
+      transition: color var(--speed);
+    }
+    .footer a:hover { color: var(--primary); }
+  </style>
+</head>
+<body>
+
+  <!-- ── 헤더 ─────────────────────────────── -->
+  <header class="header">
+    <div class="logo">🛒 ShopMall</div>
+    <nav>
+      <ul class="menu">
+        <li><a href="#">홈</a></li>
+        <li><a href="#">신상품</a></li>
+        <li><a href="#">세일</a></li>
+        <li><a href="#">브랜드</a></li>
+      </ul>
+    </nav>
+    <div class="cart">🛒 장바구니 <strong>3</strong></div>
+  </header>
+
+  <!-- ── 레이아웃 (Grid) ──────────────────── -->
+  <div class="layout">
+
+    <!-- 사이드바 -->
+    <aside class="sidebar">
+      <h2>카테고리</h2>
+      <ul>
+        <li><a href="#">👟 신발 전체</a></li>
+        <li><a href="#">🏃 러닝화</a></li>
+        <li><a href="#">👞 스니커즈</a></li>
+        <li><a href="#">🥾 부츠</a></li>
+        <li><a href="#">🩴 샌들</a></li>
+        <li><a href="#">⚽ 스포츠화</a></li>
+      </ul>
+    </aside>
+
+    <!-- 메인 -->
+    <div class="main">
+
+      <!-- 상품 카드 목록 -->
+      <div class="product-grid">
+
+        <div class="card">
+          <div class="card-img">    </div>
+          <span class="card-badge">SALE</span>
+          <div class="card-body">
+            <p class="card-title">프리미엄 운동화</p>
+            <p class="card-price">
+              <s>89,000원</s> → <strong>62,300원</strong>
+            </p>
+            <button class="btn-cart">장바구니 담기</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img c2"></div>
+          <span class="card-badge">NEW</span>
+          <div class="card-body">
+            <p class="card-title">클래식 스니커즈</p>
+            <p class="card-price">
+              <strong>62,000원</strong>
+            </p>
+            <button class="btn-cart">장바구니 담기</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img c3"></div>
+          <div class="card-body">
+            <p class="card-title">러닝화 프로</p>
+            <p class="card-price">
+              <strong>75,000원</strong>
+            </p>
+            <button class="btn-cart">장바구니 담기</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img c4"></div>
+          <span class="card-badge">SALE</span>
+          <div class="card-body">
+            <p class="card-title">워킹화 라이트</p>
+            <p class="card-price">
+              <del>68,000원</del> → <strong>47,600원</strong>
+            </p>
+            <button class="btn-cart">장바구니 담기</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img c5"></div>
+          <div class="card-body">
+            <p class="card-title">트레킹 부츠</p>
+            <p class="card-price">
+              <strong>120,000원</strong>
+            </p>
+            <button class="btn-cart">장바구니 담기</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img c6"></div>
+          <span class="card-badge">NEW</span>
+          <div class="card-body">
+            <p class="card-title">데일리 슬리퍼</p>
+            <p class="card-price">
+              <strong>32,000원</strong>
+            </p>
+            <button class="btn-cart">장바구니 담기</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 표 -->
+      <div class="table-wrap">
+        <h2>📦 상품 재고 현황</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>상품명</th>
+              <th>사이즈</th>
+              <th>재고</th>
+              <th>가격</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>프리미엄 운동화</td>
+              <td>260mm</td>
+              <td>23개</td>
+              <td>62,300원</td>
+              <td style="color:var(--primary); font-weight:700;">판매중</td>
+            </tr>
+            <tr>
+              <td>클래식 스니커즈</td>
+              <td>255mm</td>
+              <td>8개</td>
+              <td>62,000원</td>
+              <td style="color:var(--primary); font-weight:700;">판매중</td>
+            </tr>
+            <tr>
+              <td>러닝화 프로</td>
+              <td>270mm</td>
+              <td>0개</td>
+              <td>75,000원</td>
+              <td style="color:var(--accent); font-weight:700;">품절</td>
+            </tr>
+            <tr>
+              <td>워킹화 라이트</td>
+              <td>250mm</td>
+              <td>15개</td>
+              <td>47,600원</td>
+              <td style="color:var(--primary); font-weight:700;">판매중</td>
+            </tr>
+            <tr>
+              <td>트레킹 부츠</td>
+              <td>265mm</td>
+              <td>3개</td>
+              <td>120,000원</td>
+              <td style="color:#f59e0b; font-weight:700;">품귀</td>
+            </tr>
+            <tr>
+              <td>데일리 슬리퍼</td>
+              <td>240mm</td>
+              <td>42개</td>
+              <td>32,000원</td>
+              <td style="color:var(--primary); font-weight:700;">판매중</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 푸터 ─────────────────────────────── -->
+  <footer class="footer">
+    <p>
+      <a href="#">이용약관</a> &nbsp;|&nbsp;
+      <a href="#">개인정보처리방침</a> &nbsp;|&nbsp;
+      <a href="#">고객센터</a>
+    </p>
+    <p style="margin-top:8px;">고객센터: 1588-0000 &nbsp;|&nbsp; Copyright &copy; 2025 ShopMall</p>
+  </footer>
+
+</body>
+</html>

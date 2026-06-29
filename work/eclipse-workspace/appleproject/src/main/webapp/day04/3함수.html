@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>함수</title>
+<style type="text/css">
+button {
+	background-color: transparent;
+	border: 1px solid blue;
+	border-radius: 20px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #e2e2e2;
+}
+
+#result-div {
+	min-height: 200px;
+	border: 1px solid #e2e2e2;
+}
+</style>
+<script>
+	window.onload=()=>{
+		// 이름이 있는 함수
+		let button1 = document.querySelector("#def-btn");
+		// 이름이 없는 함수
+		let button2 = document.querySelector("#undef-btn");
+		// 호이스팅
+		let button3 = document.querySelector("#hoisting-btn");
+		// 화살표 함수
+		let button4 = document.querySelector("#arrow-btn");
+		// 매개변수 기본값
+		let button5 = document.querySelector("#arg-btn");
+		// ... 매개변수
+		let button6 = document.querySelector("#args-btn");
+		//lab
+		let button7 = document.querySelector("#btn-lab");
+		
+		resultBox = document.querySelector("#result-div");
+		
+		// 이벤트 속성(onclick) 추가 --> on+"이벤트 명"
+		// 함수는 동작. 이벤트 핸들러
+		// 이벤트 : 사건이 일어나면..
+		button1.onclick = func1;
+		button2.onclick = func2;
+		button3.onclick = func3;
+		button4.onclick = func4;
+		button5.onclick = func5;
+		button6.onclick = func6;
+		button7.onclick = func7;
+
+		// 내부함수
+		function func1(){
+			resultBox.innerHTML = "<h1>선언적 함수, 내부함수</h1>";
+		}
+	}
+	function func2(){
+		//즉시 실행 함수
+		(function(){
+			resultBox.innerHTML = `<h1>익명함수 + 즉시 실행 함수</h1>`;
+		})();
+		
+		const f = function() {
+			resultBox.innerHTML += `<h1>함수 표현식, 리터럴</h1>`;
+		}
+		f();
+	}
+	function func3() {
+		resultBox.innerHTML = "출력 결과 대기 중..";
+		// var과 선언적 함수는 호이스팅 단계를 거친다
+		// 맨 위로 끌어올린다.
+		console.log(score); // undefined
+		innerFunc(); // 정상호출
+		// f2(); // error : 함수가 아닌 아직 초기화된 변수
+		var score = 99;
+		console.log(score);
+		// var의 경우 선언부를 최상단으로 끌어올려서 우선 처리
+		
+		function innerFunc(){
+			console.log("innerFunc() 실행됨");
+		}
+		
+		// 동적 typing, 값이 할당 된 후 타입이 결정, 할당 후 함수화
+		var f2 = function(text) {
+			console.log("var로 선언된 함수");
+			console.log(text);
+		}
+		f2("매개변수 추가 입력")
+	}
+	
+	function func4(){
+		resultBox.innerHTML = "";
+		
+		// 내부함수, 선언적 함수
+		function greeting(name){
+			return `(내부함수, 선언적 함수) - ${name}`;
+		}
+		// 익명함수, 함수 표현식, 리터럴 함수
+		let greeting2 = function(name){
+			return `(익명함수, 함수 표현식, 리터럴 함수) - ${name}`;
+		}
+		// 화살표 함수, 리터럴 함수
+		let greeting3 = (name)=>{
+			return `(화살표 함수) - ${name}`;
+		}
+		
+		((name = "이름")=>{
+			console.log(`(화살표 함수, 즉시 실행) - ${name}`);
+		})();
+
+		resultBox.innerHTML += `<p>${greeting("이름")}</p>`;
+		resultBox.innerHTML += `<p>${greeting2("이름")}</p>`;
+		resultBox.innerHTML += `<p>${greeting3("이름")}</p>`;
+	}
+
+	function func5(){
+		resultBox.innerHTML = "";
+		// 매개변수 기본값
+		const order = (item, qty = 1) => `${item} ${qty}개`;
+		resultBox.innerHTML += `<p>${order('운동화')}</p>`;     // 운동화 1개
+		resultBox.innerHTML += `<p>${order('운동화',3)}</p>`;     // 운동화 3개
+	}
+	
+	function func6(){
+		resultBox.innerHTML = "";
+		// 나머지 매개변수 (...rest)
+		const sum = (title = "title = sum()", ...nums) => {
+			alert("알림: " + title);
+			return nums?.reduce((a,b) => a+b, 0)};
+		resultBox.innerHTML += `<p>${sum("합계", 1,2,3,4,5)}</p>`;  // 15
+		resultBox.innerHTML += `<p>${sum()}</p>`;
+		resultBox.innerHTML += `<p>${sum("test")}</p>`;
+		
+		// 템플릿 리터럴, 백틱
+		const price = 89000;
+		console.log(`가격: ${price.toLocaleString()}원`);
+	}
+	
+	function func7(){
+		/*
+		① 선언식으로 calcDiscount(price, rate) 작성
+   		→ price * (1 - rate/100) 반환
+		② 표현식으로 동일 함수 재작성
+		③ 화살표 함수로 한 줄로 줄이기
+		④ calcDiscount(89000, 30) 호출 → 62300 확인
+		⑤ 기본값 추가: rate = 10 으로 설정 후 테스트
+		*/
+		function calcDiscount(price, rate){
+			return price * (1 - rate/100);
+		}
+		
+		const calcDiscount2 = function(price, rate){
+			return price * (1 - rate/100);
+		}
+		
+		const calcDiscount3 = (price, rate = 10) => price * (1 - rate/100);
+		
+		resultBox.innerHTML = `<p>${calcDiscount(89000, 30)}</p>`;
+		resultBox.innerHTML += `<p>${calcDiscount2(89000, 30)}</p>`;
+		resultBox.innerHTML += `<p>${calcDiscount3(89000)}</p>`;
+		
+		/*
+		calcSale(price, rate)  — 할인가 반환
+		getGrade(score)        — 점수 → 'A'/'B'/'C'/'F' 반환
+		totalCart([{price,qty},...]) — 장바구니 합계 반환
+		세 함수 모두 화살표 함수로도 재작성
+		*/
+		
+		const calcSale = (price, rate) => price * (1 - rate/100);
+		const getGrade = (score) => {
+			let result = "F";
+			switch(Math.floor(score/10)){
+			case 10: case 9: result = 'A'; break;
+			case 8: result = 'B'; break;
+			case 7: result = 'C'; break;
+			}
+			return result;
+		}
+		const totalCart = ({price,qty}, ...etc) => {
+
+		};
+		
+		let price = prompt(`calcSale(price, rate) price 입력`);
+		let rate = prompt(`calcSale(price, rate) rate 입력`);
+		resultBox.innerHTML += `<p>calcSale(${price}, ${rate}) => ${calcSale(price, rate)}</p>`;
+		
+		let score = prompt(`getGrade(score) score 입력`);
+		resultBox.innerHTML += `<p>getGrade(${score}) => ${getGrade(score)}</p>`;
+
+	}
+</script>
+</head>
+<body>
+	<h1>함수</h1>
+	<button id="def-btn">선언적 함수</button>
+	<button id="undef-btn">익명함수</button>
+	<button id="hoisting-btn">호이스팅</button>
+	<button id="arrow-btn">화살표 함수</button>
+	<button id="arg-btn">매개변수의 기본값</button>
+	<button id="args-btn">... 매개변수</button>
+	<button id="btn-lab">lab</button>
+	<div id="result-div">출력 결과 대기 중</div>
+</body>
+</html>

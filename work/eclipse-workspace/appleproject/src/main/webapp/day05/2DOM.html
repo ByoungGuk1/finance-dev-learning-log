@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+body {
+	font-family: sans-serif;
+	padding: 24px;
+}
+/* classList 토글 확인용 */
+.active {
+	background: lightgreen;
+}
+
+.hidden {
+	/* 화면에 보이지않음, 자리를 차지하지않음 display: none */
+	/* 자리차지함*/
+	visibility: hidden;
+}
+
+.selected {
+	outline: 2px solid yellow;
+}
+
+.done {
+	text-decoration: line-through;
+}
+</style>
+<script type="text/javascript">
+	window.onload = () => {
+		const btn1 = document.querySelector("#myBtn");
+		const btn2 = document.querySelector("#myBtn2");
+		const btn3 = document.querySelector("#myBtn3");
+		
+		const formBtn = document.querySelector("form>input[type='button']");
+		const formTag = document.querySelector("form");
+		const title = document.querySelector("#title");
+		
+		btn1.addEventListener("click", btn1Handler);
+		btn2.addEventListener("click", selectedToggleHandler);
+		btn3.addEventListener("click", createHandler);
+		formTag.addEventListener("submit", formMethod);
+		formBtn.addEventListener("click", formBtnHandler);
+	}
+	function btn1Handler(e) {
+		title.classList.add("active");
+		title.innerHTML = `<em>Sale</em>`;
+		title.style = `color : red`;
+		
+		document.querySelectorAll(".card").forEach((tag)=>{
+			tag.classList.remove("hidden");
+		});
+	}
+	function selectedToggleHandler(e){
+		title.classList.toggle("selected");
+	}
+	function createHandler(e, text = "li태그 텍스트"){
+		//li를 동적으로 만들어서 ul에 넣기
+		const ulTag = document.querySelector("body>ul");
+		const liTag = document.createElement("li");
+		const spanTag = document.createElement("span");
+		const buttonTag = document.createElement("button");
+		const tagText = document.createTextNode(text);
+		
+		spanTag.appendChild(tagText);
+		liTag.appendChild(spanTag);
+		buttonTag.appendChild("DEL");
+		liTag.appendChild(buttonTag);
+		ulTag.appendChild(liTag);
+	}
+	function deleteHandler(e){
+		e.target.remove();
+	}
+	function formMethod(e){
+		e.preventDefault(); // default이벤트 취소
+		const inputData = document.querySelector("#input").value;
+		if(inputData.trim() === ""){
+			return;
+		}
+		/*
+		let liTag = createHandler(e, "body>ul", inputData, "li");
+		console.log(liTag);
+		let buttonTag = createHandler(e, "body>ul>li", "버튼", "button");
+		console.log(buttonTag);*/
+		input.value = "";
+		input.focus();
+	}
+	function formBtnHandler(e) {
+		const ulTag = document.querySelector("body>ul");
+		const inputData = document.querySelector("#input").value;
+		if(inputData.trim()==="") return;
+		ulTag.innerHTML += `<li><span>${inputData}</span><button>삭제</button></li>`;
+		
+		ulTag.addEventListener("click",(e)=>{
+			if(e.target.tagName != "BUTTON") return;
+			const li = e.target.closest("li");
+			if(li){
+				li.remove();
+			}
+		});
+	}
+	function completeHandler(e) {
+			e.target.classList.add("done");
+	}
+</script>
+</head>
+<body>
+	<!-- 선택 대상 -->
+	<h2 id="title">프리미엄 운동화</h2>
+	<!-- classList 테스트 -->
+	<div class="card">카드 1</div>
+	<div class="card">카드 2</div>
+	<div class="card hidden">카드 3</div>
+	<!-- 요소 추가 대상 -->
+	<ul></ul>
+	<!-- 이벤트 대상 -->
+	<button id="myBtn">버튼 클릭</button>
+	<button id="myBtn2">토글 버튼</button>
+	<button id="myBtn3">생성 버튼</button>
+	<!-- 폼 submit : defaultEvent => 서버로 전송 -->
+	<!-- form action="" method="GET" -->
+	<!-- default envet 취소 -> onsubmit="return false;" -->
+	<form>
+		<input id="input" name="input-data" placeholder="입력하세요">
+		<button type="submit">전송</button>
+		<input type="button" value="innerHTML 연습" />
+	</form>
+	<!-- 카운터 -->
+	<p class="counter">
+		전체 <span id="totalCount">0</span>개 &nbsp;|&nbsp; 완료 <span
+			id="doneCount">0</span>개 &nbsp;|&nbsp; 남은 <span id="remainCount">0</span>개
+	</p>
+</body>
+</html>

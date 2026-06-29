@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3-1. box-sizing 실습</title>
+  <style>
+    /* TODO: 여기에 * { box-sizing: border-box; } 를 추가해보세요 */ 
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      padding: 40px 24px;
+    }
+    .card {
+      width: 200px;
+      padding: 20px;
+      border: 3px solid blue;
+      margin: 10px; 
+      background: skyblue;
+      border-radius: 8px;
+    }
+    .card.card-sm { padding: 8px;  }
+    .card.card-lg { padding: 32px; }
+  </style>
+</head>
+<body>
+  <div class="card-wrap">
+    <div class="card">
+      <strong>카드 A</strong><br>
+      padding: 20px<br>
+      width: 200px
+    </div>
+    <div class="card card-sm">
+      <strong>카드 B</strong><br>
+      padding: 8px<br>
+      width: 200px
+    </div>
+    <div class="card card-lg">
+      <strong>카드 C</strong><br>
+      padding: 32px<br>
+      width: 200px
+    </div>
+  </div>
+</body>
+</html>

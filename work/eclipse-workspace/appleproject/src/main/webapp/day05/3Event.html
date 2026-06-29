@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>event</title>
+<style>
+div, h1, span {
+	border: 1px solid #e2e2e2;
+	padding: 10px;
+	margin: 10px;
+}
+</style>
+<script type="text/javascript">
+winodw.onload = () => {
+	const formTag = document.querySelect("#my-form");
+	formTag.addEventListener("submit", submitHandler);
+}
+function submitHandler(e) {
+	alert("서버전송 취소 : preventDefault");
+	e.preventDefault();
+}
+</script>
+</head>
+<body>
+	<div onclick="alert('outer div');">
+		<div onclick="alert('inner div');">
+			<h1 onclick="alert('h1');">
+				<span> 버블링, 캡쳐링 </span> <br />이벤트 전달 방식 : default => 버블링
+			</h1>
+		</div>
+	</div>
+	<script>
+	const spanTag = document.querySelector("h1 > span");
+	spanTag.addEventListener("click", (e)=>{
+		alert('span');
+		e.stopPropagation();// 기존
+	});
+	</script>
+
+	<h1>신규 직원 추가</h1>
+	<br />
+	<!-- form은 default Event 제공 -->
+	<form id="my-from" action="insert.do" method="post">
+		<div>
+			<label for="emp-id">직원번호 : </label><input type="number" id="emp-id"
+				autofocus="autofocus" name="employeeId" required="required"
+				placeholder="필수 입력" />
+		</div>
+		<div>
+			<label for="first-name">이름 : </label><input type="text"
+				id="first-name" name="firstName" />
+		</div>
+		<div>
+			<label for="last-name">성 : </label><input type="text" id="last-name"
+				name="lastName" required="required" placeholder="필수 입력" />
+		</div>
+		<div>
+			<label for="email">이메일 : </label><input type="text" id="email"
+				name="email" required="required" placeholder="필수 입력" />
+		</div>
+		<div>
+			<label for="phone-number">전화번호 : </label><input type="text"
+				id="phone-number" name="phoneNumber" />
+		</div>
+		<div>
+			<label for="hire-date">입사일 : </label><input type="date"
+				id="hire-date" name="hireDate" required="required"
+				placeholder="필수 입력" />
+		</div>
+		<div>
+			<label for="job-id">jobId : </label><input type="text" id="job-id"
+				name="jobId" required="required" placeholder="필수 입력" />
+		</div>
+		<div>
+			<label>급여 : </label><input type="number" name="salary" />
+		</div>
+		<div>
+			<label>커미션 : </label><input type="number" name="commissionPct"
+				step="0.01" />
+		</div>
+		<div>
+			<label>메니저 : </label><input type="number" name="managerId" />
+		</div>
+		<div>
+			<label for="departmentId">부서번호 : </label> <select name="departmentId">
+				<option value="0">부서 없음</option>
+				<option value="1">부서 1</option>
+				<option value="2">부서 2</option>
+				<option value="3">부서 3</option>
+				<option value="4">부서 4</option>
+				<option value="5">부서 5</option>
+			</select>
+		</div>
+		<div class="submit-wrapper">
+			<input type="submit" value="서버전송" /> <input type="reset" value="초기화" />
+		</div>
+	</form>
+</body>
+</html>

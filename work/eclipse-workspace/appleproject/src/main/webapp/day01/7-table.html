@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+table, th, td {
+	border: 1px solid black
+}
+</style>
+<body>
+	<table>
+		<caption>선물용과 가정용 상품 구성</caption>
+		<thead>
+			<tr>
+				<th>용도</th>
+				<th>중량</th>
+				<th>갯수</th>
+				<th>가격</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>선물용</td>
+				<td>3kg</td>
+				<td>11~16과</td>
+				<td>35,000원</td>
+			</tr>
+			<tr>
+				<td>가정용</td>
+				<td>5kg</td>
+				<td>18~26과</td>
+				<td>47,000원</td>
+			</tr>
+		</tbody>
+	</table>
+	<hr />
+	<table>
+		<thead>
+			<tr>
+				<th>A</th>
+				<th>B</th>
+				<th>C</th>
+				<th>D</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td rowspan="2">선물용</td>
+				<!-- 아래 행과 병합 -->
+				<td>3kg</td>
+				<td>11~16과</td>
+				<td>35,000원</td>
+			</tr>
+			<tr>
+				<td>5kg</td>
+				<td>18~26과</td>
+				<td>52,000원</td>
+			</tr>
+			<tr>
+				<td colspan="3">합계</td>
+				<!-- 오른쪽 2칸과 병합 -->
+				<td>87,000원</td>
+			</tr>
+		</tbody>
+	</table>
+	<hr />
+	<!-- 
+	이름 / 과목1 / 과목2 / 평균 4개 컬럼 표를 만드세요.
+	자신 포함 3명의 데이터를 입력하세요.
+	마지막 행에 colspan으로 '평균 행' 셀을 병합하세요.
+	 -->
+	<table>
+		<tr>
+			<th>이름</th>
+			<th>과목1</th>
+			<th>과목2</th>
+			<th>평균</th>
+		<tr>
+		<tr>
+			<td>홍길동1</td>
+			<td rowspan="3">50</td>
+			<td>60</td>
+			<td>dd</td>
+		</tr>
+		<tr>
+			<td>홍길동2</td>
+			<!-- <td>50</td> -->
+			<td>60</td>
+			<td>dd</td>
+		</tr>
+		<tr>
+			<td>홍길동3</td>
+			<!-- <td>50</td> -->
+			<td>60</td>
+			<td>dd</td>
+		</tr>
+		<tr>
+			<td colspan="4">1</td>
+		<tr>
+	</table>
+</body>
+</html>

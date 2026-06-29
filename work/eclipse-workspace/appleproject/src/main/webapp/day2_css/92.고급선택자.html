@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS 고급 선택자 실습</title>
+<style>
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background: #f3f4f6;
+	padding: 32px 24px;
+	color: #1a1a1a;
+}
+
+h2 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: #1F3864;
+	margin: 40px 0 12px;
+	padding-bottom: 6px;
+	border-bottom: 2px solid #2E75B6;
+}
+
+.desc {
+	font-size: 0.875rem;
+	color: #555;
+	margin-bottom: 12px;
+	line-height: 1.7;
+}
+
+.todo-box {
+	background: #fffbeb;
+	border-left: 4px solid #f59e0b;
+	padding: 12px 16px;
+	font-size: 0.88rem;
+	color: #78350f;
+	border-radius: 0 6px 6px 0;
+	line-height: 1.9;
+	margin-bottom: 20px;
+}
+
+.wrap {
+	background: #fff;
+	border: 2px dashed #cbd5e1;
+	padding: 20px;
+	border-radius: 8px;
+	margin-bottom: 8px;
+}
+
+/* ════════════════════════════════════════
+       1. 연결 선택자
+    ════════════════════════════════════════ */
+
+/* TODO 1-1: 하위 선택자 — section 안의 모든 p */
+/* .section-1 p { color: #2E75B6; } */
+
+/* TODO 1-2: 자식 선택자 — ul의 직계 자식 li만 */
+/* .section-1 > ul > li { font-weight: 700; } */
+
+/* TODO 1-3: 인접 형제 — h3 바로 다음 p 하나 */
+/* .section-1 h3 + p { color: #1D9E75; font-style: italic; } */
+
+/* TODO 1-4: 일반 형제 — h3 이후 모든 형제 p */
+/* .section-1 h3 ~ p { text-indent: 1rem; } */
+
+/* ════════════════════════════════════════
+       2. 속성 선택자
+    ════════════════════════════════════════ */
+
+/* TODO 2-1: type이 text인 input */
+input[type="text"] {
+	border: 2px solid #2E75B6;
+}
+
+/* TODO 2-2: type이 email인 input */
+input[type="email"] {
+	border: 2px solid #1D9E75;
+}
+
+/* TODO 2-3: required 속성이 있는 input */
+input[required] {
+	background: #fffbeb;
+}
+
+/* TODO 2-4: href가 https로 시작하는 링크 */
+a[href^="https"] {
+	color: #1D9E75;
+	font-weight: 700;
+}
+
+/* TODO 2-5: href가 .pdf로 끝나는 링크 */
+a[href$=".pdf"] {
+	color: #D85A30;
+}
+
+/* TODO 2-6: href에 shinhan이 포함된 링크 */
+a[href*="shinhan"] {
+	text-decoration: blink;
+}
+
+/* |= 같거나 또는 하이픈 연결 문자를 찾음 */
+a[class|="aa"] {
+	color: red;
+}
+
+/* 공통 input 스타일 */
+.form-group {
+	margin-bottom: 12px;
+}
+
+.form-group label {
+	display: block;
+	font-size: 0.85rem;
+	font-weight: 700;
+	margin-bottom: 4px;
+	color: #374151;
+}
+
+.form-group input {
+	width: 100%;
+	padding: 10px 12px;
+	border-radius: 6px;
+	font-size: 0.9rem;
+	font-family: inherit;
+	outline: none;
+}
+
+/* ════════════════════════════════════════
+       3. 가상 클래스 선택자
+    ════════════════════════════════════════ */
+
+/* TODO 3-1: 링크 상태 (순서 중요: L V H A) */
+.link-wrap a:link {
+	color: #374151;
+} /* 방문 전 */
+.link-wrap a:visited {
+	color: #9ca3af;
+} /* 방문 후 */
+.link-wrap a:hover {
+	color: #1D9E75;
+	text-decoration: underline;
+}
+
+* /
+.link-wrap a:active {
+	color: #222222;
+} /* 누르고 있을 때 */
+
+/* TODO 3-2: input 포커스 */
+/* .form-group input:focus {
+      border-color: #1D9E75;
+      outline: 2px solid rgba(29,158,117,0.25);
+    } */
+
+/* TODO 3-3: 체크박스 체크 상태 */
+/* input[type="checkbox"]:checked + label {
+      color: #1D9E75;
+      font-weight: 700;
+    } */
+
+/* TODO 3-4: 구조 기반 — 첫번째, 마지막, 홀짝 */
+.item-list li:first-child {
+	color: #D85A30;
+	font-weight: 700;
+}
+
+.item-list li:last-child {
+	color: #9ca3af;
+}
+
+.item-list li:nth-child(even) {
+	background: #f5f8ff;
+}
+
+.item-list li:nth-child(3) {
+	background: #fde68a;
+}
+
+/* mytest클래스의 자손 중 n번째 p 타입*/
+.mytest p:nth-of-type(1) {
+	color: red;
+}
+
+.mytest p:last-child {
+	color: green;
+}
+
+/* TODO 3-5: 제외 선택자 */
+.item-list li:not(:last-child) {
+	border-bottom: 1px solid #e5e7eb;
+}
+
+/* TODO 3-6: 빈 input */
+input:placeholder-shown {
+	background: #fafafa;
+}
+
+/* 공통 스타일 */
+.link-wrap {
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.link-wrap a {
+	font-size: 0.9rem;
+}
+
+.item-list {
+	list-style: none;
+}
+
+.item-list li {
+	padding: 10px 12px;
+	font-size: 0.9rem;
+}
+
+.check-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.check-group div {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.check-group input {
+	width: auto;
+}
+
+.check-group label {
+	font-size: 0.9rem;
+	font-weight: 400;
+	margin: 0;
+}
+
+/* ════════════════════════════════════════
+       4. 가상 요소
+    ════════════════════════════════════════ */
+
+/* TODO 4-1: ::before — 필수 항목 * 표시 */
+.required::after {
+	content: ' *';
+	color: #D85A30;
+	font-weight: 700;
+}
+/* TODO 4-2: ::before — 섹션 제목 왼쪽 막대 */
+.bar-title::before {
+	content: '';
+	display: inline-block;
+	width: 4px;
+	height: 1em;
+	background: #1D9E75;
+	margin-right: 8px;
+	vertical-align: middle;
+	border-radius: 2px;
+}
+
+/* TODO 4-3: ::after — 외부 링크 아이콘 */
+.external::after {
+	content: ' ↗';
+	font-size: 0.8em;
+	color: #9ca3af;
+}
+
+/* TODO 4-4: ::first-letter — 첫 글자 크게 */
+.dropcap::first-letter {
+	font-size: 2.5em;
+	font-weight: 900;
+	float: left;
+	line-height: 1;
+	margin-right: 6px;
+	color: #1D9E75;
+}
+
+/* TODO 4-5: ::selection — 드래그 색상 */
+::selection {
+	background: #1D9E75;
+	color: #fff;
+}
+
+/* TODO 4-6: ::placeholder — placeholder 색상 */
+input::placeholder {
+	color: #d1d5db;
+	font-style: italic;
+}
+
+/* 공통 스타일 */
+.pseudo-list {
+	list-style: none;
+}
+
+.pseudo-list li {
+	padding: 10px 12px;
+	border-bottom: 1px solid #f3f4f6;
+	font-size: 0.9rem;
+}
+
+.bar-title {
+	font-size: 1rem;
+	font-weight: 700;
+	margin-bottom: 12px;
+}
+
+.dropcap {
+	font-size: 0.9rem;
+	line-height: 1.8;
+	color: #374151;
+	overflow: hidden;
+}
+</style>
+</head>
+<body>
+
+	<!-- ══ 1. 연결 선택자 ══════════════════════════════ -->
+	<h2>1. 연결 선택자</h2>
+	<p class="desc">두 선택자의 관계를 이용해 특정 요소만 선택합니다.</p>
+	<div class="todo-box">
+		📝 TODO 1-1 —
+		<code>.section-1 p</code>
+		: section 안 모든 p (하위)<br> 📝 TODO 1-2 —
+		<code>.section-1 > ul > li</code>
+		: 직계 자식 li만 (자식)<br> 📝 TODO 1-3 —
+		<code>h3 + p</code>
+		: h3 바로 다음 p 하나 (인접 형제)<br> 📝 TODO 1-4 —
+		<code>h3 ~ p</code>
+		: h3 이후 모든 형제 p (일반 형제)
+	</div>
+	<div class="wrap section-1">
+		<h3>상품 소개</h3>
+		<p>h3 바로 다음 p — 인접 형제 선택자 대상</p>
+		<p>h3 이후 형제 p — 일반 형제 선택자 대상</p>
+		<p>h3 이후 형제 p — 일반 형제 선택자 대상</p>
+		<ul>
+			<li>직계 자식 li A
+				<ul>
+					<li>중첩 ul의 li (자식 선택자 대상 아님)</li>
+					<li>중첩 ul의 li (자식 선택자 대상 아님)</li>
+				</ul>
+			</li>
+			<li>직계 자식 li B</li>
+			<li>직계 자식 li C</li>
+		</ul>
+	</div>
+
+
+	<!-- ══ 2. 속성 선택자 ══════════════════════════════ -->
+	<h2>2. 속성 선택자</h2>
+	<p class="desc">태그의 속성(attribute) 값으로 요소를 선택합니다.</p>
+	<div class="todo-box">
+		📝 TODO 2-1 —
+		<code>input[type="text"]</code>
+		: 파란 테두리<br> 📝 TODO 2-2 —
+		<code>input[type="email"]</code>
+		: 초록 테두리<br> 📝 TODO 2-3 —
+		<code>input[required]</code>
+		: 노란 배경<br> 📝 TODO 2-4 —
+		<code>a[href^="https"]</code>
+		: 초록 굵게 (https로 시작)<br> 📝 TODO 2-5 —
+		<code>a[href$=".pdf"]</code>
+		: 주황색 (pdf로 끝남)<br> 📝 TODO 2-6 —
+		<code>a[href*="shinhan"]</code>
+		: 밑줄 (shinhan 포함)
+	</div>
+	<div class="wrap">
+
+		<!-- input 속성 선택자 -->
+		<div class="form-group">
+			<label>아이디 (text)</label> <input type="text" placeholder="아이디 입력">
+		</div>
+		<div class="form-group">
+			<label>이메일 (email + required)</label> <input type="email"
+				placeholder="이메일 입력" required>
+		</div>
+		<div class="form-group">
+			<label>비밀번호 (password + required)</label> <input type="password"
+				placeholder="비밀번호 입력" required>
+		</div>
+		<div class="form-group">
+			<label>전화번호 (tel)</label> <input type="tel"
+				placeholder="010-0000-0000">
+		</div>
+
+		<br>
+
+		<!-- 링크 속성 선택자 -->
+		<div
+			style="display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem;">
+			<a href="https://www.shinhan.com">신한은행 (https + shinhan 포함)</a> <a
+				href="https://www.google.com">구글 (https로 시작)</a> <a
+				href="http://example.com">예시 사이트 (http로 시작)</a> <a
+				href="/files/manual.pdf">이용 매뉴얼 (.pdf로 끝남)</a> <a
+				href="/files/guide.pdf">가이드 문서 (.pdf로 끝남)</a> <a href="/about">소개
+				페이지 (일반 링크)</a> <a class="aa bb">class="aa bb"</a> <a class="aa-bb">class="aa-bb"</a>
+		</div>
+	</div>
+
+
+	<!-- ══ 3. 가상 클래스 선택자 ═══════════════════════ -->
+	<h2>3. 가상 클래스 선택자</h2>
+	<p class="desc">
+		요소의 <strong>상태</strong>나 <strong>구조적 위치</strong>에 따라 선택합니다.
+	</p>
+	<div class="todo-box">
+		📝 TODO 3-1 —
+		<code>a:link / :visited / :hover / :active</code>
+		순서 중요!<br> 📝 TODO 3-2 —
+		<code>input:focus</code>
+		: 포커스 시 테두리 변경<br> 📝 TODO 3-3 —
+		<code>:checked + label</code>
+		: 체크 시 라벨 강조<br> 📝 TODO 3-4 —
+		<code>:first-child / :last-child / :nth-child(n)</code>
+		<br> 📝 TODO 3-5 —
+		<code>:not(:last-child)</code>
+		: 마지막 제외 구분선<br> 📝 TODO 3-6 —
+		<code>:placeholder-shown</code>
+		: 입력 전 배경색
+	</div>
+	<div class="wrap">
+
+		<!-- 링크 상태 -->
+		<p
+			style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: #374151;">
+			🔗 링크 상태 (L V H A 순서)</p>
+		<div class="link-wrap" style="margin-bottom: 20px;">
+			<a href="https://www.naver.com" target="_blank">네이버</a> <a
+				href="https://www.kakao.com" target="_blank">카카오</a> <a
+				href="https://www.toss.im" target="_blank">토스</a> <a href="#">내부
+				링크</a>
+		</div>
+
+		<!-- input 포커스 -->
+		<p
+			style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: #374151;">
+			🎯 input:focus</p>
+		<div class="form-group" style="margin-bottom: 20px;">
+			<label>클릭해서 포커스 확인</label> <input type="text" placeholder="클릭해보세요">
+		</div>
+
+		<!-- 체크박스 -->
+		<p
+			style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: #374151;">
+			✅ :checked + label</p>
+		<div class="check-group" style="margin-bottom: 20px;">
+			<div>
+				<input type="checkbox" id="chk1"> <label for="chk1">신발</label>
+			</div>
+			<div>
+				<input type="checkbox" id="chk2" checked> <label for="chk2">의류
+					(이미 체크됨)</label>
+			</div>
+			<div>
+				<input type="checkbox" id="chk3"> <label for="chk3">잡화</label>
+			</div>
+		</div>
+
+		<!-- 구조 기반 -->
+		<p
+			style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: #374151;">
+			🔢 :first-child / :last-child / :nth-child / :not</p>
+		<ul class="item-list">
+			<li>1번 항목 — :first-child</li>
+			<li>2번 항목 — :nth-child(even)</li>
+			<li>3번 항목 — :nth-child(3)</li>
+			<li>4번 항목 — :nth-child(even)</li>
+			<li>5번 항목 — :last-child</li>
+		</ul>
+		<div class="mytest">
+			<p>1번</p>
+			<p>2번</p>
+			<p>3번</p>
+		</div>
+	</div>
+
+	<!-- ══ 4. 가상 요소 ════════════════════════════════ -->
+	<h2>4. 가상 요소</h2>
+	<p class="desc">
+		HTML에 없는 요소를 CSS로 만들어 삽입합니다.
+		<code>content</code>
+		속성이 반드시 있어야 합니다.
+	</p>
+	<div class="todo-box">
+		📝 TODO 4-1 —
+		<code>.required::after</code>
+		: 필수 항목 * 표시<br> 📝 TODO 4-2 —
+		<code>.bar-title::before</code>
+		: 제목 왼쪽 초록 막대<br> 📝 TODO 4-3 —
+		<code>.external::after</code>
+		: 외부 링크 ↗ 아이콘<br> 📝 TODO 4-4 —
+		<code>.dropcap::first-letter</code>
+		: 첫 글자 크게<br> 📝 TODO 4-5 —
+		<code>::selection</code>
+		: 드래그 색상 변경<br> 📝 TODO 4-6 —
+		<code>input::placeholder</code>
+		: placeholder 색상
+	</div>
+	<div class="wrap">
+
+		<!-- ::after 필수 라벨 -->
+		<p class="bar-title">주문 정보 입력</p>
+		<div class="form-group">
+			<label class="required">이름</label> <input type="text"
+				placeholder="홍길동">
+		</div>
+		<div class="form-group">
+			<label class="required">이메일</label> <input type="email"
+				placeholder="hong@example.com">
+		</div>
+		<div class="form-group">
+			<label>메모 (선택)</label> <input type="text" placeholder="배송 요청사항">
+		</div>
+
+		<br>
+
+		<!-- ::after 외부 링크 -->
+		<p
+			style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: #374151;">
+			🔗 외부 링크 아이콘 (::after)</p>
+		<ul class="pseudo-list">
+			<li><a href="https://www.naver.com" class="external">네이버
+					바로가기</a></li>
+			<li><a href="https://www.kakao.com" class="external">카카오
+					바로가기</a></li>
+			<li><a href="/about">내부 링크 (아이콘 없음)</a></li>
+		</ul>
+
+		<br>
+
+		<!-- ::first-letter -->
+		<p
+			style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: #374151;">
+			🔤 ::first-letter — 첫 글자 크게</p>
+		<p class="dropcap">신한DS금융소프트웨어아카데미는 금융 소프트웨어 전문 인재를 양성하는 과정입니다.
+			HTML과 CSS를 시작으로 Java, Spring Boot, React까지 풀스택 개발 역량을 키웁니다.</p>
+
+		<br>
+
+		<!-- ::selection -->
+		<p
+			style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: #374151;">
+			🖱️ ::selection — 아래 텍스트를 드래그해보세요</p>
+		<p style="font-size: 0.9rem; color: #374151; line-height: 1.8;">이
+			텍스트를 마우스로 드래그하면 선택 색상이 바뀝니다. ::selection 가상 요소로 드래그 배경색과 글자색을 바꿀 수
+			있습니다.</p>
+
+	</div>
+
+</body>
+</html>

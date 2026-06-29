@@ -1,4 +1,4 @@
-package com.shinhan.day04;
+package com.shinhan.emp;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -14,9 +14,6 @@ import java.util.Map;
 
 import com.shinhan.util.DBUtil;
 
-/**
- * 작성자 : 송병국 생성일 및 시간 : 2026. 6. 12. 오전 9:47:42 설명 : EmpDAO
- */
 public class EmpDAO {
 	Connection conn = null;
 	PreparedStatement pst = null;
@@ -111,8 +108,8 @@ public class EmpDAO {
 	}
 
 //	여러 조건으로 직원들을 조회( 부서, 직책, 급여 >=, 입사일>= )
-	public List<EmpVO> selectByCondition(int deptId, String jobId, double salary, Date hireDate) {
-		List<EmpVO> empList = new ArrayList<>();
+	public List<EmpDTO> selectByCondition(int deptId, String jobId, double salary, Date hireDate) {
+		List<EmpDTO> empList = new ArrayList<>();
 		String sql = """
 				select * from employees
 				where
@@ -144,8 +141,8 @@ public class EmpDAO {
 	}
 
 //	jobId로 직원 조회
-	public List<EmpVO> selectByJobId(String jobId) {
-		List<EmpVO> empList = new ArrayList<>();
+	public List<EmpDTO> selectByJobId(String jobId) {
+		List<EmpDTO> empList = new ArrayList<>();
 		String sql = """
 				select * from employees where job_id = upper(?)
 				""";
@@ -167,8 +164,8 @@ public class EmpDAO {
 	}
 
 //	특정 부서의 직원 조회
-	public List<EmpVO> selectByDepartmentId(int deptId) {
-		List<EmpVO> empList = new ArrayList<>();
+	public List<EmpDTO> selectByDepartmentId(int deptId) {
+		List<EmpDTO> empList = new ArrayList<>();
 		String sql = """
 				select * from employees where department_id = ?
 				""";
@@ -189,10 +186,11 @@ public class EmpDAO {
 		return empList;
 	}
 
-	public List<EmpVO> selectAll() {
-		List<EmpVO> empList = new ArrayList<>();
+	public List<EmpDTO> selectAll() {
+		List<EmpDTO> empList = new ArrayList<>();
 		String sql = """
 				select * from employees
+				order by employee_id
 				""";
 
 		conn = DBUtil.dbConnect();
@@ -210,8 +208,8 @@ public class EmpDAO {
 		return empList;
 	}
 
-	public EmpVO selectById(int empid) {
-		EmpVO emp = null;
+	public EmpDTO selectById(int empid) {
+		EmpDTO emp = null;
 		String sql = """
 				select * from employees where employee_id = ?
 				""";
@@ -232,7 +230,7 @@ public class EmpDAO {
 		return emp;
 	}
 
-	public int insert(EmpVO emp) {
+	public int insert(EmpDTO emp) {
 		int result = 0;
 		String sql = """
 				insert into employees values(?,?,?,?,?,?,?,?,?,?,?)
@@ -261,7 +259,7 @@ public class EmpDAO {
 		return result;
 	}
 
-	public int update(EmpVO emp) {
+	public int update(EmpDTO emp) {
 		int result = 0;
 		String sql = """
 				update employees
@@ -321,8 +319,8 @@ public class EmpDAO {
 		return result;
 	}
 
-	private EmpVO buildVO(ResultSet rs) throws SQLException {
-		EmpVO emp = EmpVO.builder() //
+	private EmpDTO buildVO(ResultSet rs) throws SQLException {
+		EmpDTO emp = EmpDTO.builder() //
 				.employeeId(rs.getInt(1)) //
 				.firstName(rs.getString(2)) //
 				.lastName(rs.getString(3)) //

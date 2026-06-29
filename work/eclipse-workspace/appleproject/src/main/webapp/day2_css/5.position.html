@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>position 속성 실습</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        background: #f3f4f6;
+        color: #1a1a1a;
+        /* 스크롤 확인을 위해 height 충분히,   뷰포트 높이의 2배 */
+        min-height: 200vh;
+      }
+
+      h2 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1f3864;
+        margin: 40px 0 12px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #2e75b6;
+      }
+
+      p.desc {
+        font-size: 0.875rem;
+        color: #555;
+        margin-bottom: 16px;
+        line-height: 1.7;
+      }
+
+      .todo-box {
+        background: #fffbeb;
+        border-left: 4px solid #f59e0b;
+        padding: 12px 16px;
+        font-size: 0.88rem;
+        color: #78350f;
+        border-radius: 0 6px 6px 0;
+        line-height: 1.9;
+        margin-bottom: 20px;
+      }
+
+      .wrap {
+        background: #fff;
+        border: 2px dashed #cbd5e1;
+        padding: 24px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+      }
+
+      .section {
+        padding: 24px;
+      }
+
+      /* ════════════════════════════
+       sticky(스티커식의 ,달라붙은) — 헤더
+       스크롤해도 상단에 고정
+    ════════════════════════════ */
+      .site-header {
+        /* TODO A: position: sticky; top: 0; 주석 풀어보세요 */
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: #1f3864;
+        color: #fff;
+        padding: 0 24px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .site-header nav a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 0.9rem;
+      }
+
+      /* ════════════════════════════
+       1. static (기본값)
+    ════════════════════════════ */
+      .box-static {
+        width: 160px;
+        height: 60px;
+        background: #bfdbfe;
+        border: 2px solid #3b82f6;
+        padding: 12px;
+        /* position: static; ← 기본값, 선언 안 해도 동일 */
+        /* top, left 줘봤자 아무 반응 없음 */
+        /* TODO 1: 아래 주석 풀고 위치 변화 없는 것 확인 */
+        /* top: 30px; left: 30px; */
+      }
+
+      /* ════════════════════════════
+       2. relative
+       자신이 원래 있던 자리 기준
+    ════════════════════════════ */
+      .box-relative-wrap {
+        display: flex;
+        gap: 0;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      .box-normal {
+        width: 120px;
+        height: 60px;
+        background: #bbf7d0;
+        border: 2px solid #16a34a;
+        padding: 10px;
+        font-size: 0.8rem;
+      }
+
+      .box-relative {
+        width: 120px;
+        height: 60px;
+        background: #86efac;
+        border: 2px solid #16a34a;
+        padding: 10px;
+        font-size: 0.8rem;
+        /* TODO 2: 주석을 하나씩 풀어보세요 */
+        position: relative;
+        top: 20px;
+        left: 30px;
+      }
+
+      .box-normal2 {
+        width: 120px;
+        height: 60px;
+        background: #bbf7d0;
+        border: 2px solid #16a34a;
+        padding: 10px;
+        font-size: 0.8rem;
+        border: 1px solid red;
+      }
+      /* relative 뱃지 활용 — 텍스트 살짝 올리기 */
+      .badge-relative {
+        display: inline-block;
+        background: #fbbf24;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        /* TODO 2-1: 주석 풀고 뱃지가 위로 올라가는지 확인 */
+        position: relative;
+        top: -25px;
+      }
+
+      /* ════════════════════════════
+       3. absolute
+       가장 가까운 positioned 부모 기준
+    ════════════════════════════ */
+      .card {
+        width: 200px;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+        /* TODO 3: position: relative 주석 풀어보세요
+         → absolute 자식의 기준점이 됩니다 */
+        position: relative;
+      }
+
+      .card-img {
+        width: 100%;
+        height: 140px;
+        background: pink;
+      }
+
+      .card-body {
+        padding: 12px;
+      }
+
+      .card-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin: 0 0 4px;
+      }
+
+      .card-price {
+        font-size: 0.85rem;
+        color: #6b7280;
+        margin: 0;
+      }
+
+      .sale-badge {
+        background: #dc2626;
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 4px;
+        /* TODO 3-1: 주석 풀고 뱃지 위치 변화 확인 */
+        position: absolute;
+        top: 15px;
+        left: 15px;
+
+        /* TODO 3-2: 값을 바꿔보세요(아래로)(오른쪽으로) */
+
+        /*  position: absolute;
+         bottom: 12px;
+         right: 12px ; */
+      }
+      /* absolute 기준이 없을 때 — body 기준으로 올라감 */
+      .card-no-relative {
+        width: 200px;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+        /* position: relative 없음 — 자식 absolute가 body 기준으로 이동 */
+
+        /*       position: absolute;
+       top: 15px;
+       left: 15px; */
+      }
+
+      /* ════════════════════════════
+       4. fixed
+       뷰포트 기준 — 스크롤해도 고정
+    ════════════════════════════ */
+      .scroll-guide {
+        background: #fef9c3;
+        border: 1px solid #fbbf24;
+        padding: 16px 20px;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        color: #78350f;
+        line-height: 1.8;
+        margin-bottom: 16px;
+      }
+      /* TODO 4: 주석 풀면 오른쪽 하단에 버튼 고정됩니다 */
+      .top-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #1f3864;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: block;
+        margin: 12px 0;
+      }
+
+      /* ════════════════════════════
+       z-index — 쌓임 순서
+    ════════════════════════════ */
+      .z-wrap {
+        position: relative;
+        height: 120px;
+      }
+
+      .z-box {
+        width: 120px;
+        height: 80px;
+        border-radius: 6px;
+        padding: 10px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        position: absolute;
+      }
+
+      .z1 {
+        background: blue;
+        border: 2px solid #3b82f6;
+        color: #e2e2e2;
+        top: 0;
+        left: 0;
+        /* TODO 5: z-index 값을 바꿔보세요 */
+        z-index: 5;
+        top: 0;
+      }
+
+      .z2 {
+        background: green;
+        border: 2px solid #16a34a;
+        top: 20px;
+        left: 60px;
+        z-index: 3;
+      }
+
+      .z3 {
+        background: #fde68a;
+        border: 2px solid yellow;
+        top: 40px;
+        left: 120px;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ══ sticky 헤더 ═══════════════════════════════ -->
+    <header class="site-header">
+      <span>🛒 ShopMall</span>
+      <nav><a href="#">홈</a> <a href="#">신상품</a> <a href="#">세일</a></nav>
+    </header>
+
+    <div class="section">
+      <!-- ══ 1. static ════════════════════════════════ -->
+      <h2>1. static — 기본값 (normal flow)</h2>
+      <p class="desc">
+        모든 요소의 기본값입니다.
+        <strong>top · left · right · bottom이 아무 효과가 없습니다.</strong
+        ><br />
+        위에서 아래로, 왼쪽에서 오른쪽으로 순서대로 쌓입니다.
+      </p>
+      <div class="todo-box">
+        📝 TODO 1 — CSS의
+        <code>top: 30px; left: 30px;</code>
+        주석을 풀어보세요.<br />
+        static 상태에서는 위치 속성이
+        <strong>아무 반응도 하지 않는 것</strong>을 확인하세요.
+      </div>
+      <div class="wrap">
+        <div class="box-static">
+          static 박스<br />
+          <small>top·left 줘도 안 움직임</small>
+        </div>
+      </div>
+
+      <!-- ══ 2. relative ══════════════════════════════ -->
+      <h2>2. relative — 자신의 원래 위치 기준으로 이동</h2>
+      <p class="desc">
+        <strong>원래 있던 자리를 기준</strong>으로 top · left · right ·
+        bottom만큼 이동합니다.<br />
+        핵심: 원래 자리는 <strong>그대로 유지</strong>됩니다 — 주변 요소가
+        밀리지 않습니다.
+      </p>
+      <div class="todo-box">
+        📝 TODO 2 —
+        <code>.box-relative</code>
+        에
+        <code>position: relative; top: 20px; left: 30px;</code>
+        주석을 풀어보세요.<br />
+        초록 박스가 이동해도 양쪽 박스가 밀리지 않는 것을 확인하세요.<br />
+        📝 TODO 2-1 — 뱃지에
+        <code>position: relative; top: -5px;</code>
+        을 추가해서 텍스트 위에 살짝 올려보세요.
+      </div>
+      <div class="wrap">
+        <div class="box-relative-wrap">
+          <div class="box-normal">일반 박스 A</div>
+          <div class="box-relative">
+            relative 박스<br />
+            <small>여기서 이동</small>
+          </div>
+          <div class="box-normal2">일반 박스 B</div>
+        </div>
+        <br />
+        <p style="font-size: 0.9rem">
+          신상품 <span class="badge-relative">NEW</span> 이 출시되었습니다.
+        </p>
+      </div>
+
+      <!-- ══ 3. absolute ══════════════════════════════ -->
+      <h2>3. absolute — 가장 가까운 positioned 부모 기준</h2>
+      <p class="desc">
+        <strong>position이 static이 아닌 가장 가까운 부모</strong>를 기준으로
+        위치를 잡습니다.<br />
+        부모에
+        <code>position: relative</code>
+        가 없으면 계속 위로 올라가 <strong>body까지 올라갑니다.</strong>
+      </p>
+      <div class="todo-box">
+        📝 TODO 3 —
+        <code>.card</code>
+        의
+        <code>position: relative</code>
+        주석을 풀어보세요.<br />
+        📝 TODO 3-1 —
+        <code>.sale-badge</code>
+        의
+        <code>position: absolute; top: 12px; left: 12px;</code>
+        주석을 풀어보세요.<br />
+        뱃지가 카드 이미지 위 왼쪽에 딱 붙는 것을 확인하세요.<br />
+        📝 TODO 3-2 — top/left 값을 bottom/right로 바꾸며 위치를 이동해보세요.
+      </div>
+      <div
+        class="wrap"
+        style="display: flex; gap: 32px; align-items: flex-start"
+      >
+        <div>
+          <p style="font-size: 0.8rem; color: #888; margin-bottom: 8px">
+            ✅ 부모에 position:relative 있음
+          </p>
+          <div class="card">
+            <div class="card-img">
+              <span class="sale-badge">SALE</span>
+            </div>
+            <div class="card-body">
+              <p class="card-title">프리미엄 운동화</p>
+              <p class="card-price">89,000원</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p style="font-size: 0.8rem; color: #e11d48; margin-bottom: 8px">
+            ❌ 부모에 position:relative 없음<br />
+            <small>(TODO 3 주석 풀면 뱃지가 body 기준으로 이탈)</small>
+          </p>
+          <div class="card-no-relative">
+            <div class="card-img"></div>
+            <div class="card-body">
+              <p class="card-title">클래식 스니커즈</p>
+              <p class="card-price">62,000원</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ 4. fixed ═════════════════════════════════ -->
+      <h2>4. fixed — 뷰포트 기준 고정 (스크롤해도 유지)</h2>
+      <p class="desc">
+        <strong>브라우저 화면(뷰포트) 기준</strong>으로 위치를 잡습니다.<br />
+        스크롤해도 항상 같은 자리에 있습니다. 쇼핑몰 "맨 위로" 버튼, 채팅 버튼에
+        활용합니다.
+      </p>
+      <div class="todo-box">
+        📝 TODO 4 —
+        <code>.top-btn</code>
+        의 주석을 풀어보세요.<br />
+        스크롤을 내려도 버튼이 오른쪽 하단에 고정되는 것을 확인하세요.<br />
+        📝 TODO A — 상단 헤더의
+        <code>position: sticky; top: 0;</code>
+        주석도 풀어서<br />
+        스크롤 시 헤더가 상단에 달라붙는 것도 같이 확인하세요.
+      </div>
+      <div class="scroll-guide">
+        👇 아래로 스크롤해서 fixed 버튼과 sticky 헤더를 확인하세요.<br />
+        fixed: 뷰포트에 고정 — 문서 흐름에서 완전히 빠져나옴<br />
+        sticky: 스크롤 중 특정 지점에서 달라붙음 — 문서 흐름 유지
+      </div>
+      <button
+        class="top-btn"
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+      >
+        ↑
+      </button>
+
+      <!-- ══ 5. z-index ═══════════════════════════════ -->
+      <h2>5. z-index — 쌓임 순서</h2>
+      <p class="desc">
+        position이 static이 아닌 요소들 사이의 <strong>앞뒤 순서</strong>를
+        결정합니다.<br />
+        숫자가 클수록 앞에 나옵니다.
+        <code>position</code>
+        이 있어야 z-index가 동작합니다.
+      </p>
+      <div class="todo-box">
+        📝 TODO 5 — 세 박스의 z-index 주석을 풀어보세요.<br />
+        그 다음
+        <code>.z1</code>
+        의 z-index를
+        <code>99</code>
+        로 바꿔서 파란 박스가 맨 앞으로 오는지 확인하세요.
+      </div>
+      <div class="wrap">
+        <div class="z-wrap">
+          <div class="z-box z1">파란 박스<br />z-index: 5</div>
+          <div class="z-box z2">초록 박스<br />z-index: 3</div>
+          <div class="z-box z3">노란 박스<br />z-index: 1</div>
+        </div>
+      </div>
+
+      <!-- ══ 정리 표 ════════════════════════════════════ -->
+      <h2>📋 position 속성 한눈에 비교</h2>
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem">
+        <thead>
+          <tr style="background: #1f3864; color: #fff">
+            <th style="padding: 10px 14px; text-align: left">값</th>
+            <th style="padding: 10px 14px; text-align: left">기준점</th>
+            <th style="padding: 10px 14px; text-align: left">문서 흐름</th>
+            <th style="padding: 10px 14px; text-align: left">주요 사용처</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #fff">
+            <td style="padding: 10px 14px"><code>static</code></td>
+            <td style="padding: 10px 14px">없음 (기본값)</td>
+            <td style="padding: 10px 14px">유지</td>
+            <td style="padding: 10px 14px">기본 상태</td>
+          </tr>
+          <tr style="background: #f5f8ff">
+            <td style="padding: 10px 14px"><code>relative</code></td>
+            <td style="padding: 10px 14px">자신의 원래 위치</td>
+            <td style="padding: 10px 14px">유지 (빈 자리 남음)</td>
+            <td style="padding: 10px 14px">미세 조정, absolute 기준 부모</td>
+          </tr>
+          <tr style="background: #fff">
+            <td style="padding: 10px 14px"><code>absolute</code></td>
+            <td style="padding: 10px 14px">가장 가까운 positioned 부모</td>
+            <td style="padding: 10px 14px">이탈 (빈 자리 없음)</td>
+            <td style="padding: 10px 14px">뱃지, 툴팁, 드롭다운</td>
+          </tr>
+          <tr style="background: #f5f8ff">
+            <td style="padding: 10px 14px"><code>fixed</code></td>
+            <td style="padding: 10px 14px">뷰포트</td>
+            <td style="padding: 10px 14px">이탈</td>
+            <td style="padding: 10px 14px">헤더, 맨위로 버튼, 채팅</td>
+          </tr>
+          <tr style="background: #fff">
+            <td style="padding: 10px 14px"><code>sticky</code></td>
+            <td style="padding: 10px 14px">스크롤 임계점</td>
+            <td style="padding: 10px 14px">유지</td>
+            <td style="padding: 10px 14px">헤더, 사이드바, 탭메뉴</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- /section -->
+  </body>
+</html>

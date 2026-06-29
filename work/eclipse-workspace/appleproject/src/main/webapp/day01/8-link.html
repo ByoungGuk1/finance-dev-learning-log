@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>LINK</title>
+</head>
+<style>
+img {
+	width: 150px
+}
+</style>
+<body>
+	<h1>이미지 연결</h1>
+	<!-- 웹 프로그램은 경로를 알아야한다 -->
+	<p>상대 경로 이용</p>
+	<img alt="상대경로 곰이미지" src="../resources/images/bear.jpg">
+	<p>절대 경로 이용</p>
+	<img alt="절대경로 곰이미지" src="/appleproject/resources/images/bear.jpg"
+		style="width: 70%">
+	<p>전체경로</p>
+	<img alt="전체 경로 곰 이미지"
+		src="http://localhost:9999/appleproject/resources/images/bear.jpg">
+</body>
+</html>

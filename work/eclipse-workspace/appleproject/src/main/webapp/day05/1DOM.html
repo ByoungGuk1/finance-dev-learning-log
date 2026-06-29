@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Document Object Model</title>
+<script type="text/javascript">
+	window.onload = () => {
+		const btn1 = document.querySelector("#btn1");
+		const btn2 = document.querySelector("#btn2");
+		const btn3 = document.querySelector("#btn3");
+		
+		const div = document.querySelector("#here");
+		
+		console.dir(btn1);
+		
+		//callback -> 함수를 할당(eventListener), 호출은 이벤트가
+		btn1.onclick = func1;
+		btn2.onclick = func2;
+		btn3.onclick = func3;
+	}
+	
+	function func1() {
+		document.querySelector("h2").innerHTML = this.innerHTML;
+	}
+	function func2() {
+		const imgTag = document.querySelector("div>img");
+		imgTag.setAttribute("src","../resources/images/cat.jpg");
+		//존재하지 않는 속성은 setAttribute 사용
+		imgTag.setAttribute("my-data","임의의 속성 추가");
+	}
+	function func3() {
+		const ulTag = document.querySelector("div>ul");
+		
+
+		const li = document.createElement("li");
+		const textNode = document.createTextNode("appendChild로 추가");
+		li.appendChild(textNode);
+		ulTag.appendChild(li);
+
+		// 1) 이벤트 연결(고전)
+		// 이벤트 속성 = 이벤트 핸들러 (대입)
+		/*
+		li.onclick = () => {
+			alert("appendChild 사용");	
+		}
+		*/
+		// 2) 표준
+		li.addEventListener("click",(e)=>alert("appendChild 사용"));
+		
+
+		/*
+		ulTag.innerHTML += `<li>innerHTML로 추가</li>`;
+		const liTag = document.querySelectorAll("div>ul>li");
+		liTag.forEach((tag)=>{tag.onclick = () => {
+			alert("innerHTML 사용");
+		}})
+		*/
+	}
+	
+</script>
+</head>
+<body>
+	<h1>DOM(Document Object Model)연습</h1>
+	<h2>선택된 객체의 이름</h2>
+	<button id="btn1">1.innerHTML</button>
+	<button id="btn2">2.changeAttribute</button>
+	<button id="btn3">3.동적 생성</button>
+	<div>
+		<ul>
+		</ul>
+	</div>
+	<div>
+		<img alt="test-img" src="../resources/images/umbrella.jpg">
+	</div>
+	<div id="here">
+		<span>test</span>
+	</div>
+</body>
+</html>

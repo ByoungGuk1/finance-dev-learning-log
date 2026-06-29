@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSS 애니메이션 실습</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #f3f4f6;
+      padding: 32px 24px;
+      color: #1a1a1a;
+    }
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1F3864;
+      margin: 40px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #2E75B6;
+    }
+    .desc {
+      font-size: 0.875rem;
+      color: #555;
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+    .todo-box {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #78350f;
+      border-radius: 0 6px 6px 0;
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+    .wrap {
+      background: #fff;
+      border: 2px dashed #cbd5e1;
+      padding: 32px 24px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      background: #1F3864;
+      color: #fff;
+      transition: background 0.2s;
+    }
+    button:hover { background: #2E75B6; }
+
+
+    /* ════════════════════════════════════════
+       @keyframes 정의
+    ════════════════════════════════════════ */
+
+    /* 위에서 아래로 등장 */
+    @keyframes slideDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+
+    /* 아래에서 위로 등장 */
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    /* 왼쪽에서 등장 */
+    @keyframes slideRight {
+      from { transform: translateX(-40px); opacity: 0; }
+      to   { transform: translateX(0);     opacity: 1; }
+    }
+
+    /* 페이드인 */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* 맥박 — 크기 */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);    }
+      50%       { transform: scale(1.12); }
+    }
+
+    /* 맥박 — 색상 */
+    @keyframes pulseBg {
+      0%, 100% { background: #D85A30; }
+      50%       { background: #ff8c5a; }
+    }
+
+    /* 회전 */
+    @keyframes spin {
+      from { transform: rotate(0deg);   }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* 흔들기 */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0);    }
+      20%       { transform: translateX(-8px); }
+      40%       { transform: translateX(8px);  }
+      60%       { transform: translateX(-6px); }
+      80%       { transform: translateX(6px);  }
+    }
+
+    /* 튀어오르기 */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0);    }
+      30%       { transform: translateY(-20px); }
+      50%       { transform: translateY(0);    }
+      70%       { transform: translateY(-10px); }
+    }
+
+    /* 토스트 메시지 */
+    @keyframes toast {
+      0%   { transform: translateY(100%); opacity: 0; }
+      15%  { transform: translateY(0);    opacity: 1; }
+      80%  { transform: translateY(0);    opacity: 1; }
+      100% { transform: translateY(100%); opacity: 0; }
+    }
+
+    /* 카드 순차 등장 */
+    @keyframes cardIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+
+    /* ════════════════════════════
+       1. slideDown — 모달
+    ════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .modal-overlay.show { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: slideDown 0.35s ease-out;
+      /* TODO 1: from/to 값을 바꿔보세요
+         translateY(-30px) → translateY(30px) : 아래서 올라오게
+         duration: 0.1s / 0.8s 차이 확인     */
+    }
+    .modal h3 { margin-bottom: 12px; color: #1F3864; }
+    .modal p  { font-size: 0.88rem; color: #555; margin-bottom: 20px; }
+    .modal-close {
+      background: #D85A30;
+      width: 100%;
+      padding: 12px;
+    }
+
+
+    /* ════════════════════════════
+       2. pulse — 뱃지
+    ════════════════════════════ */
+    .badge-wrap {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .badge-new {
+      background: #1D9E75;
+      animation: pulse 1.5s ease-in-out infinite;
+      /* TODO 2-1: 1.5s → 0.5s / 3s 로 바꿔보세요 */
+      /* TODO 2-2: infinite → 3 으로 바꾸면 3번만 반복 */
+    }
+    .badge-sale {
+      animation: pulseBg 1s ease-in-out infinite;
+    }
+    .badge-hot {
+      background: #7C3AED;
+      animation: pulse 0.8s ease-in-out infinite;
+    }
+
+
+    /* ════════════════════════════
+       3. spin — 로딩
+    ════════════════════════════ */
+    .loading {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #e5e7eb;
+      border-top-color: #1D9E75;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      /* TODO 3-1: linear → ease 로 바꾸면 어색해짐 확인 */
+      /* TODO 3-2: 1s → 0.3s / 3s 로 바꿔보세요 */
+    }
+    .loading-txt {
+      font-size: 0.85rem;
+      color: #555;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+
+    /* ════════════════════════════
+       4. shake — 에러 버튼
+    ════════════════════════════ */
+    .btn-error {
+      background: #D85A30;
+      animation: none;
+    }
+    .btn-error.shake {
+      animation: shake 0.5s ease;
+    }
+
+
+    /* ════════════════════════════
+       5. bounce — 알림
+    ════════════════════════════ */
+    .bell {
+      font-size: 2rem;
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+    }
+    .bell.bounce {
+      animation: bounce 0.8s ease;
+    }
+    .bell-count {
+      position: absolute;
+      top: -4px;
+      right: -8px;
+      background: #D85A30;
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+
+    /* ════════════════════════════
+       6. animation-fill-mode
+          forwards / backwards
+    ════════════════════════════ */
+    .fill-box {
+      width: 120px;
+      height: 60px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+      opacity: 0;
+    }
+    .fill-none {
+      background: #2E75B6;
+      /* 끝나면 원래 상태로 돌아옴 (opacity:0으로) */
+    }
+    .fill-forwards {
+      background: #1D9E75;
+      animation-fill-mode: forwards;  /* 끝난 후 마지막 상태 유지 */
+    }
+    .fill-both {
+      background: #D85A30;
+      animation-delay: 0.5s;
+      animation-fill-mode: both;      /* 시작 전도 from 상태 유지 */
+    }
+    .running {
+      animation: fadeIn 1s ease-out;
+    }
+
+
+    /* ════════════════════════════
+       7. 토스트 메시지
+    ════════════════════════════ */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      background: #1F3864;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      opacity: 0;
+      z-index: 998;
+      white-space: nowrap;
+    }
+    .toast.show {
+      animation: toast 2.5s ease forwards;
+    }
+
+
+    /* ════════════════════════════
+       8. 카드 순차 등장
+    ════════════════════════════ */
+    .seq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+    }
+    .seq-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #1F3864;
+      opacity: 0;
+    }
+    /* animation-delay로 순차 등장 */
+    .seq-card:nth-child(1) { animation: cardIn 0.4s ease 0.0s forwards; }
+    .seq-card:nth-child(2) { animation: cardIn 0.4s ease 0.15s forwards; }
+    .seq-card:nth-child(3) { animation: cardIn 0.4s ease 0.3s forwards; }
+    .seq-card:nth-child(4) { animation: cardIn 0.4s ease 0.45s forwards; }
+    .seq-card:nth-child(5) { animation: cardIn 0.4s ease 0.6s forwards; }
+    .seq-card:nth-child(6) { animation: cardIn 0.4s ease 0.75s forwards; }
+    /* TODO 8: delay 간격을 0.05s / 0.5s 로 바꿔보세요 */
+
+
+    /* ════════════════════════════
+       9. 종합 실습 — TODO 직접 완성
+    ════════════════════════════ */
+    .practice-btn {
+      padding: 14px 32px;
+      background: #1D9E75;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      /* TODO 9-1: hover 시 pulse 애니메이션 추가 */
+    }
+    /* .practice-btn:hover {
+      animation: pulse 0.6s ease-in-out infinite;
+    } */
+
+    .practice-icon {
+      font-size: 2rem;
+      display: inline-block;
+      /* TODO 9-2: 클릭 시 spin 1회 */
+    }
+
+    .practice-box {
+      width: 120px;
+      height: 80px;
+      background: #2E75B6;
+      border-radius: 8px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      /* TODO 9-3: 아래 keyframes 완성 후 적용 */
+    }
+    /* @keyframes myAnim {
+      0%   { ??? }
+      50%  { ??? }
+      100% { ??? }
+    } */
+  </style>
+</head>
+<body>
+
+  <!-- ══ 1. slideDown — 모달 ════════════════════════ -->
+  <h2>1. slideDown — 모달 등장</h2>
+  <p class="desc">
+    <code>from</code> 에서 <code>to</code> 로 한 번 실행됩니다.
+    <code>animation-fill-mode: forwards</code> 없으면 끝난 후 원래 상태로 돌아갑니다.
+  </p>
+  <div class="todo-box">
+    📝 TODO 1 — 버튼 클릭 후 모달 확인.<br>
+    <code>slideDown</code> 의 <code>translateY(-30px)</code> 를 <code>translateY(30px)</code> 로 바꾸면 아래서 올라오는 모달이 됩니다.<br>
+    <code>duration</code> 을 <code>0.1s / 1s</code> 로 바꿔서 차이를 확인하세요.
+  </div>
+  <div class="wrap">
+    <button onclick="document.querySelector('.modal-overlay').classList.add('show')">
+      모달 열기
+    </button>
+  </div>
+
+  <!-- 모달 -->
+  <div class="modal-overlay">
+    <div class="modal">
+      <h3>🛒 장바구니 담기 완료!</h3>
+      <p>프리미엄 운동화가 장바구니에<br>성공적으로 담겼습니다.</p>
+      <button class="modal-close"
+        onclick="document.querySelector('.modal-overlay').classList.remove('show')">
+        확인
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ══ 2. pulse — 뱃지 ══════════════════════════ -->
+  <h2>2. pulse — 뱃지 강조</h2>
+  <p class="desc">
+    <code>0%, 100%</code> 을 같은 값으로 맞추면 자연스럽게 반복됩니다.
+    <code>infinite</code> 로 무한 반복합니다.
+  </p>
+  <div class="todo-box">
+    📝 TODO 2-1 — <code>.badge-new</code> duration을 <code>0.3s / 3s</code> 로 바꿔보세요.<br>
+    📝 TODO 2-2 — <code>infinite</code> 를 숫자 <code>3</code> 으로 바꾸면 3번만 반복합니다.<br>
+    📝 TODO 2-3 — <code>scale(1.12)</code> 를 <code>scale(1.3) / scale(0.9)</code> 로 바꿔보세요.
+  </div>
+  <div class="wrap">
+    <div class="badge-wrap">
+      <div class="badge badge-new">NEW</div>
+      <div class="badge badge-sale">SALE</div>
+      <div class="badge badge-hot">HOT</div>
+      <span style="font-size:0.88rem; color:#555;">← 각각 다른 pulse 패턴</span>
+    </div>
+  </div>
+
+
+  <!-- ══ 3. spin — 로딩 ═══════════════════════════ -->
+  <h2>3. spin — 로딩 스피너</h2>
+  <p class="desc">
+    <code>linear</code> 을 써야 일정한 속도로 돌아갑니다.
+    <code>ease</code> 를 쓰면 속도가 불규칙해서 어색합니다.
+  </p>
+  <div class="todo-box">
+    📝 TODO 3-1 — <code>linear</code> → <code>ease</code> 로 바꿔서 어색함을 확인하세요.<br>
+    📝 TODO 3-2 — <code>duration</code> 을 <code>0.3s / 3s</code> 로 바꿔보세요.<br>
+    📝 TODO 3-3 — <code>border-top-color</code> 를 다른 색으로 바꿔보세요.
+  </div>
+  <div class="wrap" style="flex-direction:column; gap:12px;">
+    <div class="loading"></div>
+    <p class="loading-txt">데이터를 불러오는 중입니다...</p>
+  </div>
+
+
+  <!-- ══ 4. shake — 에러 ══════════════════════════ -->
+  <h2>4. shake — 에러 흔들기</h2>
+  <p class="desc">
+    클릭할 때만 1회 실행합니다.
+    class를 붙였다 떼는 방식으로 애니메이션을 재실행합니다.
+  </p>
+  <div class="todo-box">
+    📝 TODO 4 — 버튼 클릭 → 흔들림 확인.<br>
+    <code>shake</code> keyframes의 <code>translateX</code> 값을 키우면 더 많이 흔들립니다.<br>
+    <code>duration</code> 을 <code>0.2s / 1s</code> 로 바꿔보세요.
+  </div>
+  <div class="wrap">
+    <button class="btn-error" id="shakeBtn"
+      onclick="
+        const btn = document.getElementById('shakeBtn');
+        btn.classList.remove('shake');
+        void btn.offsetWidth;
+        btn.classList.add('shake');
+      ">
+      로그인 실패 — 클릭해보세요
+    </button>
+  </div>
+
+
+  <!-- ══ 5. bounce — 알림 ═════════════════════════ -->
+  <h2>5. bounce — 알림 벨</h2>
+  <p class="desc">
+    여러 중지점(%)으로 자연스러운 튀어오르기 효과를 만듭니다.
+  </p>
+  <div class="todo-box">
+    📝 TODO 5 — 벨을 클릭하면 bounce 애니메이션 실행.<br>
+    <code>translateY(-20px)</code> 를 <code>-40px</code> 로 바꾸면 더 높이 튑니다.<br>
+    <code>duration</code> 을 <code>0.3s / 2s</code> 로 바꿔보세요.
+  </div>
+  <div class="wrap">
+    <div style="position:relative; cursor:pointer;"
+      onclick="
+        const bell = document.getElementById('bell');
+        bell.classList.remove('bounce');
+        void bell.offsetWidth;
+        bell.classList.add('bounce');
+      ">
+      <span class="bell" id="bell">🔔</span>
+      <span class="bell-count">3</span>
+    </div>
+    <span style="font-size:0.88rem; color:#555;">벨을 클릭해보세요</span>
+  </div>
+
+
+  <!-- ══ 6. animation-fill-mode ═══════════════════ -->
+  <h2>6. animation-fill-mode — 끝난 후 상태</h2>
+  <p class="desc">
+    <code>forwards</code> — 애니메이션 끝난 후 <strong>마지막 상태 유지</strong><br>
+    <code>backwards</code> — delay 중에 <strong>시작 전 상태 적용</strong><br>
+    <code>both</code> — forwards + backwards 동시 적용
+  </p>
+  <div class="todo-box">
+    📝 TODO 6 — 버튼 클릭 → 세 박스 비교.<br>
+    파란 박스(none): 끝나면 opacity:0으로 돌아감<br>
+    초록 박스(forwards): 끝난 후 opacity:1 유지<br>
+    주황 박스(both): 0.5s delay 동안 이미 from 상태(opacity:0)
+  </div>
+  <div class="wrap" style="flex-direction:column; gap:16px;">
+    <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+      <div style="text-align:center;">
+        <div class="fill-box fill-none" id="fillNone">none</div>
+        <p style="font-size:0.75rem; color:#888; margin-top:6px;">fill-mode: none</p>
+      </div>
+      <div style="text-align:center;">
+        <div class="fill-box fill-forwards" id="fillFwd">forwards</div>
+        <p style="font-size:0.75rem; color:#888; margin-top:6px;">fill-mode: forwards</p>
+      </div>
+      <div style="text-align:center;">
+        <div class="fill-box fill-both" id="fillBoth">both</div>
+        <p style="font-size:0.75rem; color:#888; margin-top:6px;">fill-mode: both</p>
+      </div>
+    </div>
+    <button onclick="
+      ['fillNone','fillFwd','fillBoth'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('running');
+        void el.offsetWidth;
+        el.classList.add('running');
+      });
+    ">애니메이션 실행</button>
+  </div>
+
+
+  <!-- ══ 7. 토스트 메시지 ════════════════════════ -->
+  <h2>7. 토스트 메시지 — 등장 후 자동 사라짐</h2>
+  <p class="desc">
+    <code>keyframes</code> 안에서 등장과 사라짐을 동시에 처리합니다.
+    JS 없이 CSS만으로 타이밍을 제어합니다.
+  </p>
+  <div class="todo-box">
+    📝 TODO 7 — 버튼 클릭 → 하단 토스트 확인.<br>
+    keyframes의 <code>80%</code> 위치를 <code>60%</code> 로 바꾸면 더 빨리 사라집니다.<br>
+    <code>duration</code> 을 <code>1.5s / 4s</code> 로 바꿔보세요.
+  </div>
+  <div class="wrap">
+    <button onclick="
+      const t = document.getElementById('toast');
+      t.classList.remove('show');
+      void t.offsetWidth;
+      t.classList.add('show');
+    ">장바구니 담기</button>
+  </div>
+
+  <div class="toast" id="toast">
+    ✅ 프리미엄 운동화가 장바구니에 담겼습니다!
+  </div>
+
+
+  <!-- ══ 8. 순차 등장 ════════════════════════════ -->
+  <h2>8. 순차 등장 — animation-delay</h2>
+  <p class="desc">
+    <code>nth-child</code> 로 각 카드의 <code>delay</code> 를 다르게 주면
+    순서대로 등장하는 효과를 만들 수 있습니다.
+  </p>
+  <div class="todo-box">
+    📝 TODO 8 — delay 간격 <code>0.15s</code> 를 <code>0.05s / 0.5s</code> 로 바꿔보세요.<br>
+    페이지 새로고침(F5)으로 재확인하세요.
+  </div>
+  <div class="wrap">
+    <div class="seq-grid">
+      <div class="seq-card">카드 1</div>
+      <div class="seq-card">카드 2</div>
+      <div class="seq-card">카드 3</div>
+      <div class="seq-card">카드 4</div>
+      <div class="seq-card">카드 5</div>
+      <div class="seq-card">카드 6</div>
+    </div>
+  </div>
+
+
+  <!-- ══ 9. 종합 실습 ════════════════════════════ -->
+  <h2>9. 종합 실습 — 직접 완성</h2>
+  <p class="desc">
+    아래 세 가지를 직접 완성해보세요.
+  </p>
+  <div class="todo-box">
+    📝 TODO 9-1 — <code>.practice-btn:hover</code> 에 <code>pulse</code> 애니메이션 추가<br>
+    📝 TODO 9-2 — 아이콘 클릭 시 <code>spin</code> 1회 실행 (JS + class 토글)<br>
+    📝 TODO 9-3 — <code>@keyframes myAnim</code> 직접 작성 후 <code>.practice-box</code> 에 적용<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;힌트: 색상 + 크기 + 이동 중 하나 이상 조합
+  </div>
+  <div class="wrap" style="gap:32px;">
+    <button class="practice-btn">hover 해보세요</button>
+    <span class="practice-icon" id="practiceIcon"
+      onclick="
+        const el = document.getElementById('practiceIcon');
+        el.style.animation = 'none';
+        void el.offsetWidth;
+        el.style.animation = 'spin 0.6s ease-out';
+      ">⚙️</span>
+    <div class="practice-box">myAnim</div>
+  </div>
+
+</body>
+</html>

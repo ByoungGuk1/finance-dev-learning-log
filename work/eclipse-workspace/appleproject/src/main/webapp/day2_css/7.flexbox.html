@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style>
+* {
+	box-sizing: border-box;
+}
+
+.nav-link {
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.nav-link:hover {
+	color: green;
+}
+
+.header {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.menu {
+	display: flex;
+	text-decoration: none;
+	justify-content: space-around;
+	list-style: none;
+	gap: 1rem;
+	width: 100%;
+}
+</style>
+</head>
+<body>
+	<header class="header">
+		<div class="logo">
+			<strong>ShopMall</strong>
+		</div>
+		<nav>
+			<ul class="menu">
+				<li><a class="nav-link" href="#">홈</a></li>
+				<li><a class="nav-link" href="#">신상품</a></li>
+				<li><a class="nav-link" href="#">세일</a></li>
+			</ul>
+		</nav>
+		<div class="cart">
+			🛒 <span>7</span>
+		</div>
+	</header>
+
+</body>
+</html>

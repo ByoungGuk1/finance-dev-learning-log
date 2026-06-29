@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+button {
+	background-color: transparent;
+	border: 1px solid blue;
+	border-radius: 20px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #e2e2e2;
+}
+
+#div-result {
+	min-height: 200px;
+	border: 1px solid #e2e2e2;
+}
+</style>
+<script>
+	window.onload = bodyLoaded;
+
+	function bodyLoaded() {
+		const btn1 = document.querySelector("#btn1");
+		const btn2_1 = document.querySelector("#btn2-1");
+		const btn2_2 = document.querySelector("#btn2-2");
+		const btn2_3 = document.querySelector("#btn2-3");
+		const btn2_4 = document.querySelector("#btn2-4");
+		const btn2_5 = document.querySelector("#btn2-5");
+		const btn2_6 = document.querySelector("#btn2-6");
+		const btn3 = document.querySelector("#btn3");
+		const btn4 = document.querySelector("#btn4");
+
+		result = document.querySelector("#div-result");
+
+		btn1.onclick = f1;
+		btn2_1.onclick = f2_1;
+		btn2_2.onclick = f2_2;
+		btn2_3.onclick = f2_3;
+		btn2_4.onclick = f2_4;
+		btn2_5.onclick = f2_5;
+		btn2_6.onclick = f2_6;
+		btn3.onclick = f3;
+		btn4.onclick = f4;
+	}
+
+	function f1() {
+		//내장 객체
+		result.innerHTML = `<p>Math.floor(10.123) : ${Math.floor(10.123)}</p>`;
+		let date = new Date();
+		console.log(date);
+		console.log(date.toISOString());
+		let strDate = date.toISOString();
+		let arrDate = strDate.split("T");
+		console.log(arrDate[0]);
+		console.log(arrDate[1]);
+		console.log(date.toLocaleDateString());
+	}
+
+	function f2_1() {
+		result.innerHTML = ``;
+		//BOM (Browser Object Model) - window
+		for ( const prop in window) {
+			result.innerHTML += `<p>${prop} : ${window[prop]}</p>`;
+		}
+	}
+
+	function f2_2() {
+		result.innerHTML = ``;
+		//BOM (Browser Object Model) - document
+		for ( const prop in document) {
+			result.innerHTML += `<p>${prop} : ${document[prop]}</p>`;
+		}
+	}
+
+	function f2_3() {
+		result.innerHTML = ``;
+		//BOM (Browser Object Model) - navigator
+		for ( const prop in navigator) {
+			result.innerHTML += `<p>${prop} : ${navigator[prop]}</p>`;
+		}
+	}
+
+	function f2_4() {
+		result.innerHTML = ``;
+		//BOM (Browser Object Model) - history
+		for ( const prop in history) {
+			result.innerHTML += `<p>${prop} : ${history[prop]}</p>`;
+		}
+	}
+
+	function f2_5() {
+		result.innerHTML = ``;
+		//BOM (Browser Object Model) - location
+		for ( const prop in location) {
+			result.innerHTML += `<p>${prop} : ${location[prop]}</p>`;
+		}
+	}
+
+	function f2_6() {
+		result.innerHTML = ``;
+		//BOM (Browser Object Model) - screen
+		for ( const prop in screen) {
+			result.innerHTML += `<p>${prop} : ${screen[prop]}</p>`;
+		}
+	}
+
+	function f3() {
+	}
+
+	function f4() {
+		//사용자 정의 객체
+		let customerObj = {
+			name : "홍길동",
+			age : 20,
+			address : "서울"
+		};
+		console.log(customerObj?.name);
+		console.log(customerObj["name"]);
+		
+		const prop = "name";
+		console.log(customerObj?.prop); // X -> "prop" 이라는 속성이 없어서 undefined
+		console.log(customerObj[prop]);
+		
+		for(const p in customerObj){
+			console.log(customerObj[p]);
+		}
+		
+	}
+</script>
+</head>
+<body>
+	<h1>객체 - 내장 객체, BOM, DOM, 사용자 정의 객체</h1>
+	<button id="btn1">내장객체(Date, Array, Math ...)</button>
+	<button id="btn2-1">BOM - window</button>
+	<button id="btn2-2">BOM - document</button>
+	<button id="btn2-3">BOM - navigator</button>
+	<button id="btn2-4">BOM - history</button>
+	<button id="btn2-5">BOM - location</button>
+	<button id="btn2-6">BOM - screen</button>
+	<button id="btn3">DOM</button>
+	<button id="btn4">사용자 정의 객체</button>
+	<div id="div-result">출력 결과 대기 중</div>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>transform &amp; transition 실습</title>
+<style>
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background: #f3f4f6;
+	padding: 32px 24px;
+	color: #1a1a1a;
+}
+
+h2 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: #1F3864;
+	margin: 40px 0 12px;
+	padding-bottom: 6px;
+	border-bottom: 2px solid #2E75B6;
+}
+
+.desc {
+	font-size: 0.875rem;
+	color: #555;
+	margin-bottom: 12px;
+	line-height: 1.7;
+}
+
+.todo-box {
+	background: #fffbeb;
+	border-left: 4px solid #f59e0b;
+	padding: 12px 16px;
+	font-size: 0.88rem;
+	color: #78350f;
+	border-radius: 0 6px 6px 0;
+	line-height: 1.9;
+	margin-bottom: 20px;
+}
+
+.wrap {
+	background: #fff;
+	border: 2px dashed #cbd5e1;
+	padding: 40px 24px;
+	border-radius: 8px;
+	margin-bottom: 8px;
+	display: flex;
+	gap: 24px;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+/* 기준 박스 공통 */
+.box {
+	width: 100px;
+	height: 100px;
+	background: #2E75B6;
+	color: #fff;
+	font-size: 0.78rem;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+/* ════════════════════════════
+       1. transform 기본
+    ════════════════════════════ */
+
+/* TODO 1-1: translate — 이동 */
+.box-translate {
+	background: #1D9E75;
+	/* TODO: 값을 바꿔보세요 */
+	transform: translate(40px, 20px); /*  → X,Y 동시 */
+	/*translateX(40px);*/
+	/* translateY(40px);         → 아래로 */
+	/* translateX(-40px) ;       → 왼쪽으로 */
+}
+
+/* TODO 1-2: scale — 크기 */
+.box-scale {
+	background: #D85A30;
+	/* TODO: 값을 바꿔보세요 */
+	transform: scale(1.3);
+	/* scale(0.5)       → 50% 축소 */
+	/* scale(2)         → 200% 확대 */
+	/* scaleX(1.5)      → 가로만 */
+	/* scaleY(0.5)      → 세로만 */
+}
+
+/* TODO 1-3: rotate — 회전 */
+.box-rotate {
+	background: #7C3AED;
+	/* TODO: 값을 바꿔보세요 */
+	transform: rotate(45deg);
+	/* rotate(-45deg)   → 반시계 */
+	/* rotate(180deg)   → 뒤집기 */
+	/* rotate(360deg)   → 한 바퀴 */
+}
+
+/* TODO 1-4: skew — 기울기 */
+.box-skew {
+	background: #0891B2;
+	/* TODO: 값을 바꿔보세요 */
+	transform: skewX(20deg);
+	/* skewY(20deg)         → Y축 기울기 */
+	/* skew(20deg, 10deg)   → X,Y 동시 */
+}
+
+/* TODO 1-5: 복합 적용 */
+.box-multi {
+	background: #1F3864;
+	/* TODO: 여러 개 동시 적용 — 띄어쓰기로 구분 */
+	transform: translateX(20px) rotate(15deg) scale(1.1);
+}
+
+/* TODO 1-6: transform-origin — 기준점 변경 */
+.box-origin {
+	background: #059669;
+	transform: rotate(45deg);
+	transform-origin: top left; /* 기본값: center center */
+	/* top right / bottom left / bottom right */
+	/* 0 0 / 100% 100% / 50px 50px */
+}
+
+/* ════════════════════════════
+       2. transition 기본
+    ════════════════════════════ */
+
+/* transition 없음 — 즉각 변화 */
+.btn-no-transition {
+	padding: 12px 24px;
+	background: #2E75B6;
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+	font-family: inherit;
+	/* transition 없음 */
+}
+
+.btn-no-transition:hover {
+	background: #1F3864;
+	transform: translateY(-4px);
+}
+
+/* transition 있음 — 부드럽게 */
+.btn-transition {
+	padding: 12px 24px;
+	background: #1D9E75;
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+	font-family: inherit;
+	/* TODO 2-1: duration 값을 바꿔보세요 */
+	transition: background 0.2s ease, transform 0.2s ease;
+	/* 0.05s → 너무 빠름  */
+	/* 1s    → 너무 느림  */
+	/* 0.2s  → 실무 표준  */
+}
+
+.btn-transition:hover {
+	background: #085041;
+	transform: translateY(-4px);
+}
+
+/* TODO 2-2: timing-function 비교 */
+.timing-bar {
+	width: 60px;
+	height: 44px;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.72rem;
+	font-weight: 700;
+	color: #fff;
+	cursor: pointer;
+	transition: transform 1s; /* 1s로 늘려야 차이가 보임 */
+}
+
+.timing-bar:hover {
+	transform: translateX(160px);
+}
+
+.ease {
+	background: #2E75B6;
+	transition-timing-function: ease;
+}
+
+.ease-in {
+	background: #1D9E75;
+	transition-timing-function: ease-in;
+}
+
+.ease-out {
+	background: #D85A30;
+	transition-timing-function: ease-out;
+}
+
+.ease-in-out {
+	background: #7C3AED;
+	transition-timing-function: ease-in-out;
+}
+
+.linear {
+	background: #0891B2;
+	transition-timing-function: linear;
+}
+
+/* ════════════════════════════
+       3. transform + transition
+          실무 패턴
+    ════════════════════════════ */
+
+/* 카드 hover */
+.card {
+	width: 160px;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	/* TODO 3-1: duration을 0.5s / 0.1s 로 바꿔보세요 */
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+	transform: translateY(-8px);
+	box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+}
+
+.card-img {
+	height: 100px;
+	background: #e0e7ff;
+}
+
+.card-img.c2 {
+	background: #d1fae5;
+}
+
+.card-img.c3 {
+	background: #fde68a;
+}
+
+.card-body {
+	padding: 12px;
+}
+
+.card-name {
+	font-size: 0.85rem;
+	font-weight: 700;
+	margin-bottom: 4px;
+}
+
+.card-price {
+	font-size: 0.8rem;
+	color: #6b7280;
+}
+
+/* 버튼 눌리는 효과 */
+.btn-press {
+	padding: 12px 28px;
+	background: #D85A30;
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+	font-family: inherit;
+	transition: transform 0.1s ease, box-shadow 0.1s ease;
+	box-shadow: 0 4px 0 #8B2500; /* 버튼 입체감 */
+}
+
+.btn-press:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 0 #8B2500;
+}
+
+.btn-press:active {
+	transform: translateY(2px); /* 눌리는 효과 */
+	box-shadow: 0 2px 0 #8B2500;
+}
+
+/* 아이콘 회전 */
+.icon-btn {
+	width: 48px;
+	height: 48px;
+	background: #1F3864;
+	color: #fff;
+	border: none;
+	border-radius: 50%;
+	font-size: 1.2rem;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.3s ease, background 0.3s;
+}
+
+.icon-btn:hover {
+	transform: rotate(90deg);
+	background: #D85A30;
+}
+
+/* 이미지 줌 */
+.img-zoom {
+	width: 160px;
+	height: 120px;
+	overflow: hidden; /* 넘치는 부분 숨김 */
+	border-radius: 8px;
+}
+
+.img-zoom div {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(135deg, #1D9E75, #2E75B6);
+	transition: transform 0.4s ease;
+}
+
+.img-zoom:hover div {
+	transform: scale(1.15); /* overflow:hidden으로 잘림 */
+}
+
+/* 메뉴 밑줄 슬라이드 */
+.underline-menu {
+	display: flex;
+	gap: 4px;
+	list-style: none;
+}
+
+.underline-menu a {
+	display: block;
+	padding: 10px 16px;
+	text-decoration: none;
+	color: #374151;
+	font-size: 0.9rem;
+	font-weight: 500;
+	position: relative;
+}
+
+.underline-menu a::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0; /* 기본: 너비 0 */
+	height: 2px;
+	background: #1D9E75;
+	transition: width 0.25s ease;
+}
+
+.underline-menu a:hover::after {
+	width: 100%; /* hover: 너비 100% */
+}
+
+/* ════════════════════════════
+       4. 종합 실습 — TODO 채우기
+    ════════════════════════════ */
+.practice-card {
+	width: 180px;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	overflow: hidden;
+	position: relative;
+	cursor: pointer;
+
+	/* TODO 4: 아래를 채워보세요 */
+	/* transition: ??? */
+}
+
+.practice-card:hover {
+	/* transform: ??? */
+	/* box-shadow: ??? */
+	
+}
+
+.practice-card .overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(29, 158, 117, 0);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-weight: 700;
+	font-size: 0.85rem;
+
+	/* TODO 4-1: transition 추가 */
+	/* transition: background 0.3s; */
+}
+
+.practice-card:hover .overlay {
+	/* TODO 4-2: hover 시 배경 나타나게 */
+	/* background: rgba(29, 158, 117, 0.7); */
+	
+}
+
+.practice-img {
+	width: 100%;
+	height: 140px;
+	background: #ddd6fe;
+	/* TODO 4-3: scale 줌 효과 */
+	/* transition: transform 0.4s ease; */
+}
+
+.practice-card:hover .practice-img {
+	/* transform: scale(1.1); */
+	
+}
+
+.practice-body {
+	padding: 12px;
+}
+</style>
+</head>
+<body>
+
+	<!-- ══ 1. transform ════════════════════════════════ -->
+	<h2>1. transform — 요소 변형</h2>
+	<p class="desc">
+		실제 레이아웃을 바꾸지 않고 <strong>시각적으로만</strong> 변형합니다. 원래 자리는 그대로 유지됩니다.
+	</p>
+	<div class="todo-box">
+		📝 TODO 1-1 —
+		<code>translateX(40px)</code>
+		를
+		<code>translateY / translate</code>
+		로 바꿔보세요.<br> 📝 TODO 1-2 —
+		<code>scale(1.3)</code>
+		을
+		<code>0.5 / 2 / scaleX(1.5)</code>
+		로 바꿔보세요.<br> 📝 TODO 1-3 —
+		<code>rotate(45deg)</code>
+		를
+		<code>-45 / 180 / 360deg</code>
+		로 바꿔보세요.<br> 📝 TODO 1-4 —
+		<code>skewX(20deg)</code>
+		를
+		<code>skewY / skew(x,y)</code>
+		로 바꿔보세요.<br> 📝 TODO 1-5 — 복합 적용 순서를 바꾸면 결과가 달라지는지 확인하세요.<br>
+		📝 TODO 1-6 —
+		<code>transform-origin</code>
+		을
+		<code>top right / bottom center</code>
+		로 바꿔보세요.
+	</div>
+	<div class="wrap">
+		<div class="box box-translate">
+			translate<br>X(40px)
+		</div>
+		<div class="box box-scale">
+			scale<br>(1.3)
+		</div>
+		<div class="box box-rotate">
+			rotate<br>(45deg)
+		</div>
+		<div class="box box-skew">
+			skew<br>X(20deg)
+		</div>
+		<div class="box box-multi">
+			복합<br>적용
+		</div>
+		<div class="box box-origin">
+			origin<br>top left
+		</div>
+	</div>
+
+
+	<!-- ══ 2. transition ══════════════════════════════ -->
+	<h2>2. transition — 부드러운 전환</h2>
+	<p class="desc">
+		상태 변화(hover 등) 시 <strong>부드럽게 전환</strong>합니다.
+		<code>property duration timing-function delay</code>
+		순서입니다.
+	</p>
+	<div class="todo-box">
+		📝 TODO 2-1 — transition 있는 버튼과 없는 버튼을 번갈아 hover해서 차이를 확인하세요.<br>
+		📝 TODO 2-2 —
+		<code>duration</code>
+		을
+		<code>0.05s / 0.5s / 1s</code>
+		로 바꿔보세요.<br> 📝 TODO 2-3 — timing-function 5개를 hover해서 속도 곡선 차이를
+		확인하세요.<br> (1s로 늘려야 차이가 잘 보입니다)
+	</div>
+
+	<!-- transition 있음/없음 비교 -->
+	<div class="wrap"
+		style="flex-direction: column; align-items: flex-start; gap: 16px;">
+		<div style="display: flex; gap: 16px; align-items: center;">
+			<button class="btn-no-transition">transition 없음</button>
+			<button class="btn-transition">transition 있음 (0.2s)</button>
+		</div>
+
+		<!-- timing-function 비교 -->
+		<p
+			style="font-size: 0.85rem; font-weight: 700; color: #374151; margin-top: 8px;">
+			hover 해서 timing-function 차이 확인 (duration: 1s)</p>
+		<div
+			style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+			<div class="timing-bar ease">ease</div>
+			<div class="timing-bar ease-in">ease-in</div>
+			<div class="timing-bar ease-out">ease-out</div>
+			<div class="timing-bar ease-in-out">ease-in-out</div>
+			<div class="timing-bar linear">linear</div>
+		</div>
+	</div>
+
+
+	<!-- ══ 3. 실무 패턴 ═══════════════════════════════ -->
+	<h2>3. transform + transition 실무 패턴</h2>
+	<p class="desc">실무에서 가장 많이 쓰는 조합 패턴입니다. hover 해서 확인하세요.</p>
+	<div class="todo-box">
+		📝 카드 hover —
+		<code>translateY + box-shadow</code>
+		<br> 📝 버튼 press —
+		<code>:active 로 눌리는 효과</code>
+		<br> 📝 아이콘 회전 —
+		<code>rotate(90deg)</code>
+		<br> 📝 이미지 줌 —
+		<code>scale + overflow:hidden</code>
+		<br> 📝 메뉴 밑줄 —
+		<code>::after 너비 0 → 100%</code>
+	</div>
+
+	<!-- 카드 hover -->
+	<p
+		style="font-size: 0.85rem; font-weight: 700; color: #374151; margin-bottom: 12px;">
+		🃏 카드 — translateY + box-shadow</p>
+	<div class="wrap">
+		<div class="card">
+			<div class="card-img"></div>
+			<div class="card-body">
+				<p class="card-name">프리미엄 운동화</p>
+				<p class="card-price">89,000원</p>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-img c2"></div>
+			<div class="card-body">
+				<p class="card-name">클래식 스니커즈</p>
+				<p class="card-price">62,000원</p>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-img c3"></div>
+			<div class="card-body">
+				<p class="card-name">러닝화 프로</p>
+				<p class="card-price">75,000원</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- 버튼·아이콘·이미지줌 -->
+	<p
+		style="font-size: 0.85rem; font-weight: 700; color: #374151; margin: 24px 0 12px;">
+		🖱️ 버튼 press / 아이콘 회전 / 이미지 줌</p>
+	<div class="wrap">
+		<button class="btn-press">눌러보세요</button>
+		<button class="icon-btn">✕</button>
+		<div class="img-zoom">
+			<div></div>
+		</div>
+	</div>
+
+	<!-- 메뉴 밑줄 -->
+	<p
+		style="font-size: 0.85rem; font-weight: 700; color: #374151; margin: 24px 0 12px;">
+		📋 메뉴 밑줄 슬라이드 (::after + width 0 → 100%)</p>
+	<div class="wrap" style="justify-content: flex-start;">
+		<ul class="underline-menu">
+			<li><a href="#">홈</a></li>
+			<li><a href="#">신상품</a></li>
+			<li><a href="#">세일</a></li>
+			<li><a href="#">브랜드</a></li>
+			<li><a href="#">마이페이지</a></li>
+		</ul>
+	</div>
+
+
+	<!-- ══ 4. 종합 실습 ═══════════════════════════════ -->
+	<h2>4. 종합 실습 — TODO 직접 완성</h2>
+	<p class="desc">카드에 hover 시 이미지 줌 + 초록 오버레이가 나타나도록 완성해보세요.</p>
+	<div class="todo-box">
+		📝 TODO 4-1 —
+		<code>.practice-card</code>
+		에
+		<code>transition</code>
+		추가<br> 📝 TODO 4-2 —
+		<code>:hover</code>
+		시
+		<code>transform: translateY(-8px)</code>
+		적용<br> 📝 TODO 4-3 —
+		<code>.overlay</code>
+		에 transition 추가 → hover 시 배경 나타나게<br> 📝 TODO 4-4 —
+		<code>.practice-img</code>
+		에 scale 줌 효과 추가
+	</div>
+	<div class="wrap">
+		<div class="practice-card">
+			<div class="overlay">장바구니 담기</div>
+			<div class="practice-img"></div>
+			<div class="practice-body">
+				<p style="font-size: 0.9rem; font-weight: 700; margin-bottom: 4px;">트레킹
+					부츠</p>
+				<p style="font-size: 0.82rem; color: #6b7280;">120,000원</p>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

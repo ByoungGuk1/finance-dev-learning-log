@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>display 속성 실습</title>
+<style>
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background: #fff;
+	padding: 32px 24px;
+	color: #1a1a1a;
+	border: 1px solid gray;
+}
+
+h2 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: #1F3864;
+	margin: 40px 0 12px;
+	padding-bottom: 6px;
+	border-bottom: 2px solid #2E75B6;
+}
+
+p.desc {
+	font-size: 0.875rem;
+	color: purple;
+	margin-bottom: 16px;
+	line-height: 1.7;
+}
+
+.todo-box {
+	background: #fffbeb;
+	border-left: 4px solid #f59e0b;
+	padding: 12px 16px;
+	font-size: 0.88rem;
+	color: #78350f;
+	border-radius: 0 6px 6px 0;
+	line-height: 1.9;
+	margin-bottom: 20px;
+}
+
+.wrap {
+	background: #fff;
+	border: 2px dashed #cbd5e1;
+	padding: 20px;
+	border-radius: 8px;
+	margin-bottom: 8px;
+}
+/* 공통 색상 — 요소별 구별용 */
+div {
+	background: #bfdbfe;
+} /* 파랑 */
+p {
+	background: #bbf7d0;
+} /* 초록 */
+h1 {
+	background: #fde68a;
+} /* 노랑 */
+span {
+	background: #fecaca;
+} /* 빨강 */
+a {
+	background: #e9d5ff;
+} /* 보라 */
+strong {
+	background: #fed7aa;
+} /* 주황 */
+img {
+	background: #d1fae5;
+}
+
+/* 요소 구별을 위한 공통 패딩 */
+.wrap div, .wrap p, .wrap h1, .wrap span, .wrap a, .wrap strong {
+	padding: 6px 12px;
+	margin: 4px;
+}
+
+/* ════════════════════════════
+       1. block
+    ════════════════════════════ */
+/* TODO 1: 아래 주석을 풀어가며 확인 */
+.test-block {
+	border: 10px dotted red;
+}
+
+.test-block div {
+	display: block;
+	width: 300px;
+}
+
+.test-block p {
+	display: block;
+	width: 300px;
+}
+
+.test-block h1 {
+	display: block;
+	width: 300px;
+}
+
+/* ════════════════════════════
+       2. inline
+    ════════════════════════════ */
+/* TODO 2: inline 요소에 width·height를 줘보세요 — 적용이 안 됩니다 */
+.test-inline span {
+	display: inline;
+	width: 300px;
+}
+
+.test-inline a {
+	display: inline;
+	width: 300px;
+}
+
+.test-inline strong {
+	display: inline;
+	width: 300px;
+}
+
+/* ════════════════════════════
+       3. inline-block
+    ════════════════════════════ */
+/* TODO 3: inline-block으로 바꾸면 width·height가 적용됩니다 */
+.test-iblock span {
+	display: inline-block;
+	width: 150px;
+	height: 60px;
+}
+
+/* ════════════════════════════
+       4. none
+    ════════════════════════════ */
+/* TODO 4: .hidden을 display:none / visibility:hidden 으로 바꿔보세요 */
+.test-none .hidden {
+	display: inline;
+	/*  display: none;   */ /* 공간도 사라짐 */
+	/*  visibility: hidden;    */ /* 공간은 유지, 내용만 숨김 */
+}
+
+/* ════════════════════════════
+       5. 실무 활용 — nav 메뉴
+    ════════════════════════════ */
+/* TODO 5: ul > li를 가로로 만들어보세요 */
+.test-nav {
+	background: #1F3864;
+	padding: 0 16px;
+	border-radius: 8px;
+}
+
+.test-nav ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	background: transparent;
+	display: flex;
+	gap: 1rem;
+}
+
+.test-nav li {
+	background: transparent;
+	/* TODO 5-1: display: inline-block; 추가 */
+
+	/* TODO 5-2: margin: 0 8px; 추가 */
+}
+
+.test-nav a {
+	display: block;
+	padding: 14px 4px;
+	color: #fff;
+	text-decoration: none;
+	background: transparent;
+	font-size: 0.9rem;
+}
+
+.test-nav a:hover {
+	color: #60a5fa;
+}
+
+/* ════════════════════════════
+       6. 종합 실습 — 상품 카드
+    ════════════════════════════ */
+.card-area {
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	padding: 20px;
+}
+/* TODO 6: 아래 .card에 display 속성을 추가해서
+               카드 3개를 가로로 나란히 배치해보세요 */
+.card-wrap {
+	/* TODO 6-1: 자식 카드를 가로로 만들 방법은? */
+	display: flex;
+	gap: 1rem;
+}
+
+.card {
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	overflow: hidden;
+	box-sizing: border-box;
+	width: 200px;
+	min-height: 200px;
+	margin: 8px;
+}
+
+.card:nth-child(3) { & span { visibility :hidden;
+	
+}
+
+}
+.card-img {
+	width: 100%;
+	height: 120px;
+	background: orange;
+}
+
+.card-body {
+	padding: 12px;
+	background: #fff;
+}
+
+.card-title {
+	font-size: 0.9rem;
+	font-weight: 700;
+	margin: 0 0 4px;
+	padding: 0;
+	margin: 0 0 4px;
+	background: transparent;
+}
+
+.card-price {
+	font-size: 0.85rem;
+	background: transparent;
+	margin: 0;
+	padding: 0;
+}
+
+.sale {
+	font-size: 0.75rem;
+	font-weight: 700;
+	color: #fff;
+	background: #dc2626;
+	padding: 2px 8px;
+	border-radius: 20px;
+}
+</style>
+</head>
+<body>
+
+	<!-- ══ 1. block ════════════════════════════ -->
+	<h2>1. block — 줄 바꿈, 너비 100%</h2>
+	<p class="desc">
+		block 요소는 <strong>항상 새 줄에서 시작</strong>하고 <strong>가로 너비 전체</strong>를
+		차지합니다.<br> 대표 태그:
+		<code>div</code>
+		<code>p</code>
+		<code>h1~h6</code>
+		<code>ul</code>
+		<code>li</code>
+	</p>
+	<div class="todo-box">
+		📝 TODO 1 — CSS의 주석을 하나씩 풀어가며 각 요소가 block임을 확인하세요.<br> block 요소에
+		<code>width: 200px</code>
+		을 추가하면 너비가 줄어드는지 확인하세요.
+	</div>
+	<div class="wrap test-block">
+		<div>div — block 요소</div>
+		<p>p — block 요소</p>
+		<h1>h1 — block 요소</h1>
+	</div>
+
+
+	<!-- ══ 2. inline ═══════════════════════════ -->
+	<h2>2. inline — 줄 바꿈 없음, 내용만큼</h2>
+	<p class="desc">
+		inline 요소는 <strong>줄 바꿈 없이 옆으로 이어지고</strong> 내용만큼만 너비를 가집니다.<br>
+		<strong>width · height가 적용되지 않습니다.</strong><br> 대표 태그:
+		<code>span</code>
+		<code>a</code>
+		<code>strong</code>
+		<code>em</code>
+	</p>
+	<div class="todo-box">
+		📝 TODO 2 —
+		<code>span</code>
+		에
+		<code>width: 200px; height: 80px;</code>
+		을 추가해보세요.<br> 적용이 안 되는 것을 확인한 뒤 → TODO 3에서
+		<code>inline-block</code>
+		으로 해결하세요.
+	</div>
+	<div class="wrap test-inline">
+		<span>span</span> <a href="#">a 링크</a> <strong>strong</strong> <span>span
+			또 나옴</span> <a href="#">a 링크 또</a>
+	</div>
+
+
+	<!-- ══ 3. inline-block ════════════════════ -->
+	<h2>3. inline-block — 옆으로 배치 + width·height 가능</h2>
+	<p class="desc">
+		<strong>inline처럼 옆으로 이어지면서</strong> width · height도 설정할 수 있습니다.<br>
+		대표 태그:
+		<code>img</code>
+		<code>button</code>
+		<code>input</code>
+	</p>
+	<div class="todo-box">
+		📝 TODO 3 — CSS에서
+		<code>width: 150px;</code>
+		<code>height: 60px;</code>
+		주석을 풀어보세요.<br> inline일 때와 달리 크기가 적용되는 걸 확인하세요.
+	</div>
+	<div class="wrap test-iblock">
+		<span>span A</span> <span>span B</span> <span>span C</span>
+	</div>
+
+
+	<!-- ══ 4. none vs visibility:hidden ══════ -->
+	<h2>4. none — 완전히 숨김 (공간도 사라짐)</h2>
+	<p class="desc">
+		<code>display: none</code>
+		은 요소를 완전히 제거합니다 — 공간도 차지하지 않습니다.<br>
+		<code>visibility: hidden</code>
+		은 안 보이지만 <strong>공간은 그대로 유지</strong>됩니다.
+	</p>
+	<div class="todo-box">
+		📝 TODO 4 —
+		<code>display: none</code>
+		과
+		<code>visibility: hidden</code>
+		을 번갈아 적용해보세요.<br> "나 보여요" 박스가 사라질 때 주변 박스가 붙는지(none) / 안
+		붙는지(hidden) 차이를 확인하세요.
+	</div>
+	<div class="wrap test-none"
+		style="display: flex; gap: 8px; align-items: center;">
+		<div style="padding: 12px 20px;">앞 박스</div>
+		<div class="hidden" style="padding: 12px 20px; background: #fca5a5;">나
+			보여요</div>
+		<div style="padding: 12px 20px;">뒷 박스</div>
+	</div>
+
+
+	<!-- ══ 5. 실무 — nav 메뉴 ════════════════ -->
+	<h2>5. 실무 활용 — 가로 내비게이션 메뉴</h2>
+	<p class="desc">
+		li는 기본이 block이라 세로로 쌓입니다.<br>
+		<code>display: inline-block</code>
+		을 추가하면 가로 메뉴가 됩니다.
+	</p>
+	<div class="todo-box">
+		📝 TODO 5 — CSS의
+		<code>.test-nav li</code>
+		에
+		<code>display: inline-block;</code>
+		과
+		<code>margin: 0 8px;</code>
+		을 추가해보세요.<br> 세로로 쌓인 메뉴가 가로 내비게이션으로 바뀝니다.
+	</div>
+	<nav class="test-nav">
+		<ul>
+			<li><a href="#">홈</a></li>
+			<li><a href="#">신상품</a></li>
+			<li><a href="#">세일</a></li>
+			<li><a href="#">마이페이지</a></li>
+		</ul>
+	</nav>
+
+
+	<!-- ══ 6. 종합 실습 ════════════════════════ -->
+	<h2>6. 종합 실습 — 상품 카드 3개 가로 배치</h2>
+	<p class="desc">
+		카드 3개가 지금은 세로로 쌓여 있습니다.<br> display 속성만으로 가로로 나란히 배치해보세요.
+	</p>
+	<div class="todo-box">
+		📝 TODO 6-1 —
+		<code>.card</code>
+		에
+		<code>display: inline-block;</code>
+		추가 → 카드가 가로로 배치됩니다.<br> 📝 TODO 6-2 —
+		<code>.sale</code>
+		뱃지에
+		<code>display: inline-block;</code>
+		추가 → 뱃지 크기가 내용에 맞게 됩니다.<br> 📝 TODO 6-3 —
+		<code>vertical-align: top;</code>
+		도 추가해서 카드 상단 정렬을 맞춰보세요.
+	</div>
+	<div class="card-area">
+		<div class="card-wrap">
+
+			<div class="card">
+				<div class="card-img"></div>
+				<div class="card-body">
+					<span class="sale">SALE</span>
+					<p class="card-title">프리미엄 운동화</p>
+					<p class="card-price">89,000원</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-img"></div>
+				<div class="card-body">
+					<span class="sale">NEW</span>
+					<p class="card-title">클래식 스니커즈</p>
+					<p class="card-price">62,000원</p>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-img"></div>
+				<div class="card-body">
+					<span class="sale">NEW</span>
+					<p class="card-title">러닝화 프로</p>
+					<p class="card-price">75,000원</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</body>
+</html>

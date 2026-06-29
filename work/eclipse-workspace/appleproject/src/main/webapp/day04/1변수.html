@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>변수와 자료형</title>
+<style type="text/css">
+div {
+	border: 1px dotted #e2e2e2;
+}
+
+button {
+	background-color: transparent;
+	border: 1px solid blue;
+	border-radius: 20px;
+}
+</style>
+<script type="text/javascript">
+	console.log("1. head에 JavaScript 입력");
+	/* document.getElementById("here").innerHTML = "<h1>1. 동적으로 접근중 ..</h1>" */
+</script>
+<script src="external.js">
+	/* external JS : 권장 */
+</script>
+</head>
+<body>
+	<script type="text/javascript">
+		/* internalJS */
+		console.log("2. body 최상단에 JavaScript 입력");
+		/* document.getElementById("here").innerHTML = "<h1>2. 동적으로 접근중 ..</h1>" */
+	</script>
+
+	<h1>변수와 자료형</h1>
+	<!-- inline JS : 권장하지 않음 -->
+	<div class="button-wrapper">
+		<button id="var-test">변수</button>
+		<button id="data-type">data type</button>
+		<button class="oper">연산자</button>
+		<button class="nullish">nullish</button>
+		<button>nullish2</button>
+		<button onclick="call()">alert</button>
+		<button onclick="call2()">confirm</button>
+		<button onclick="call3()">prompt</button>
+		<button onclick="call4()">확인</button>
+	</div>
+	<div id="here">!여기!</div>
+	<script>
+	const product = {
+			  stock:    0,        // 재고 0개 — 데이터는 있음
+			  discount: null,     // 할인 없음 — 명시적으로 없음
+			  rating:   undefined // 아직 미등록
+			};
+	// 함수를 만들고 할당 -> 호출은 버튼이 --> callback
+		document.querySelector("div>button:nth-of-type(5)").onclick = func;
+		
+		// 이름이 있는 함수
+		function func () {
+				// || 사용하면
+			console.log(product.stock    || '품절');			// '품절' ← 0개인데 품절 표시 (버그!)
+			console.log(product.discount || '없음');			// '없음' ← 맞음
+			console.log(product.rating   || '미등록' );		// '미등록' ← 맞음
+
+				// ?? 사용하면
+			console.log(product.stock    ?? '품절');			// 0      ← 재고 0개 정확히 표시
+			console.log(product.discount ?? '없음');			// '없음' ← 맞음
+			console.log(product.rating   ?? '미등록');		// '미등록' ← 맞음
+		}
+		
+		document.querySelector(".nullish").onclick = () => {
+			let count = 0;
+			
+			// ?? (nullish 병합) — null/undefined 일 때만 오른쪽
+			const userName = null ?? '손님';      // '손님'
+			const stock    = count    ?? '품절';      // 0  (null 이냐, undefined 이냐 ……아니다!!!)
+			const stock2   = count    || '품절';      // '품절'  ← || 와 차이!
+			
+			console.log("null ?? '손님' => " + userName);
+			console.log("count    ?? '품절' => " + stock);
+			console.log("count    || '품절' => " + stock2);
+			
+			document.querySelector("#here").innerHTML += `
+			<p>null ?? '손님' => ${userName}</p>
+			<p>count    ?? '품절' => ${stock}</p>
+			<p>count    || '품절' => ${stock2}</p>`;
+			
+			// ?. (옵셔널 체이닝) — null 안전 접근
+			const user = null;
+			console.log(user?.address?.city);   // undefined (에러 없음)
+ 		//	console.log(user.address.city);
+
+		}
+		document.querySelector(".oper").onclick = () => {
+			// == / === 차이
+			console.log("1 == '1' => "+(1 == '1'));    // true  (타입 무시)
+			console.log("1 === '1' => "+(1 === '1'));   // false (타입+값)
+			console.log("0 == false => "+(0 == false));  // true  ← 함정!
+			console.log("0 === false => "+(0 === false)); // false ← 안전
+			
+			// 논리
+			const isTrue = true;
+			const isFalse = false;
+			let i = 10;
+			console.log(isTrue && isFalse);  // false
+			console.log(isFalse && ++i);  // false
+			console.log("isTrue && ++i 실행 결과 i = " + i);
+			console.log(isTrue || ++i);  // true
+			console.log("isTrue || ++i 실행 결과 i = " + i);
+			console.log(!isTrue);            // false
+		}
+	
+		const call4 = () => {
+		// 선언되지 않은 변수를 접근하면 not defined
+		// 다른 함수에서 선언되었고 접근 할 수 있다면 global(좋지 않다)
+			console.log("score를 다른 함수에서 접근: " + score);
+			console.log("subject을 다른 스크립트에서 접근: " + subject);
+			/* console.log("myname을 다른 스크립트에서 접근(불가): " + myname); */
+		}
+		document.querySelector("#data-type").onclick = function(){
+			let number = 100;
+			let string = "문자";
+			let bool = 10>20;
+			let arr = [10,20,30]; // 배열 - 객체
+			let obj = {name :"홍길동"}; // JS object -> 다른 언어에선 map, dic ...
+			let func = function() {alert("JS의 타입은 6종");} // 함수도 변수에 담을 수 있다
+			let n = null; // object
+			let undef = undefined; // object
+			
+			console.log(number + "->" + typeof(number));
+			console.log(string + "->" + typeof(string));
+			console.log(bool + "->" + typeof(bool));
+			console.log(arr + "->" + typeof(arr));
+			console.log(obj + "->" + typeof(obj));
+			console.log(obj.name + "->" + typeof(obj.name));
+			console.log(func + "->" + typeof(func));
+			func();
+			console.log(n + "->" + typeof(n));
+			console.log(undef + "->" + typeof(undef));
+		}
+	</script>
+	<script type="text/javascript">
+		var subject = "자바스크립트-global";
+		console.log("3. body 최하단에 JavaScript 입력");
+		document.getElementById("here").innerHTML = "<h3>동적으로 접근중 ..</h3>"
+
+		/* 익명함수, callback함수 */
+		document.querySelector("#var-test").onclick = function() {
+			console.log("버튼 클릭 시 수행")
+			// JS : 동적 타입 언어 / Java : 정적 타입 언어
+			// 변수 : JS 에서 변수의 선언 없이 사용 가능(global) , <var,let,const>
+			score = 100;
+			console.log("score = " + score +" "+ typeof(score));
+			score = "100점";
+			console.log("score = " + score +" "+ typeof(score));
+			
+			//지역변수
+			// var : 재선언 가능.
+			var myname="이름";
+			console.log(typeof(myname) + "--"+ "myname : " + myname);
+			var myname=1234;
+			console.log(typeof(myname) + "--"+ "myname : " + myname);
+			
+			// let : ES6 이상 (선호)
+			// block 내부에서만 유효, 재선언 불가
+			{
+				let price="가격";
+				console.log("블럭 내부 접근 : "+typeof(price) + "--"+ "price : " + price);
+			}
+			/* console.log("블럭 외부 접근 : " + typeof(price) + "--"+ "price : " + price); */
+/* 			let price=1234;
+			console.log(typeof(price) + "--"+ "price : " + price); */
+			
+			for(var i = 0; i<5; i++){
+				console.log("i = "+(i+1));
+			}
+			console.log("for var i = "+i);
+
+			for(let j = 0; j<5; j++){
+				console.log("j = "+(j+1));
+			}
+			/* console.log("for let j = "+i); */
+			
+			const week = "금요일";
+			console.log(week);
+			// const 는 값 변경 불가
+/* 			week = "토요일";
+			console.log(week); */
+		};
+	</script>
+</body>
+</html>

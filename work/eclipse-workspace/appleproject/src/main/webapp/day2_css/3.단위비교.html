@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>단위 비교 — px · em · rem · %</title>
+<style>
+* {
+	box-sizing: border-box;
+}
+
+/* ────────────────────────────────────────
+       기준값 설정
+       html = rem의 기준
+       .parent = em의 기준 (부모 font-size)
+    ──────────────────────────────────────── */
+html {
+	font-size: 16px;
+} /* TODO A: 이 값을 20px로 바꾸면 rem 단위 전체가 커짐 */
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background: #f3f4f6;
+	padding: 32px 24px;
+	color: #1a1a1a;
+}
+
+h2 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: #1F3864;
+	margin: 40px 0 12px;
+	padding-bottom: 6px;
+	border-bottom: 2px solid #2E75B6;
+}
+
+p.desc {
+	font-size: 0.875rem;
+	color: #555;
+	margin-bottom: 16px;
+	line-height: 1.7;
+}
+
+/* ════════════════════════════════════════
+       1. px — 고정값
+    ════════════════════════════════════════ */
+.wrap-px {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	border: 1px solid #e5e7eb;
+}
+
+.box-px-sm {
+	font-size: 12px;
+	background: #bfdbfe;
+	padding: 12px 16px;
+	border-radius: 4px;
+}
+
+.box-px-md {
+	font-size: 16px;
+	background: #93c5fd;
+	padding: 12px 16px;
+	border-radius: 4px;
+}
+
+.box-px-lg {
+	font-size: 24px;
+	background: #60a5fa;
+	padding: 12px 16px;
+	border-radius: 4px;
+	color: #fff;
+}
+
+.box-px-xl {
+	font-size: 32px;
+	background: #3b82f6;
+	padding: 12px 16px;
+	border-radius: 4px;
+	color: #fff;
+}
+
+/* ════════════════════════════════════════
+       2. em — 부모 font-size 기준
+    ════════════════════════════════════════ */
+.wrap-em {
+	background: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	border: 1px solid #e5e7eb;
+}
+/* TODO B: 부모 font-size를 바꾸면 em 자식들이 같이 커짐 */
+.parent-em {
+	font-size: 16px; /* em의 기준 — 20px로 바꿔보세요 */
+	background: #f0fdf4;
+	padding: 16px;
+	border: 2px dashed #16a34a;
+	border-radius: 6px;
+}
+
+.child-em-1 {
+	font-size: 1em;
+	background: #bbf7d0;
+	padding: 6px 12px;
+	margin: 6px 0;
+	border-radius: 4px;
+}
+
+.child-em-2 {
+	font-size: 1.5em;
+	background: #86efac;
+	padding: 6px 12px;
+	margin: 6px 0;
+	border-radius: 4px;
+}
+
+.child-em-3 {
+	font-size: 2em;
+	background: #4ade80;
+	padding: 6px 12px;
+	margin: 6px 0;
+	border-radius: 4px;
+	color: #fff;
+}
+
+/* em 중첩 문제 */
+.nest-wrap {
+	margin-top: 20px;
+	background: #fff7ed;
+	padding: 16px;
+	border: 2px dashed #ea580c;
+	border-radius: 6px;
+	font-size: 16px;
+}
+
+.nest-1 {
+	font-size: 1.5em;
+	background: #fed7aa;
+	padding: 8px;
+	border-radius: 4px;
+	margin: 4px 0;
+}
+
+.nest-2 {
+	font-size: 1.5em;
+	background: #fb923c;
+	padding: 8px;
+	border-radius: 4px;
+	margin: 4px 0;
+	color: #fff;
+}
+
+.nest-3 {
+	font-size: 1.5em;
+	background: #ea580c;
+	padding: 8px;
+	border-radius: 4px;
+	margin: 4px 0;
+	color: #fff;
+}
+
+/* ════════════════════════════════════════
+       3. rem — html font-size 기준
+    ════════════════════════════════════════ */
+.wrap-rem {
+	background: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	border: 1px solid #e5e7eb;
+}
+/* rem은 부모와 무관하게 항상 html 기준 */
+.parent-rem {
+	font-size: 24px; /* 부모를 24px로 키워도 */
+	background: #faf5ff;
+	padding: 16px;
+	border: 2px dashed #9333ea;
+	border-radius: 6px;
+}
+
+.child-rem-1 {
+	font-size: 0.75rem;
+	background: #e9d5ff;
+	padding: 6px 12px;
+	margin: 6px 0;
+	border-radius: 4px;
+}
+
+.child-rem-2 {
+	font-size: 1rem;
+	background: #d8b4fe;
+	padding: 6px 12px;
+	margin: 6px 0;
+	border-radius: 4px;
+}
+
+.child-rem-3 {
+	font-size: 1.5rem;
+	background: #a855f7;
+	padding: 6px 12px;
+	margin: 6px 0;
+	border-radius: 4px;
+	color: #fff;
+}
+
+.child-rem-4 {
+	font-size: 2rem;
+	background: #9333ea;
+	padding: 6px 12px;
+	margin: 6px 0;
+	border-radius: 4px;
+	color: #fff;
+}
+
+/* ════════════════════════════════════════
+       4. % — 부모 너비 기준
+    ════════════════════════════════════════ */
+.wrap-percent {
+	background: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	border: 1px solid #e5e7eb;
+}
+
+.parent-percent {
+	width: 100%; /* TODO C: 600px으로 바꾸면 자식 % 기준이 바뀜 */
+	background: #fef9c3;
+	padding: 16px;
+	border: 2px dashed #ca8a04;
+	border-radius: 6px;
+}
+
+.child-percent-25 {
+	width: 25%;
+	background: #fde68a;
+	padding: 10px;
+	margin: 6px 0;
+	border-radius: 4px;
+	text-align: center;
+}
+
+.child-percent-50 {
+	width: 50%;
+	background: #fcd34d;
+	padding: 10px;
+	margin: 6px 0;
+	border-radius: 4px;
+	text-align: center;
+}
+
+.child-percent-75 {
+	width: 75%;
+	background: #fbbf24;
+	padding: 10px;
+	margin: 6px 0;
+	border-radius: 4px;
+	text-align: center;
+}
+
+.child-percent-100 {
+	width: 100%;
+	background: #f59e0b;
+	padding: 10px;
+	margin: 6px 0;
+	border-radius: 4px;
+	text-align: center;
+	color: #fff;
+}
+
+/* ════════════════════════════════════════
+       5. 종합 비교 — 실무 카드
+    ════════════════════════════════════════ */
+.card-wrap {
+	display: flex;
+	gap: 16px;
+	flex-wrap: nowrap;
+	overflow: auto;
+}
+
+.card {
+	flex: 1;
+	min-width: 200px;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	overflow: hidden;
+	min-width: 200px;
+}
+
+.card-head {
+	padding: 12px 16px;
+	font-weight: 700;
+	font-size: 0.875rem;
+	color: #fff;
+}
+
+.card-body {
+	padding: 16px;
+	font-size: 0.875rem;
+	line-height: 2;
+	color: #374151;
+}
+
+.card-body code {
+	background: #f1f5f9;
+	padding: 1px 6px;
+	border-radius: 4px;
+	font-size: 0.8rem;
+	color: #0f172a;
+}
+
+.c-blue {
+	background: #3b82f6;
+}
+
+.c-green {
+	background: #16a34a;
+}
+
+.c-purple {
+	background: #9333ea;
+}
+
+.c-yellow {
+	background: #ca8a04;
+}
+
+/* ════════════════════════════════════════
+       TODO 6. 직접 실습
+    ════════════════════════════════════════ */
+.practice {
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	padding: 20px;
+}
+
+.todo-box {
+	background: #fffbeb;
+	border-left: 4px solid #f59e0b;
+	padding: 12px 16px;
+	font-size: 0.88rem;
+	color: #78350f;
+	border-radius: 0 6px 6px 0;
+	line-height: 1.9;
+	margin-bottom: 20px;
+}
+
+/* TODO: 아래 세 버튼의 font-size 단위를 바꿔보세요 */
+.btn-group {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.btn {
+	padding: 12px 24px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	font-family: inherit;
+}
+
+.btn-px {
+	font-size: 24px;
+	background: #bfdbfe;
+	color: #1e3a5f;
+} /* 고정 */
+.btn-em {
+	font-size: 1.5em;
+	background: #bbf7d0;
+	color: #064e3b;
+} /* 부모 기준 */
+.btn-rem {
+	font-size: 1.5rem;
+	background: #e9d5ff;
+	color: #4a1d96;
+} /* html 기준 */
+</style>
+</head>
+<body>
+
+	<!-- ══ 1. px ══════════════════════════════ -->
+	<h2>1. px — 고정값 (화면 픽셀)</h2>
+	<p class="desc">
+		브라우저 설정이나 부모 요소에 관계없이 <strong>항상 고정된 크기</strong>입니다.<br> 사용자가
+		브라우저 글자 크기를 키워도 px은 반응하지 않습니다.
+	</p>
+	<div class="wrap-px">
+		<div class="box-px-sm">12px</div>
+		<div class="box-px-md">16px</div>
+		<div class="box-px-lg">24px</div>
+		<div class="box-px-xl">32px</div>
+	</div>
+
+	<!-- ══ 2. em ══════════════════════════════ -->
+	<h2>2. em — 부모 font-size 기준</h2>
+	<p class="desc">
+		<strong>부모 요소의 font-size를 1로</strong> 봅니다.<br> 점선 박스 = 부모.
+		<code>font-size: 16px</code>
+		을
+		<code>20px</code>
+		로 바꾸면 자식이 모두 커집니다.
+	</p>
+	<div class="wrap-em">
+		<div class="parent-em">
+			부모 font-size: 16px (em 기준)
+			<div class="child-em-1">1em = 16px (부모와 동일)</div>
+			<div class="child-em-2">1.5em = 24px</div>
+			<div class="child-em-3">2em = 32px</div>
+		</div>
+
+		<!-- em 중첩 문제 -->
+		<div class="nest-wrap" style="margin-top: 20px;">
+			<p class="desc" style="margin: 0 0 8px;">
+				⚠️ <strong>em 중첩 주의</strong> — 모두
+				<code>font-size: 1.5em</code>
+				인데 안으로 갈수록 커집니다.
+			</p>
+			<div class="nest-1">
+				1.5em → 24px
+				<div class="nest-2">
+					1.5em → 36px (부모 24px × 1.5)
+					<div class="nest-3">1.5em → 54px (부모 36px × 1.5)</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ══ 3. rem ══════════════════════════════ -->
+	<h2>3. rem — html font-size 기준 (실무 권장)</h2>
+	<p class="desc">
+		<strong>항상 html의 font-size를 1로</strong> 봅니다. 부모가 얼마든 상관없습니다.<br>
+		<code>html { font-size: 16px; }</code>
+		→ 1rem = 16px 고정.<br> html 한 곳만 바꾸면 rem 단위 전체가 비례해서 바뀝니다. <strong>(TODO
+			A 확인)</strong>
+	</p>
+	<div class="wrap-rem">
+		<div class="parent-rem">
+			부모 font-size: 24px — 하지만 rem 자식은 무관합니다
+			<div class="child-rem-1">0.75rem = 12px (html 16px × 0.75)</div>
+			<div class="child-rem-2">1rem = 16px (html 기준)</div>
+			<div class="child-rem-3">1.5rem = 24px</div>
+			<div class="child-rem-4">2rem = 32px</div>
+		</div>
+	</div>
+
+	<!-- ══ 4. % ══════════════════════════════ -->
+	<h2>4. % — 부모 너비 기준</h2>
+	<p class="desc">
+		<strong>부모 요소의 width를 100%로</strong> 봅니다.<br> 점선 박스 = 부모. 부모
+		width를
+		<code>600px</code>
+		으로 바꾸면 자식 % 기준이 달라집니다. <strong>(TODO C 확인)</strong>
+	</p>
+	<div class="wrap-percent">
+		<div class="parent-percent">
+			부모 width: 100%
+			<div class="child-percent-25">width: 25%</div>
+			<div class="child-percent-50">width: 50%</div>
+			<div class="child-percent-75">width: 75%</div>
+			<div class="child-percent-100">width: 100%</div>
+		</div>
+	</div>
+
+	<!-- ══ 5. 종합 비교 카드 ══════════════════ -->
+	<h2>5. 단위 선택 기준 — 실무 요약</h2>
+	<div class="card-wrap">
+		<div class="card">
+			<div class="card-head c-blue">px</div>
+			<div class="card-body">
+				고정값 · 예측 쉬움<br>
+				<code>border: 1px solid</code>
+				<br>
+				<code>border-radius: 8px</code>
+				<br> 아이콘 · 구분선 · 고정 요소
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-head c-green">em</div>
+			<div class="card-body">
+				부모 font-size 기준<br>
+				<code>padding: 0.75em 1.5em</code>
+				<br> 버튼 · 뱃지 내부 여백<br> ⚠️ 중첩 시 누적 주의
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-head c-purple">rem</div>
+			<div class="card-body">
+				html 기준 · 일관성 ✅<br>
+				<code>font-size: 1rem</code>
+				<br>
+				<code>margin: 1.5rem</code>
+				<br> 글자 크기 · 전체 여백
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-head c-yellow">%</div>
+			<div class="card-body">
+				부모 너비 기준<br>
+				<code>width: 50%</code>
+				<br>
+				<code>max-width: 100%</code>
+				<br> 레이아웃 · 반응형 이미지
+			</div>
+		</div>
+	</div>
+
+	<!-- ══ 6. 직접 실습 ══════════════════════ -->
+	<h2>6. 직접 실습 — TODO</h2>
+	<div class="practice">
+		<div class="todo-box">
+			📝 <strong>TODO A</strong> &nbsp;—
+			<code>html { font-size: 16px; }</code>
+			를
+			<code>20px</code>
+			으로 바꾸면 rem 버튼만 커지는지 확인<br> 📝 <strong>TODO B</strong> &nbsp;—
+			<code>.parent-em { font-size: 16px; }</code>
+			를
+			<code>24px</code>
+			으로 바꾸면 em 자식들이 같이 커지는지 확인<br> 📝 <strong>TODO C</strong> &nbsp;—
+			<code>.parent-percent { width: 100%; }</code>
+			를
+			<code>400px</code>
+			으로 바꾸면 % 자식 너비가 달라지는지 확인<br> 📝 <strong>TODO D</strong> &nbsp;—
+			아래 버튼 3개의 font-size를 모두
+			<code>1.5em / 1.5rem / 24px</code>
+			으로 바꾸고 차이 비교
+		</div>
+
+		<div class="btn-group">
+			<button class="btn btn-px">
+				px 버튼<br> <small>font-size: 24px</small>
+			</button>
+			<button class="btn btn-em">
+				em 버튼<br> <small>font-size: 1.5em</small>
+			</button>
+			<button class="btn btn-rem">
+				rem 버튼<br> <small>font-size: 1.5rem</small>
+			</button>
+		</div>
+	</div>
+
+</body>
+</html>

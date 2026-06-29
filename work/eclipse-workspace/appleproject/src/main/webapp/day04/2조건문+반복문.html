@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>조건문과 반복문</title>
+<style>
+button {
+	background-color: transparent;
+	border: 1px solid blue;
+	border-radius: 20px;
+}
+
+#button-result {
+	min-height: 200px;
+	border: 1px dotted #e2e2e2;
+}
+</style>
+<script type="text/javascript">
+window.onload=()=>{
+	const button1 = document.querySelector("#button-if");
+	const button2 = document.querySelector("#button-for");
+	const button3 = document.querySelector("#button-test");
+	
+	result = document.querySelector("#button-result");
+	
+	button1.onclick = f_1;
+	button2.onclick = f_2;
+	button3.onclick = f_3;
+}
+const f_1 = () => {
+	// if - else if - else
+	const score = 100;
+	let grade = "F";
+
+	if      (score >= 90) { console.log('A'); }
+	else if (score >= 80) { console.log('B'); }
+	else if (score >= 70) { console.log('C'); }  // ← 출력
+	else                  { console.log('F'); }
+	
+	// switch
+	switch(Math.floor(score/10)){
+	case 10:
+	case 9: grade = 'A'; break;
+	case 8: grade = 'B'; break;
+	case 7: grade = 'C'; break;
+	}
+	result.innerHTML = `<p>switch : 점수는 ${score} 학점은 ${grade}입니다.</p>`;
+	
+	// 삼항 연산자
+	const stock = 5;
+	const msg = stock > 0 ? '구매가능' : '품절';
+
+	result.innerHTML += `<p>삼항 연산자 : msg</p>`;
+}
+const f_2 = () => {
+	result.innerHTML = "";
+	// for
+	const items = ['신발', '의류', '잡화'];
+	console.log(items); // JS는 개발자 도구에 객체 출력 가능
+	result.innerHTML += `<p>${items}</p>`	//toString 적용
+	result.innerHTML += `<p>`;
+	for (let i = 0; i < items.length; i++) {
+		result.innerHTML += `${i} - ${items[i]}`;
+		if(i!==items.length-1){
+			result.innerHTML += `  |  `;
+		}
+	}
+	result.innerHTML += `</p>`;
+
+	result.innerHTML += `<p>`;
+	// for...of  (실무 선호)
+	for (const item of items) {
+		result.innerHTML += `${item}  `;
+	}
+	result.innerHTML += `</p>`;
+	
+	for (const index in items){
+		result.innerHTML += `<p>${index} : ${items[index]}</p>`;
+	}
+
+	// while
+	let n = 1;
+	result.innerHTML += `<p>`;
+	while (n <= 5) { 
+		result.innerHTML += `${n} `;
+		n++;
+	}
+	result.innerHTML += `</p>`;
+}
+const f_3 =()=>{
+	result.innerHTML = "<ul>";
+	/* 
+	1~20까지 출력, 단:
+  3의 배수 → 'Fizz'
+  5의 배수 → 'Buzz'
+  15의 배수 → 'FizzBuzz'
+	for문으로 구현 → for...of 로 리팩토링
+ */
+	for(let i = 0; i < 20; i++){
+		console.log((i+1));
+		result.innerHTML += `<li>${(i+1)}`;
+		if((i+1) % 3 === 0){
+			console.log("Fizz");
+			result.innerHTML += `Fizz`;
+		}
+		if((i+1) % 5 === 0){
+			console.log("Buzz");
+			result.innerHTML += `Buzz`;
+		}
+		result.innerHTML += `</li>`;
+	}
+	result.innerHTML += "</ul>";
+}
+</script>
+</head>
+<body>
+	<h1>조건문과 반복문</h1>
+	<button id="button-if">조건문 if</button>
+	<button id="button-for">반복문 for</button>
+	<button id="button-test">test</button>
+	<div id="button-result">출력 대기</div>
+</body>
+</html>

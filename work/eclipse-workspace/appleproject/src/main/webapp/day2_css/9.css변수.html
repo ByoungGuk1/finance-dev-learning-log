@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSS 변수 실습</title>
+  <style>
+    :root {
+      --primary:      gray;  
+      --primary-dark: #085041;
+      --accent:       #D85A30;
+      --radius:       8px;
+      --shadow:       0 2px 8px rgba(0,0,0,0.08);
+      --speed:        0.2s;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #f3f4f6;
+      padding: 40px 24px;
+      color: #1a1a1a;
+    }
+
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1F3864;
+      margin: 32px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .todo-box {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #78350f;
+      border-radius: 0 6px 6px 0;
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    /* ════════════════════════════
+       버튼
+    ════════════════════════════ */
+    .btn {
+      background:    var(--primary);
+      border-radius: var(--radius);
+      box-shadow:    var(--shadow);
+      transition:    background var(--speed) ease;
+
+      /* 버튼 기본 스타일 */
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      padding: 12px 28px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn:hover { background: var(--primary-dark); }
+
+    /* TODO: var(--accent) 사용하는 보조 버튼 */
+    .btn-accent {
+      background:    var(--accent);
+      border-radius: var(--radius);
+      box-shadow:    var(--shadow);
+      transition:    background var(--speed) ease;
+
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      padding: 12px 28px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-accent:hover { background: var(--primary-dark); }
+
+    /* ════════════════════════════
+       카드 — var() 적용 확인
+    ════════════════════════════ */
+    .card-wrap {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .card {
+      flex: 1;
+      min-width: 200px;
+      background: #fff;
+      border-radius: var(--radius);   /* --radius 사용 */
+      box-shadow:    var(--shadow);   /* --shadow 사용 */
+      overflow: hidden;
+      transition: transform var(--speed) ease, box-shadow var(--speed) ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+    }
+    .card-head {
+      height: 100px;
+      background: var(--primary);    /* --primary 사용 */
+      transition: background var(--speed) ease;
+    }
+    .card-body { padding: 16px; }
+    .card-title { font-weight: 700; margin: 0 0 6px; font-size: 0.95rem; }
+    .card-price { color: #6b7280;   margin: 0 0 12px; font-size: 0.88rem; }
+
+    /* ════════════════════════════
+       다크모드
+    ════════════════════════════ */
+     @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #4ECFA8;
+        --accent:  #FF8A65;
+      }
+      body      { background: #1a1a2e; color: #e2e8f0; }
+      .card     { background: #16213e; }
+      .card-title { color: #e2e8f0; }
+      h2        { color: #4ECFA8; border-color: #4ECFA8; }
+      .todo-box { background: #2d2d1a; color: #fbbf24; border-color: #fbbf24; }
+    }  
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size:1.3rem; margin:0 0 4px;">CSS 변수 <code>var()</code> 실습</h1>
+  <p style="font-size:0.875rem; color:#555; margin:0 0 32px;">
+    <code>:root</code> 의 변수 값을 바꾸면 아래 모든 요소가 한 번에 바뀝니다.
+  </p>
+
+  <!-- ── 1. 버튼 ───────────────────────── -->
+  <h2>1. 버튼 — var(--primary) / var(--accent)</h2>
+  <div class="todo-box">
+    📝 TODO 1 — <code>:root</code> 의 <code>--primary</code> 값을 <code>royalblue</code> 로 바꿔보세요.<br>
+    아래 버튼과 카드 헤더 색이 <strong>동시에</strong> 바뀌는지 확인하세요.
+  </div>
+  <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:32px;">
+    <button class="btn">기본 버튼 (--primary)</button>
+    <button class="btn-accent">보조 버튼 (--accent)</button>
+  </div>
+
+  <!-- ── 2. 카드 ───────────────────────── -->
+  <h2>2. 카드 — var(--radius) / var(--shadow) / var(--speed)</h2>
+  <div class="todo-box">
+    📝 TODO 2 — <code>--radius</code> 를 <code>0px</code> / <code>24px</code> 으로 바꿔보세요.<br>
+    📝 TODO 3 — <code>--shadow</code> 를 <code>0 8px 24px rgba(0,0,0,0.3)</code> 으로 바꿔보세요.<br>
+    📝 TODO 4 — <code>--speed</code> 를 <code>1s</code> 으로 바꾸고 hover 속도 차이를 확인하세요.
+  </div>
+  <div class="card-wrap">
+    <div class="card">
+      <div class="card-head"></div>
+      <div class="card-body">
+        <p class="card-title">프리미엄 운동화</p>
+        <p class="card-price">89,000원</p>
+        <button class="btn" style="width:100%; padding:10px;">장바구니 담기</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"></div>
+      <div class="card-body">
+        <p class="card-title">클래식 스니커즈</p>
+        <p class="card-price">62,000원</p>
+        <button class="btn" style="width:100%; padding:10px;">장바구니 담기</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"></div>
+      <div class="card-body">
+        <p class="card-title">러닝화 프로</p>
+        <p class="card-price">75,000원</p>
+        <button class="btn" style="width:100%; padding:10px;">장바구니 담기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. 다크모드 ───────────────────── -->
+  <h2>3. 다크모드 — prefers-color-scheme</h2>
+  <div class="todo-box">
+    📝 TODO 5 — Chrome 개발자도구 F12 →<br>
+    오른쪽 상단 점 3개 → More tools → Rendering →<br>
+    <code>Emulate CSS media feature prefers-color-scheme</code> →
+    <code>dark</code> 선택<br>
+    --primary 가 <code>#4ECFA8</code> 으로 바뀌며 전체 색상이 전환됩니다.
+  </div>
+  <div style="background:#1a1a2e; border-radius:var(--radius); padding:20px; color:#e2e8f0;">
+    <p style="margin:0 0 12px; font-size:0.88rem; color:#94a3b8;">다크모드 미리보기 (배경만 시뮬레이션)</p>
+    <button style="
+      background: #4ECFA8;
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: inherit;
+    ">다크모드 버튼 (#4ECFA8)</button>
+  </div>
+
+</body>
+</html>

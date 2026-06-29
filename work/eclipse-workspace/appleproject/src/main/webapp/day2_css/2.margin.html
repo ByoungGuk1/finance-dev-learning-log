@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3-2. margin · padding · border 실습</title>
+<style>
+* {
+	box-sizing: border-box;
+} /* 3-1에서 배운 것 */
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background: #f3f4f6;
+	padding: 40px 24px;
+}
+
+.wrap {
+	display: flex;
+	border: 1px solid gray;
+}
+
+.box-margin {
+	border: 2px dashed green;
+	padding: 10px 20px;
+	margin: 10px 20px;
+	/* 시도해볼 값들:
+         margin: 0;
+         margin: 40px;
+         margin: 10px 40px;          → 위아래 10 / 좌우 40
+         margin: 10px 20px 30px 40px → top right bottom left
+         margin: 0 auto;             → 가운데 정렬 (부모가 block일 때)
+      */
+}
+
+.box-border {
+	border: 3px dotted blue;
+	border-radius: 20px;
+	text-align: center;
+	width: 30%;
+}
+
+.card-wrap {
+	border: 1px solid gray;
+	display: flex;
+	gap: 0px; /*margin실습을 위해*/
+	padding: 10px;
+}
+
+.card {
+	width: 200px;
+	background: #fff;
+	border: 1px solid skyblue;
+	border-radius: 20px;
+	padding: 10px;
+	margin: 0 auto;
+}
+
+.card-body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 15px 0px;
+	gap: 8px;
+}
+
+.card-body>p {
+	text-align: center;
+	margin: 4px;
+}
+
+.card-img {
+	margin: 0 auto;
+	width: 120px;
+	height: 120px;
+	background: orange;
+	border-radius: 50%;
+	width: 120px;
+}
+</style>
+</head>
+<body>
+
+	<!-- ── TODO 1. margin 실습 ── -->
+	<h2>TODO 1. margin — 바깥 여백</h2>
+	<p>점선 테두리가 부모 컨테이너입니다. margin 값을 바꾸며 박스와 컨테이너 사이 간격을 확인하세요.</p>
+	<div class="wrap">
+		<div class="box-margin">margin: 20px</div>
+		<div class="box-margin">margin: 20px</div>
+		<div class="box-margin">margin: 20px</div>
+	</div>
+
+	<br>
+	<br>
+
+	<!-- ── TODO 2. padding 실습 ── -->
+	<h2>TODO 2. padding — 안쪽 여백</h2>
+	<p>박스 안의 텍스트와 테두리 사이 간격입니다. padding 값을 바꾸며 내부 여백 변화를 확인하세요.</p>
+	<div class="box-padding">
+		padding 값에 따라<br>이 텍스트와 테두리 사이<br>간격이 달라집니다.
+	</div>
+
+	<br>
+	<br>
+
+	<!-- ── TODO 3. border 실습 ── -->
+	<h2>TODO 3. border — 테두리</h2>
+	<p>border의 굵기·스타일·색상과 border-radius를 바꿔보세요.</p>
+	<div class="box-border">
+		border 스타일을<br>바꿔보세요
+	</div>
+
+	<br>
+	<br>
+
+	<!-- ── TODO 4. 종합 실습 ── -->
+	<h2>TODO 4. 종합 — 상품 카드 완성</h2>
+	<p>.card의 padding · border · border-radius · margin을 직접 채워서 카드를
+		완성해보세요.</p>
+	<div class="card-wrap">
+
+		<div class="card">
+			<div class="card-img"></div>
+			<div class="card-body">
+				<p class="card-title">프리미엄 운동화</p>
+				<p class="card-price">89,000원</p>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-img"></div>
+			<div class="card-body">
+				<p class="card-title">클래식 스니커즈</p>
+				<p class="card-price">62,000원</p>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-img"></div>
+			<div class="card-body">
+				<p class="card-title">러닝화 프로</p>
+				<p class="card-price">75,000원</p>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>

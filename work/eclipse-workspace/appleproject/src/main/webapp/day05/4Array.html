@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>배열메서드</title>
+<script>
+const products = [
+  { name:'운동화A', price:89000, stock:5,  category:'신발' },
+  { name:'운동화B', price:62000, stock:0,  category:'신발' },
+  { name:'티셔츠',  price:29000, stock:12, category:'의류' },
+  { name:'가방',    price:45000, stock:3,  category:'잡화' },
+];
+
+// map — 각 요소 변환 → 새 배열
+const names = products.map(p => p.name);
+// ['운동화A','운동화B','티셔츠','가방']
+
+const withSale =(products)=>products.map(p => ({
+  ...p,
+  salePrice: Math.round(p.price * 0.7)
+}));
+
+// filter — 조건 맞는 것만 → 새 배열
+const inStock = products.filter(p => p.stock > 0);
+const shoes   = products.filter(p => p.category === '신발');
+
+function filterProducts(currentCat) {
+      if (currentCat === '전체') return products;
+      return products.filter(p => p.category === currentCat);
+}
+
+// reduce — 배열 → 하나의 값
+const total = products.reduce((acc, p) => acc + p.price, 0);
+// 225000
+
+// sort — 가격 정렬
+function sortProducts(currentSort) {
+      if (currentSort === 'asc')  return [...products].sort((a, b) => a.price - b.price);
+      if (currentSort === 'desc') return [...products].sort((a, b) => b.price - a.price);
+      return products;   // 기본순
+}
+
+// 체이닝
+const result = (products) => products
+  .filter(p => p.stock > 0)
+  .map(p => ({ name:p.name, salePrice:p.price*0.7 }))
+  .sort((a,b) => a.salePrice - b.salePrice);
+  
+</script>
+</head>
+<body>
+	<h2>🛍️ 상품 목록</h2>
+	<!-- 필터 + 정렬 -->
+	<div class="toolbar">
+		<button class="cat-btn active" data-cat="전체">전체</button>
+		<button class="cat-btn" data-cat="신발">신발</button>
+		<button class="cat-btn" data-cat="의류">의류</button>
+		<button class="cat-btn" data-cat="잡화">잡화</button>
+		<select id="sortSelect">
+			<option value="default">기본순</option>
+			<option value="asc">가격 낮은순</option>
+			<option value="desc">가격 높은순</option>
+		</select>
+	</div>
+	<!-- 합계 -->
+	<p class="summary">
+		상품 <span id="countDisplay">0</span>개 &nbsp;|&nbsp; 합계 <span
+			id="totalDisplay">0</span>원
+	</p>
+	<!-- 상품 그리드 -->
+	<div class="product-grid" id="productGrid"></div>
+
+	<script>
+	window.onload = () => {
+		document.querySelectorAll(".cat-btn").forEach((btn)=>{btn.addEventListener("click",(e)=>{
+			btnCategory(e.srcElement.attributes[1].nodeValue);
+		})});
+		document.querySelector("#sortSelect").addEventListener("change",(e)=>{
+			showProduct(sortProducts(document.querySelector("#sortSelect").value));
+		});
+		showProduct(products);
+	}
+	
+	function showProduct(products){
+		const productList = withSale(products);
+					//.filter((data)=>data.stock > 0);
+		const showProductArea = document.querySelector("#productGrid");
+		const showCountDisplay = document.querySelector("#countDisplay");
+		const showTotalDisplay = document.querySelector("#totalDisplay");
+		let productCount = 0;
+		let totalPrice = 0;
+		
+		showProductArea.innerHTML = ``;
+		const madeUlTag = document.createElement("ul");
+		for(const product of productList){
+			const madeliTag = document.createElement("li");
+			//name:'운동화A', price:89000, stock:5,  category:'신발'
+			const name = document.createTextNode(`상품명 : ${product?.name}\t|\t`);
+			const price = document.createTextNode(`가격 : ${product?.price}\t|\t`);
+			const stock = document.createTextNode(`재고 : ${product?.stock}\t|\t`);
+			const category = document.createTextNode(`카테고리 : ${product?.category}\t|\t`);
+			const salePrice = document.createTextNode(`할인가 : ${product?.salePrice}\t`);
+			madeliTag.appendChild(name);
+			madeliTag.appendChild(price);
+			madeliTag.appendChild(stock);
+			madeliTag.appendChild(category);
+			madeliTag.appendChild(salePrice);
+			madeUlTag.appendChild(madeliTag);
+			totalPrice += product?.price;
+			productCount += 1;
+		}
+		showProductArea.appendChild(madeUlTag);
+		showCountDisplay.innerText = productCount;
+		showTotalDisplay.innerText = totalPrice;
+	}
+	
+	function btnCategory(category){
+		const products = filterProducts(category);
+		showProduct(products);
+	}
+	
+</script>
+</body>
+</html>
