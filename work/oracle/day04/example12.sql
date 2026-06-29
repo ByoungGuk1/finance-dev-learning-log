@@ -1,0 +1,18 @@
+--실습 과제 12-1  |  테이블 생성·변경 (★★☆  응용)
+--① 아래 금융 거래 테이블을 CREATE TABLE로 생성하세요:
+--   transactions (txn_id NUMBER(10) PK, account_id NUMBER(10) NOT NULL,
+--   txn_type CHAR(1) NOT NULL, amount NUMBER(18,2) NOT NULL,
+--   txn_date DATE DEFAULT SYSDATE, description VARCHAR2(200))
+--
+--② 위 테이블에 아래 변경을 ALTER TABLE로 수행하세요:
+--   - balance_after NUMBER(18,2) 컬럼 추가
+--   - description 컬럼 크기를 500으로 변경
+--   - txn_type CHECK(txn_type IN ('D','W','T')) 제약조건 추가
+--
+--③ USER_TABLES, USER_TAB_COLUMNS로 생성 결과를 확인하세요.
+
+--실습 과제 12-2  |  DROP · COMMENT (★☆☆  기초)
+--① emp_empty 테이블을 DROP하세요.
+--② transactions 테이블과 주요 컬럼에 COMMENT를 추가하세요.
+--   (txn_type: 'D=입금, W=출금, T=이체', amount: '거래금액(원화)')
+--③ USER_TAB_COMMENTS로 추가한 주석을 조회하세요.

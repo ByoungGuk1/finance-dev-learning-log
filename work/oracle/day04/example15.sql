@@ -1,0 +1,20 @@
+--실습 과제 15-1  |  사용자·권한 실습 (★★☆  응용)
+--SYSTEM 계정으로 접속하여 아래를 수행하세요:
+--① 사용자 db_student 를 생성하세요 (비밀번호: student123, QUOTA UNLIMITED)
+--② db_student에게 CONNECT, RESOURCE 롤을 부여하세요.
+--③ HR 계정으로 전환 후 HR.EMPLOYEES에 대한 SELECT 권한을 db_student에게 부여하세요.
+--④ db_student로 접속하여 SELECT * FROM hr.employees 가 실행되는지 확인하세요.
+
+--실습 과제 15-2  |  롤 설계 · 권한 체계 (★★★  심화)
+--금융 시스템의 권한 체계를 아래와 같이 설계·구현하세요:
+--
+--  역할별 롤 설계:
+--  role_fin_read    : accounts, transactions, customers 조회만 가능
+--  role_fin_write   : role_fin_read 포함 + INSERT, UPDATE 가능
+--  role_fin_admin   : role_fin_write 포함 + DELETE, DDL 권한
+--
+--  ① 위 3개 롤을 CREATE ROLE로 생성하세요.
+--  ② 각 롤에 적절한 권한을 GRANT하세요.
+--  ③ 테스트 사용자 3명(teller, manager, admin_user)을 생성하고
+--     각각에게 알맞은 롤을 부여하세요.
+--  ④ 각 사용자가 수행할 수 있는 작업과 수행할 수 없는 작업을 SELECT로 검증하세요.

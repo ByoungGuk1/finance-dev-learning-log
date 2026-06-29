@@ -1,0 +1,21 @@
+--실습 과제 14-1  |  제약조건 설계 (★★☆  응용)
+--아래 금융 대출 테이블을 제약조건을 포함하여 설계·생성하세요:
+--
+--  loans (loan_id NUMBER PK, customer_id NUMBER FK→customers,
+--         principal NUMBER(18,2) NOT NULL CHECK(>0),
+--         interest_rate NUMBER(5,4) CHECK(0~0.3),
+--         loan_term NUMBER(3) CHECK(1~360) -- 개월 수
+--         start_date DATE, end_date DATE,
+--         status CHAR(1) CHECK('A','P','D','C') -- Active/Paid/Default/Closed
+--         UNIQUE(customer_id, start_date)  -- 같은 날 동일 고객 중복 대출 방지)
+--
+--  생성 후 USER_CONSTRAINTS로 제약조건 목록을 확인하세요.
+
+--실습 과제 14-2  |  제약조건 위반·변경 (★★★  심화)
+--① loans 테이블에 존재하지 않는 customer_id(9999)로 INSERT를 시도하고
+--   발생하는 오류 메시지를 기록하세요.
+--② interest_rate에 1.5(범위 초과)를 INSERT 시도하고 오류를 확인하세요.
+--③ 대량 데이터 로딩 시나리오: FK 제약조건을 DISABLE 후 INSERT 5건,
+--   이후 ENABLE VALIDATE로 재활성화하세요.
+--④ 기존 loans 테이블에 loan_officer VARCHAR2(50) 컬럼을 추가하고
+--   NOT NULL 제약조건을 추가해 보세요. (기존 데이터가 있을 때 어떤 오류가 발생하나요?)
