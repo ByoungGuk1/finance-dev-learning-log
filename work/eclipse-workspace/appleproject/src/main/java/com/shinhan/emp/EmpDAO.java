@@ -136,7 +136,6 @@ public class EmpDAO {
 		} finally {
 			DBUtil.dbDisConnect(conn, pst, rs);
 		}
-
 		return empList;
 	}
 
@@ -218,6 +217,28 @@ public class EmpDAO {
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, empid);
+			rs = pst.executeQuery();
+			if (rs.next() == true) {
+				emp = buildVO(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.dbDisConnect(conn, pst, rs);
+		}
+		return emp;
+	}
+
+	public EmpDTO selectByName(String firstName) {
+		EmpDTO emp = null;
+		String sql = """
+				select * from employees where first_name = ?
+				""";
+
+		conn = DBUtil.dbConnect();
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, firstName);
 			rs = pst.executeQuery();
 			if (rs.next() == true) {
 				emp = buildVO(rs);

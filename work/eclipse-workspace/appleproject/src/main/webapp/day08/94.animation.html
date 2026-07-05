@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery 애니메이션 실습</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; padding: 32px; background: #f3f4f6; }
+    h2   { color: #1F3864; margin-bottom: 20px; }
+
+    section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+    h3 {
+      font-size: 0.95rem;
+      color: #1F3864;
+      margin-bottom: 14px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #2E75B6;
+    }
+
+    /* 실행 버튼 */
+    .btn-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .run {
+      padding: 7px 14px;
+      background: #2E75B6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .run:hover { background: #1F3864; }
+
+
+    /* ════════════════════
+       1. 기본 애니메이션
+    ════════════════════ */
+    .card-wrap { display: flex; gap: 12px; flex-wrap: wrap; }
+    .card {
+      width: 100px; height: 80px;
+      background: #dbeafe;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #1e3a5f;
+    }
+    .card:nth-child(2) { background: #d1fae5; color: #064e3b; }
+    .card:nth-child(3) { background: #fde68a; color: #78350f; }
+
+
+    /* ════════════════════
+       2. .animate()
+    ════════════════════ */
+    .progress-wrap {
+      background: #e5e7eb;
+      border-radius: 20px;
+      height: 28px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .progress {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #2E75B6, #1D9E75);
+      border-radius: 20px;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+
+    /* ════════════════════
+       3. 탭 UI
+    ════════════════════ */
+    .tab-btns { display: flex; gap: 0; margin-bottom: 0; }
+    .tab-btn {
+      padding: 10px 20px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: inherit;
+      color: #6b7280;
+    }
+    .tab-btn.active {
+      background: #fff;
+      color: #1F3864;
+      font-weight: 700;
+      border-color: #d1d5db;
+    }
+    .tab-body {
+      border: 1px solid #e5e7eb;
+      border-radius: 0 6px 6px 6px;
+      background: #fff;
+      min-height: 100px;
+    }
+    .tab-pane {
+      display: none;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #374151;
+      line-height: 1.7;
+    }
+    .tab-pane.active { display: block; }
+
+
+    /* ════════════════════
+       4. 모달
+    ════════════════════ */
+    .open-modal {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: inherit;
+      margin: 4px;
+      color: #fff;
+    }
+    #modal1-btn { background: #2E75B6; }
+    #modal2-btn { background: #1D9E75; }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px;
+      width: 340px;
+      z-index: 200;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .modal h4    { color: #1F3864; margin-bottom: 12px; }
+    .modal p     { font-size: 0.9rem; color: #6b7280; margin-bottom: 20px; }
+    .close-modal {
+      padding: 9px 24px;
+      background: #D85A30;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    .close-modal:hover { background: #9a2c0e; }
+  </style>
+</head>
+<body>
+
+  <h2>✨ jQuery 애니메이션 실습</h2>
+
+
+  <!-- ════════════════════════════════════════
+       1. 기본 애니메이션
+  ════════════════════════════════════════ -->
+  <section>
+    <h3>1. 기본 애니메이션 — hide / show / fade / slide</h3>
+
+    <div class="btn-wrap">
+      <button class="run" id="btnHide">   .hide(300)       </button>
+      <button class="run" id="btnShow">   .show(300)       </button>
+      <button class="run" id="btnToggle"> .toggle(300)     </button>
+      <button class="run" id="btnFadeIn"> .fadeIn(400)     </button>
+      <button class="run" id="btnFadeOut">.fadeOut(400)    </button>
+      <button class="run" id="btnFadeTog">.fadeToggle(400) </button>
+      <button class="run" id="btnSlideDown">.slideDown(300)</button>
+      <button class="run" id="btnSlideUp">  .slideUp(300)  </button>
+      <button class="run" id="btnSlideTog"> .slideToggle() </button>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card">카드 A</div>
+      <div class="card">카드 B</div>
+      <div class="card">카드 C</div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       2. .animate()
+  ════════════════════════════════════════ -->
+  <section>
+    <h3>2. .animate() — 커스텀 애니메이션</h3>
+
+    <div class="btn-wrap">
+      <button class="run" id="btnAnimate">진행바 75%</button>
+      <button class="run" id="btnReset">초기화</button>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress">75%</div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       3. 탭 UI
+  ════════════════════════════════════════ -->
+  <section>
+    <h3>3. 탭 UI — data-target + fadeIn</h3>
+
+    <div class="tab-btns">
+      <button class="tab-btn active" data-target2="#tab-shoes">신발</button>
+      <button class="tab-btn"        data-target2="#tab-clothes">의류</button>
+      <button class="tab-btn"        data-target2="#tab-bags">잡화</button>
+    </div>
+
+    <div class="tab-body">
+      <div class="tab-pane active" id="tab-shoes">
+        👟 신발 탭 콘텐츠<br>
+        프리미엄 운동화 89,000원 / 클래식 스니커즈 62,000원
+      </div>
+      <div class="tab-pane" id="tab-clothes">
+        👕 의류 탭 콘텐츠<br>
+        린넨 셔츠 39,000원 / 후드 집업 79,000원
+      </div>
+      <div class="tab-pane" id="tab-bags">
+        👜 잡화 탭 콘텐츠<br>
+        크로스백 45,000원 / 볼캡 모자 28,000원
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       4. 모달
+  ════════════════════════════════════════ -->
+  <section>
+    <h3>4. 모달 — fadeIn / fadeOut + 오버레이</h3>
+
+    <button class="open-modal" id="modal1-btn" data-modal="modal1">
+      🛒 장바구니 담기
+    </button>
+    <button class="open-modal" id="modal2-btn" data-modal="modal2">
+      📦 주문 완료
+    </button>
+  </section>
+
+
+  <!-- 오버레이 -->
+  <div class="overlay"></div>
+
+  <!-- 모달 1 -->
+  <div class="modal" id="modal1">
+    <h4>🛒 장바구니 담기</h4>
+    <p>프리미엄 운동화를<br>장바구니에 담으시겠습니까?</p>
+    <button class="close-modal">닫기</button>
+  </div>
+
+  <!-- 모달 2 -->
+  <div class="modal" id="modal2">
+    <h4>✅ 주문 완료</h4>
+    <p>주문이 성공적으로 완료됐습니다.<br>배송까지 2~3일 소요됩니다.</p>
+    <button class="close-modal">확인</button>
+  </div>
+
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    $(function() {
+
+      // ══════════════════════════════════════
+      // 1. 기본 애니메이션
+      // ══════════════════════════════════════
+      $('#btnHide')    .on('click', () => $('.card').hide(300));
+      $('#btnShow')    .on('click', () => $('.card').show(300));
+      $('#btnToggle')  .on('click', () => $('.card').toggle(300));
+      $('#btnFadeIn')  .on('click', () => $('.card').fadeIn(400));
+      $('#btnFadeOut') .on('click', () => $('.card').fadeOut(400));
+      $('#btnFadeTog') .on('click', () => $('.card').fadeToggle(400));
+      $('#btnSlideDown').on('click', () => $('.card').slideDown(300));
+      $('#btnSlideUp')  .on('click', () => $('.card').slideUp(300));
+      $('#btnSlideTog') .on('click', () => $('.card').slideToggle(300));
+
+
+      // ══════════════════════════════════════
+      // 2. .animate()
+      // ══════════════════════════════════════
+      $('#btnAnimate').on('click', function() {
+        $('.progress').animate({ width:'75%', opacity:1 }, 600);
+      });
+
+      $('#btnReset').on('click', function() {
+        $('.progress').stop().animate({ width:'0%', opacity:0 }, 400);
+      });
+
+
+      // ══════════════════════════════════════
+      // 3. 탭 UI
+      // ══════════════════════════════════════
+      $('.tab-btn').on('click', function() {
+        const target = $(this).data('target2');  // data-target 속성 읽기
+
+        // active 클래스 이동
+        $('.tab-btn').removeClass('active');
+        $(this).addClass('active');
+
+        // 탭 콘텐츠 전환
+        $('.tab-pane').hide();
+        $(target).fadeIn(200);
+      });
+
+
+      // ══════════════════════════════════════
+      // 4. 모달
+      // ══════════════════════════════════════
+
+      // 열기
+      $('.open-modal').on('click', function() {
+        const id = $(this).data('modal');   // data-modal 속성 읽기
+        $('.overlay').fadeIn(200);
+        $('#' + id).fadeIn(200);
+      });
+
+      // 닫기 — 닫기 버튼 또는 오버레이 클릭
+      $('.close-modal, .overlay').on('click', function() {
+        $('.modal').fadeOut(200);
+        $('.overlay').fadeOut(200);
+      });
+
+      // ESC 키도 닫기
+      $(document).on('keydown', function(e) {
+        if (e.key === 'Escape') {
+          $('.modal').fadeOut(200);
+          $('.overlay').fadeOut(200);
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>

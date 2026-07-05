@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery 종합 실습 — Day 6</title>
+
+  <!-- jQuery UI CSS -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f3f4f6; color: #1a1a1a; }
+
+    /* ── 헤더 ── */
+    .header {
+      background: #1F3864;
+      color: #fff;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .logo { font-size: 1.1rem; font-weight: 700; }
+    .cart-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    #cartCount {
+      background: #D85A30;
+      color: #fff;
+      border-radius: 50%;
+      width: 22px; height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    /* ── 탭 ── */
+    .tab-wrap { padding: 24px 32px 0; }
+    .tab-btns { display: flex; gap: 0; }
+    .tab-btn {
+      padding: 10px 24px;
+      background: #e5e7eb;
+      border: 1px solid #d1d5db;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: inherit;
+      color: #6b7280;
+    }
+    .tab-btn.active {
+      background: #fff;
+      color: #1F3864;
+      font-weight: 700;
+      border-color: #d1d5db;
+    }
+    .tab-body {
+      background: #fff;
+      border: 1px solid #d1d5db;
+      border-radius: 0 8px 8px 8px;
+      padding: 24px;
+      min-height: 300px;
+    }
+    .tab-pane { display: none; }
+
+    /* ── 상품 그리드 ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .p-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .p-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    .p-img  {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .p-body { padding: 14px; }
+    .p-name  { font-size: 0.95rem; font-weight: 700; color: #1F3864; margin-bottom: 4px; }
+    .p-price { font-size: 0.9rem; color: #1D9E75; font-weight: 700; margin-bottom: 12px; }
+    .btn-detail {
+      width: 100%;
+      padding: 8px;
+      background: #2E75B6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-detail:hover { background: #1F3864; }
+
+    /* ── 오버레이 ── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+
+    /* ── 모달 ── */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border-radius: 14px;
+      width: 420px;
+      max-width: 95vw;
+      max-height: 85vh;
+      overflow-y: auto;
+      z-index: 200;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-head {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-radius: 14px 14px 0 0;
+    }
+    .modal-head h3 { font-size: 1rem; color: #1F3864; }
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: #9ca3af;
+      line-height: 1;
+    }
+    .btn-close:hover { color: #D85A30; }
+
+    .modal-body { padding: 20px 24px; }
+
+    /* 모달 상품 정보 */
+    .modal-product {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .modal-img {
+      width: 80px; height: 80px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .modal-name  { font-size: 1rem; font-weight: 700; color: #1F3864; margin-bottom: 4px; }
+    .modal-price { font-size: 1.1rem; font-weight: 700; color: #1D9E75; }
+
+    /* 수량 + 날짜 */
+    .order-form { margin-bottom: 20px; }
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .form-label {
+      width: 70px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #374151;
+      flex-shrink: 0;
+    }
+    .qty-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .qty-btn {
+      width: 30px; height: 30px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .qty-btn:hover { background: #f3f4f6; }
+    #modalQty { font-size: 1rem; font-weight: 700; min-width: 24px; text-align: center; }
+
+    #deliveryDate {
+      padding: 7px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      width: 160px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    /* 장바구니 담기 버튼 */
+    .btn-addcart {
+      width: 100%;
+      padding: 12px;
+      background: #1D9E75;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      margin-bottom: 20px;
+      transition: background 0.2s;
+    }
+    .btn-addcart:hover { background: #085041; }
+
+    /* 토스트 */
+    #toast {
+      display: none;
+      position: fixed;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      background: #1F3864;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      z-index: 300;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+
+    /* Ajax 댓글 */
+    .comment-wrap { border-top: 1px solid #e5e7eb; padding-top: 16px; }
+    .comment-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+    .comment-loading { color: #9ca3af; font-size: 0.85rem; }
+    .comment-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 0.82rem;
+    }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-name  { font-weight: 700; color: #2E75B6; margin-bottom: 3px; }
+    .comment-body  { color: #6b7280; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <!-- ── 헤더 ───────────────────────────────── -->
+  <header class="header">
+    <div class="logo">🛍️ ShopMall</div>
+    <div class="cart-wrap" id="cartIcon">
+      🛒 장바구니 <span id="cartCount">0</span>
+    </div>
+  </header>
+
+  <!-- ── 탭 ────────────────────────────────── -->
+  <div class="tab-wrap">
+    <div class="tab-btns">
+      <button class="tab-btn active" data-target="#tab-shoes">👟 신발</button>
+      <button class="tab-btn"        data-target="#tab-clothes">👕 의류</button>
+      <button class="tab-btn"        data-target="#tab-bags">👜 잡화</button>
+    </div>
+    <div class="tab-body">
+
+      <!-- 신발 탭 -->
+      <div class="tab-pane active" id="tab-shoes">
+        <div class="product-grid">
+          <div class="p-card"
+               data-id="1" data-name="프리미엄 운동화"
+               data-price="89000" data-icon="👟" data-color="#dbeafe">
+            <div class="p-img" style="background:#dbeafe">👟</div>
+            <div class="p-body">
+              <p class="p-name">프리미엄 운동화</p>
+              <p class="p-price">89,000원</p>
+              <button class="btn-detail">상세보기</button>
+            </div>
+          </div>
+          <div class="p-card"
+               data-id="2" data-name="클래식 스니커즈"
+               data-price="62000" data-icon="👞" data-color="#e0e7ff">
+            <div class="p-img" style="background:#e0e7ff">👞</div>
+            <div class="p-body">
+              <p class="p-name">클래식 스니커즈</p>
+              <p class="p-price">62,000원</p>
+              <button class="btn-detail">상세보기</button>
+            </div>
+          </div>
+          <div class="p-card"
+               data-id="3" data-name="러닝화 프로"
+               data-price="75000" data-icon="🥿" data-color="#fce7f3">
+            <div class="p-img" style="background:#fce7f3">🥿</div>
+            <div class="p-body">
+              <p class="p-name">러닝화 프로</p>
+              <p class="p-price">75,000원</p>
+              <button class="btn-detail">상세보기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 의류 탭 -->
+      <div class="tab-pane" id="tab-clothes">
+        <div class="product-grid">
+          <div class="p-card"
+               data-id="4" data-name="린넨 셔츠"
+               data-price="39000" data-icon="👔" data-color="#d1fae5">
+            <div class="p-img" style="background:#d1fae5">👔</div>
+            <div class="p-body">
+              <p class="p-name">린넨 셔츠</p>
+              <p class="p-price">39,000원</p>
+              <button class="btn-detail">상세보기</button>
+            </div>
+          </div>
+          <div class="p-card"
+               data-id="5" data-name="후드 집업"
+               data-price="79000" data-icon="🧥" data-color="#fee2e2">
+            <div class="p-img" style="background:#fee2e2">🧥</div>
+            <div class="p-body">
+              <p class="p-name">후드 집업</p>
+              <p class="p-price">79,000원</p>
+              <button class="btn-detail">상세보기</button>
+            </div>
+          </div>
+          <div class="p-card"
+               data-id="6" data-name="청바지 슬림핏"
+               data-price="55000" data-icon="👖" data-color="#fef3c7">
+            <div class="p-img" style="background:#fef3c7">👖</div>
+            <div class="p-body">
+              <p class="p-name">청바지 슬림핏</p>
+              <p class="p-price">55,000원</p>
+              <button class="btn-detail">상세보기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 잡화 탭 -->
+      <div class="tab-pane" id="tab-bags">
+        <div class="product-grid">
+          <div class="p-card"
+               data-id="7" data-name="크로스백"
+               data-price="45000" data-icon="👜" data-color="#ede9fe">
+            <div class="p-img" style="background:#ede9fe">👜</div>
+            <div class="p-body">
+              <p class="p-name">크로스백</p>
+              <p class="p-price">45,000원</p>
+              <button class="btn-detail">상세보기</button>
+            </div>
+          </div>
+          <div class="p-card"
+               data-id="8" data-name="볼캡 모자"
+               data-price="28000" data-icon="🧢" data-color="#fef9c3">
+            <div class="p-img" style="background:#fef9c3">🧢</div>
+            <div class="p-body">
+              <p class="p-name">볼캡 모자</p>
+              <p class="p-price">28,000원</p>
+              <button class="btn-detail">상세보기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ── 오버레이 ────────────────────────────── -->
+  <div class="overlay"></div>
+
+  <!-- ── 모달 ──────────────────────────────── -->
+  <div class="modal" id="productModal">
+    <div class="modal-head">
+      <h3 id="modalTitle">상품 상세</h3>
+      <button class="btn-close">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- 상품 정보 -->
+      <div class="modal-product">
+        <div class="modal-img" id="modalImg"></div>
+        <div>
+          <p class="modal-name"  id="modalName"></p>
+          <p class="modal-price" id="modalPrice"></p>
+        </div>
+      </div>
+
+      <!-- 주문 폼 -->
+      <div class="order-form">
+        <div class="form-row">
+          <span class="form-label">수량</span>
+          <div class="qty-wrap">
+            <button class="qty-btn" id="qtyMinus">−</button>
+            <span id="modalQty">1</span>
+            <button class="qty-btn" id="qtyPlus">+</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label">배송일</span>
+          <input type="text" id="deliveryDate" placeholder="날짜 선택" readonly>
+        </div>
+      </div>
+
+      <!-- 장바구니 담기 -->
+      <button class="btn-addcart" id="btnAddCart">🛒 장바구니 담기</button>
+
+      <!-- Ajax 댓글 -->
+      <div class="comment-wrap">
+        <p class="comment-title">💬 상품 후기</p>
+        <div id="commentList">
+          <p class="comment-loading">후기를 불러오는 중...</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 토스트 -->
+  <div id="toast"></div>
+
+  <!-- jQuery + jQuery UI -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <script>
+    $(function() {
+
+      // ── 현재 선택된 상품 ────────────────────
+      let currentProduct = null;
+      let currentQty     = 1;
+
+      // ── localStorage 유틸 ──────────────────
+      const CART_KEY = 'shop_cart';
+      function loadCart() {
+        return JSON.parse(localStorage.getItem(CART_KEY) ?? '[]');
+      }
+      function saveCart(cart) {
+        localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      }
+
+      // ── 카운트 업데이트 ────────────────────
+      function updateCartCount() {
+        const cart  = loadCart();
+        const total = cart.reduce((acc, i) => acc + i.qty, 0);
+        $('#cartCount').text(total);
+      }
+
+      // ── 토스트 메시지 ──────────────────────
+      function showToast(msg) {
+        $('#toast').text(msg).fadeIn(200);
+        setTimeout(() => $('#toast').fadeOut(400), 2000);
+      }
+
+
+      // ════════════════════════════════════════
+      // 탭 전환 — fadeIn
+      // ════════════════════════════════════════
+      $('.tab-btn').on('click', function() {
+        const target = $(this).data('target');
+        $('.tab-btn').removeClass('active');
+        $(this).addClass('active');
+        $('.tab-pane').hide();
+        $(target).fadeIn(250);
+      });
+
+
+      // ════════════════════════════════════════
+      // 상세보기 버튼 → 모달 오픈
+      // ════════════════════════════════════════
+      $(document).on('click', '.btn-detail', function() {
+        const $card = $(this).closest('.p-card');
+
+        // data 속성으로 상품 정보 읽기
+        currentProduct = {
+          id:    $card.data('id'),
+          name:  $card.data('name'),
+          price: $card.data('price'),
+          icon:  $card.data('icon'),
+          color: $card.data('color'),
+        };
+        currentQty = 1;
+
+        // 모달에 상품 정보 채우기
+        $('#modalTitle').text(currentProduct.name);
+        $('#modalName') .text(currentProduct.name);
+        $('#modalPrice').text(Number(currentProduct.price).toLocaleString() + '원');
+        $('#modalImg')
+          .text(currentProduct.icon)
+          .css('background', currentProduct.color);
+        $('#modalQty').text(1);
+        $('#deliveryDate').val('');
+
+        // 모달 열기
+        $('.overlay').fadeIn(200);
+        $('#productModal').fadeIn(200);
+
+        // Ajax — 댓글 로드
+        loadComments(currentProduct.id);
+      });
+
+
+      // ════════════════════════════════════════
+      // 수량 +/-
+      // ════════════════════════════════════════
+      $('#qtyPlus').on('click', function() {
+        currentQty++;
+        $('#modalQty').text(currentQty);
+      });
+
+      $('#qtyMinus').on('click', function() {
+        if (currentQty > 1) currentQty--;
+        $('#modalQty').text(currentQty);
+      });
+
+
+      // ════════════════════════════════════════
+      // Datepicker — 배송일 선택
+      // ════════════════════════════════════════
+      $('#deliveryDate').datepicker({
+        dateFormat:  'yy-mm-dd',
+        minDate:     '+1d',
+        maxDate:     '+30d',
+        dayNamesMin: ['일','월','화','수','목','금','토'],
+        monthNames:  ['1월','2월','3월','4월','5월','6월',
+                      '7월','8월','9월','10월','11월','12월'],
+      });
+
+
+      // ════════════════════════════════════════
+      // 장바구니 담기 → localStorage 저장
+      // ════════════════════════════════════════
+      $('#btnAddCart').on('click', function() {
+        if (!currentProduct) return;
+
+        const date = $('#deliveryDate').val();
+        if (!date) { showToast('배송일을 선택해주세요.'); return; }
+
+        const cart     = loadCart();
+        const existing = cart.find(i => i.id === currentProduct.id);
+
+        if (existing) {
+          existing.qty += currentQty;
+        } else {
+          cart.push({
+            id:    currentProduct.id,
+            name:  currentProduct.name,
+            price: currentProduct.price,
+            qty:   currentQty,
+            date,
+          });
+        }
+
+        saveCart(cart);
+        updateCartCount();
+
+        // 모달 닫기
+        $('.overlay, #productModal').fadeOut(200);
+        showToast(`✅ ${currentProduct.name} ${currentQty}개 담겼습니다!`);
+      });
+
+
+      // ════════════════════════════════════════
+      // Ajax — jsonplaceholder 댓글 로드
+      // ════════════════════════════════════════
+      function loadComments(productId) {
+        $('#commentList').html('<p class="comment-loading">후기를 불러오는 중...</p>');
+
+        $.ajax({
+          url:    'https://jsonplaceholder.typicode.com/comments',
+          method: 'GET',
+          data:   { postId: productId, _limit: 3 },
+
+          success: function(data) {
+            if (!data.length) {
+              $('#commentList').html('<p class="comment-loading">후기가 없습니다.</p>');
+              return;
+            }
+            $('#commentList').empty();
+            data.forEach(function(c) {
+              const $item = $('<div class="comment-item">')
+                .append($('<p class="comment-name">').text(`✍️ ${c.name.slice(0,20)}`))
+                .append($('<p class="comment-body">').text(c.body.slice(0,80) + '...'));
+              $('#commentList').append($item);
+            });
+          },
+
+          error: function() {
+            $('#commentList').html('<p class="comment-loading">후기를 불러오지 못했습니다.</p>');
+          }
+        });
+      }
+
+
+      // ════════════════════════════════════════
+      // 모달 닫기
+      // ════════════════════════════════════════
+      $('.btn-close, .overlay').on('click', function() {
+        $('.overlay, .modal').fadeOut(200);
+      });
+
+      $(document).on('keydown', function(e) {
+        if (e.key === 'Escape') $('.overlay, .modal').fadeOut(200);
+      });
+
+
+      // ── 초기화 ────────────────────────────
+      updateCartCount();   // 페이지 로드 시 카운트 복원
+
+    });
+  </script>
+</body>
+</html>

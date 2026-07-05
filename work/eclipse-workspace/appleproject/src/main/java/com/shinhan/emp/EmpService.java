@@ -44,6 +44,11 @@ public class EmpService {
 		return emp;
 	}
 
+	public EmpDTO selectByName(String s_firstName) {
+		EmpDTO emp = empDAO.selectByName(s_firstName);
+		return emp;
+	}
+
 	public int insertService(EmpDTO emp) {
 		int result = empDAO.insert(emp);
 		return result;

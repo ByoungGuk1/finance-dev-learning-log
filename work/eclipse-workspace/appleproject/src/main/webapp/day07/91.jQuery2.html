@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>jQuery 체이닝 실습</title>
+<style>
+body {
+	font-family: sans-serif;
+	padding: 40px;
+	background: #f3f4f6;
+}
+
+h2 {
+	color: #1F3864;
+	margin-bottom: 24px;
+}
+
+/* ① input + 버튼 */
+.search-wrap {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 24px;
+}
+
+#searchInput {
+	padding: 10px 16px;
+	font-size: 1rem;
+	border: 2px solid #d1d5db;
+	border-radius: 8px;
+	outline: none;
+	width: 260px;
+	transition: border-color 0.2s;
+	font-family: inherit;
+}
+/* ④ focus/blur CSS — jQuery 와 함께 확인 */
+#searchInput.focused {
+	border-color: #2E75B6;
+	background: #eff6ff;
+}
+
+#searchBtn {
+	padding: 10px 22px;
+	background: #2E75B6;
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	font-size: 1rem;
+	cursor: pointer;
+	font-family: inherit;
+}
+
+#searchBtn:hover {
+	background: #1F3864;
+}
+
+/* ③ 결과 div */
+#result {
+	display: none; /* 처음엔 숨김 — fadeIn 으로 등장 */
+	background: #fff;
+	border-radius: 10px;
+	padding: 20px 24px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	margin-bottom: 16px;
+}
+
+.result-keyword {
+	font-size: 0.85rem;
+	color: #6b7280;
+	margin-bottom: 8px;
+}
+
+.result-keyword span {
+	font-weight: 700;
+	color: #2E75B6;
+}
+
+.result-item {
+	padding: 10px 0;
+	border-bottom: 1px solid #f3f4f6;
+	font-size: 0.9rem;
+	color: #374151;
+}
+
+.result-item:last-child {
+	border-bottom: none;
+}
+
+.result-item b {
+	color: #1D9E75;
+}
+
+/* 상태 메시지 */
+#statusMsg {
+	font-size: 0.85rem;
+	color: #9ca3af;
+	min-height: 20px;
+}
+
+/* 콘솔 로그 */
+#logBox {
+	background: #1e293b;
+	border-radius: 8px;
+	padding: 14px 16px;
+	font-family: Consolas, monospace;
+	font-size: 0.82rem;
+	line-height: 1.9;
+	margin-top: 16px;
+}
+
+.log-focus {
+	color: #7dd3fc;
+}
+
+.log-blur {
+	color: #fde68a;
+}
+
+.log-search {
+	color: #86efac;
+}
+
+.log-chain {
+	color: #d8b4fe;
+}
+
+.log-key {
+	color: #fb923c;
+}
+</style>
+</head>
+<body>
+
+	<h2>🔍 jQuery 체이닝 실습</h2>
+
+	<!-- ① input + 버튼 HTML -->
+	<div class="search-wrap">
+		<input id="searchInput" type="text" placeholder="검색어를 입력하세요">
+		<button id="searchBtn">검색</button>
+	</div>
+
+	<p id="statusMsg">입력창을 클릭해보세요</p>
+
+	<!-- ③ 결과 div -->
+	<div id="result"></div>
+
+	<!-- 로그 -->
+	<div id="logBox"></div>
+
+	<!-- jQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script>
+    $(function() {
+
+      // ── 로그 유틸 ──────────────────────────
+      function log(msg, type) {
+        $('#logBox').append(
+          $('<span>').addClass(`log-${type}`).text('> ' + msg + '\n')
+        );
+      }
+
+      // 가짜 상품 데이터
+      const products = [
+        '프리미엄 운동화', '클래식 스니커즈', '러닝화 프로',
+        '린넨 셔츠', '후드 집업', '청바지 슬림핏',
+        '크로스백', '볼캡 모자', '캐주얼 재킷',
+      ];
+
+
+      // ══════════════════════════════════════
+      // 검색 함수
+      // ══════════════════════════════════════
+      function search() {
+
+        // ② 버튼 클릭 → input.val() 읽기
+        const keyword = $('#searchInput').val().trim();
+
+        if (!keyword) {
+          $('#statusMsg').text('검색어를 입력하세요.');
+          return;
+        }
+
+        log(`검색어: "${keyword}"`, 'search');
+
+        // 키워드 포함 상품 필터링
+        const matched = products.filter(p =>
+          p.includes(keyword)
+        );
+
+        // ③ .empty().html().fadeIn() 체이닝
+        // empty()  — 기존 내용 지우기
+        // html()   — 새 내용 삽입
+        // fadeIn() — 부드럽게 나타남
+        const html = matched.length > 0
+          ? matched.map(p => {
+              // 키워드 강조
+              const highlighted = p.replace(
+                keyword,
+                `<b>${keyword}</b>`
+              );
+              return `<div class="result-item">${highlighted}</div>`;
+            }).join('')
+          : '<div class="result-item" style="color:#9ca3af">검색 결과가 없습니다.</div>';
+
+        $('#result')
+          .empty()                                    // 기존 내용 삭제
+          .html(`
+            <p class="result-keyword">
+              "<span>${keyword}</span>" 검색 결과
+              ${matched.length > 0 ? `— ${matched.length}개` : ''}
+            </p>
+            ${html}
+          `)
+          .fadeIn(300);                               // 부드럽게 등장
+
+        log(`.empty().html().fadeIn(300) 체이닝 실행`, 'chain');
+        $('#statusMsg').text(`"${keyword}" — ${matched.length}개 결과`);
+      }
+
+
+      // ══════════════════════════════════════
+      // ④ input에 focus/blur 이벤트 체이닝
+      // ══════════════════════════════════════
+      $('#searchInput')
+        .on('focus', function() {
+          $(this).addClass('focused');
+          $('#statusMsg').text('검색어를 입력하고 Enter 또는 버튼 클릭');
+          log('focus 이벤트 → addClass("focused")', 'focus');
+        })
+        .on('blur', function() {
+          $(this).removeClass('focused');
+          log('blur 이벤트 → removeClass("focused")', 'blur');
+        })
+
+        // ⑤ Enter 키도 검색
+        .on('keydown', function(e) {
+          if (e.key === 'Enter') {
+            log('keydown Enter → search() 호출', 'key');
+            search();
+          }
+        });
+
+
+      // ══════════════════════════════════════
+      // ② 버튼 클릭 → 검색
+      // ══════════════════════════════════════
+      $('#searchBtn').on('click', function() {
+        log('버튼 클릭 → search() 호출', 'search');
+        search();
+      });
+
+    });
+  </script>
+</body>
+</html>

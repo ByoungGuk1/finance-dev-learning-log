@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jQuery2</title>
+<script
+	src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.7.1.slim.min.js"></script>
+</head>
+<style>
+p {
+	border: 1px solid gray;
+}
+
+.high-light {
+	background-color: yellow;
+}
+</style>
+<script type="text/javascript">
+$(()=>{
+	$("#btn-test1").on("click", btn1Action);
+	$("#btn-array").on("click", btnArray);
+	$("#btn3").on("click", func3);
+	$("#btn4").on("click", func4);
+	$("#btn5").on("click", func5);
+	$("#btn6").on("click", func6);
+	$("#btn7").on("click", func7);
+	$("#btn8").on("click", func8);
+	$("#btn9").on("click", func9);
+});
+
+function btn1Action(){
+	$("p.orange").css({"background-color":"#e2e2e2", "color":"orange"});	
+}
+function btnArray() {
+	const arr = [
+		{id: 100, name : "홍길동", age : 20},
+		{id: 101, name : "이순신", age : 25},
+		{id: 102, name : "장보고", age : 21},
+		];
+	let output = "";
+	$.each(arr,(index, item)=>{
+			output += `<p>id : ${item.id} name : ${item.name} age : ${item.name}</p>`;
+//			$("p:index").html(output);
+	});
+	$("#here").html(output);
+}
+function func3() {
+	$("p").each((index, dom)=>{
+		let origin = $(dom).text();
+		$(dom).text(origin+"!");
+	});
+	$("h1").addClass("high-light");
+	// classList.add()
+}
+function func4(){
+	$("p")
+	.filter((index, item)=>$(item).text().includes("me"))
+	/* .filter((index,item) => {
+//		return index%3===0
+//		return $(item).text().indexOf("ame") === -1 ? false : true;
+			return $(item).text().includes("ame");
+		}) */
+		.css("color","red");
+	
+	//$("p:nth-of-type(3n)").css("color","green");
+}
+function func5(){
+	$("img").attr({"width":index=>(index+1)*50});
+	$("img").css({"border":`${index=>index*2}px solid red`});
+}
+function func6() {
+	$("img")
+	.filter((index, item)=>$(item).attr("width")>175)
+	.removeAttr("src");
+}
+function func7() {
+	$("#img-box").remove();
+}
+function func8() {
+	$("#img-box").empty();	
+}
+function func9() {
+	$("<h2></h2>").html("새로 추가된 제목").appendTo('#img-box');
+	const attr = {"src": `../resources/images/umbrella.jpg`, "alt" : "우산", "width":index=>(index+1)*50};
+	$("<img />").attr(attr).appendTo('#img-box');
+}
+</script>
+<body>
+	<h1>jQuery</h1>
+	<button id="btn-test1">test1</button>
+	<button id="btn-array">배열</button>
+	<button id="btn3">3번</button>
+	<button id="btn4">4번 filter</button>
+	<button id="btn5">5번 이미지</button>
+	<button id="btn6">6번 이미지 clear</button>
+	<button id="btn7">7번 객체 지우기</button>
+	<button id="btn8">8번 객체 내부만 지우기</button>
+	<button id="btn9">9번 객체 생성</button>
+	<p class="orange">하나</p>
+	<p class="orange">둘</p>
+	<p>셋</p>
+	<p>넷</p>
+	<div id="here"></div>
+	<div id="img-box">
+		<h1>그림박스</h1>
+		<img alt="곰1" src="../resources/images/bear.jpg" /> <img alt="곰2"
+			src="../resources/images/bear.jpg" /> <img alt="곰3"
+			src="../resources/images/bear.jpg" /> <img alt="곰4"
+			src="../resources/images/bear.jpg" />
+	</div>
+</body>
+</html>

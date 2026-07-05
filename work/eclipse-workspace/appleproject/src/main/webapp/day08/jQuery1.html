@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.reverse {
+	background-color: green;
+	color: white;
+}
+
+#here {
+	border: 3px dotted blue;
+	padding: 20px;
+}
+</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+
+  $(function(){
+	  $("h1").on("click", function(event){
+		  console.log(event);
+		  console.log(event.pageX, event.pageY);
+		  let txt = $(this).text() + "+";
+		  $(this).text(txt);
+	  });
+	  const f1 = function(){
+	    	$(this).addClass("reverse");
+	  };
+	  const f2 = function(){
+	    	$(this).removeClass("reverse");
+	   };  
+	  let obj = {
+	    "mouseenter":f1,
+	    "mouseleave":f2 
+	  };
+	  //$("h1").on(obj);
+	  $("h1").hover(f1, f2);
+	  
+	  $("#here").on(obj);
+	  
+	 const timer =  setInterval(() => {
+		  //이벤트 호출  
+		$("h1").last().trigger("click");
+	}, 1000);
+	  
+	$("#btn1").on("click", function(){
+		clearInterval(timer);
+	});
+	
+	//default event cancel
+	$("a.emp").click(function(e){
+		alert("a clicked");
+		e.preventDefault();
+	});
+
+	$("#myfrm").on("submit", f_submit);
+	function f_submit(event){
+		event.preventDefault();
+		
+		const myname = $("input[name='myname']").val();
+		alert(myname);
+	}
+	 
+		    
+		 
+	 
+	
+  });
+</script>
+</head>
+<body>
+	<h1>jQuery Event</h1>
+	<button id="btn1">중지</button>
+	<a class="emp" href="../emp/list.do">emplist call</a>
+	<form id="myfrm" method="get" action="../day7/mission1_question.html">
+		<input name="myname" value="Hong">  <input type="submit" value="server 전송">
+
+		<button>server 전송2</button>
+	</form>
+
+	<div id="here">
+		<h2>여기는 here영역</h2>
+	</div>
+</body>
+</html>
+
+
+
+

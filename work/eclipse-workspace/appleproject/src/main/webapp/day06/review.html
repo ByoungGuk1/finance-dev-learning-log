@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>5일차</title>
+<script>
+const colorArray = ["white", "yellow", "red", "blue", "black", "gray", "green"];
+	window.onload = () => {
+		let backgroundInterver = setInterval(()=>{
+			let selectedColor = colorArray[Math.floor((Math.random() * 7))];
+			document.querySelector("body").style = `background-color : ${selectedColor}`;
+		},1000);
+		
+		let timer = setInterval(()=>{
+			let time = new Date().toLocaleTimeString();
+			printResultBox(time);
+		}, 1000);
+
+		document.querySelector("#stop-interval").addEventListener("click",()=>{
+			clearInterval(backgroundInterver);
+			clearInterval(timer);
+		})
+		document.querySelector("#stop-change-background").addEventListener("click",()=>{
+			clearInterval(backgroundInterver);
+		})
+		document.querySelector("#stop-timer").addEventListener("click",()=>{
+			clearInterval(timer);
+		})
+		
+		document.querySelector("#btn-increase").addEventListener("click",()=>{
+			printCountResult(counterA.increase());
+		})
+		document.querySelector("#btn-decrease").addEventListener("click",()=>{
+			printCountResult(counterA.decrease());
+		})
+		document.querySelector("#btn-h-increase").addEventListener("click",()=>{
+			printCountResult(counterB.increase());
+		})
+		document.querySelector("#btn-h-decrease").addEventListener("click",()=>{
+			printCountResult(counterB.decrease());
+		})
+		
+		let returnF = call2(1);
+		console.log(`returnF : ${returnF}`);
+		let returnVal = returnF();
+		console.log(`returnVal : ${returnVal}`);
+		
+		const counterA = makeCount(0);
+		const counterB = makeCount(100);
+		let count = counterA.getCount();
+		printCountResult(count);
+	};
+
+	const printResultBox = (text) => {
+		const resultBox = document.querySelector("#result-box");
+		const pTag = document.createElement("p");
+		const content = document.createTextNode(text);
+		pTag.appendChild(content);
+		resultBox.appendChild(pTag);
+	};
+	
+	const printCountResult = (text) => {
+		const resultBox = document.querySelector("#count-result");
+		resultBox.innerText = `${text}`;
+	};
+
+	//고차함수
+	function call(f) {
+		f();
+	}
+	call(function() {
+		console.log("1");
+	})
+	call(()=>console.log("2"));
+	
+	// 클로저
+	function call2(count){
+		let count2 = 100;	//local var, 정보은닉
+		return ()=>{
+			console.log(`count : ${count}`);
+			console.log(`count2 : ${count2}`);
+			return count + ++count2;
+		};
+	}
+	
+	function makeCount(start){
+		let count = start;
+		return {
+			increase: () => ++count,
+			decrease: () => --count,
+			getCount: () => count
+		}
+	}
+</script>
+</head>
+<body>
+	<h1>고차함수, 클로저</h1>
+	<p>함수가 매개변수로 전달, 함수 return</p>
+	<button id="stop-interval">stop all interval</button>
+	<button id="stop-change-background">stop background</button>
+	<button id="stop-timer">stop timer</button>
+	<div id="result-box"></div>
+	<div>
+		<p id="count-result">숫자</p>
+		<button id="btn-increase">+</button>
+		<button id="btn-decrease">-</button>
+		<button id="btn-h-increase">100+</button>
+		<button id="btn-h-decrease">100-</button>
+	</div>
+</body>
+</html>
