@@ -80,7 +80,7 @@ function getEmpFormData() {
     const emp1 = $("#myfrm").serialize(); // get 방식일 때 => employee_id=100&first_name=kim...
     console.log(emp1);
     */
-    const emp2 = $("#myfrm").serializeArray; // [{},{},...]
+    const emp2 = $("#myfrm").serializeArray(); // [{},{},...]
     console.log(emp2);
     let emp3 = {};
     $.each(emp2, (idx, data) => {
@@ -99,14 +99,14 @@ function getEmpFormData() {
         jobId: $("#job_id").val(),
         email: $("#email").val(),
         departmentId: $("#department_id").val(),
-        salary: $("#salary").val(),
+        salary: $("#salary").val() || 0,
         hireDate: $("#hire_date").val(),
         phoneNumber: "",
         commissionPct: 0,
         managerId: 0
-    }
-    console.log(emp3);
-    return emp3;
+    };
+
+    return empObj;
 }
 
 async function showDetail() {
@@ -232,6 +232,7 @@ async function postEmpDetail(empObj) {
 
 function renderSelectDept(deptList) {
     $("#select-dept-id").empty();
+    $("#select-dept-id").append(`<option value="">전체</option>`);
     $.each(deptList, (index, dept) => {
         $("#select-dept-id").append(`
 			<option value="${dept.departmentId}">${dept.departmentName}</option>
@@ -241,6 +242,7 @@ function renderSelectDept(deptList) {
 
 function renderSelectJob(jobList) {
     $("#select-job-id").empty();
+    $("#select-job-id").append(`<option value="">전체</option>`);
     $.each(jobList, (index, job) => {
         $("#select-job-id").append(`
 		<option value="${job.jobId}">${job.jobTitle}</option>

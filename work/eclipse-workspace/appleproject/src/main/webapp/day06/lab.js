@@ -100,5 +100,5 @@ async function getDataHtml() {
 }
 
 function getInputCity() {
-    return document.querySelector("#city").getAttribute("value");
+    return document.querySelector("#city").value.trim();
 }
