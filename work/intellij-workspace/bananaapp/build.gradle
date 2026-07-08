@@ -19,11 +19,22 @@ repositories {
 }
 
 dependencies {
+    //webMVC
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    //Aspect사용
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+    //template
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    //MariaDB
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
