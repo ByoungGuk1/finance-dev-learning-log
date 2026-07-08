@@ -57,7 +57,7 @@ public class PeopleV2 {
             @Qualifier("scoreMap") Map<String, Integer> scores,
             @Qualifier("contactProps") Properties contacts
     ) {
-        System.out.println(">> PeopleV2 생성자 주입 호출");
+//        System.out.println(">> PeopleV2 생성자 주입 호출");
         this.name = name;
         this.age = age;
         this.birthday = birthday;

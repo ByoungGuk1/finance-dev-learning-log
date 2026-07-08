@@ -15,11 +15,11 @@ public class EmpService implements EmpServiceInterface {
 
     //방법 2 생성자를 통해 주입 (권장)
     public EmpService(EmpRepository empRepo) {
-        log.info("empService");
+//        log.info("empService");
         this.empRepo = empRepo;
     }
 
-    public AccountDTO selectEmpService(){
+    public AccountDTO selectEmpService() {
         return empRepo.getData();
     }
 }

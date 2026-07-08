@@ -16,12 +16,12 @@ public class ShinhanReposiotry {
     // 2. 생성자를 통해 의존성 주입
     public ShinhanReposiotry(@Qualifier("shin2") ShinhanDTO dto) {
         this.dto = dto;
-        System.out.println("ShinhanReposiotry constructor");
-        System.out.println("dto = " + dto);
+//        System.out.println("ShinhanReposiotry constructor");
+//        System.out.println("dto = " + dto);
     }
 
     public String f1() {
-        System.out.println("ShinhanReposiotry f1");
+//        System.out.println("ShinhanReposiotry f1");
         return dto.toString();
     }
 }

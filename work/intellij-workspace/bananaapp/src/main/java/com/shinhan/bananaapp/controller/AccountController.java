@@ -1,9 +1,12 @@
 package com.shinhan.bananaapp.controller;
 
 
+import com.shinhan.bananaapp.annotation.LoginRequired;
 import com.shinhan.bananaapp.di2.EmpDTO;
 import com.shinhan.bananaapp.dto.AccountDTO;
 import com.shinhan.bananaapp.service.AccountService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +33,7 @@ public class AccountController {
         return "redirect:list.do"; //재요청:browser로 내려가서 다시 조회
     }
 
+    @LoginRequired(role = "MANAGER")
     @PostMapping("/insert.do")
     public String f_insert(@ModelAttribute AccountDTO account, RedirectAttributes attr) {
         boolean result = accountService.insertAccount(account);
@@ -37,6 +41,7 @@ public class AccountController {
         return "redirect:list.do"; //재요청:browser로 내려가서 다시 조회
     }
 
+    @LoginRequired(role = "MANAGER")
     @GetMapping("/insert.do")
     public String insertGet(Model model) {
         model.addAttribute("account", new AccountDTO());
@@ -44,24 +49,28 @@ public class AccountController {
     }
 
     @GetMapping("/detail.do")
-    public String f_detail(@RequestParam("id") Long id, Model model) {
+    public String f_detail(@RequestParam("id") Long id, Model model, HttpServletResponse hsr) {
         model.addAttribute("account", accService.selectById(id));
+        setCookie("lastViewAccount", String.valueOf(id), hsr);
         return "account/detail";
     }
 
     @GetMapping("/{accId}")
-    public String f_detail2(@PathVariable("accId") Long id, Model model) {
+    public String f_detail2(@PathVariable("accId") Long id, Model model, HttpServletResponse hsr) {
         model.addAttribute("account", accService.selectById(id));
+        setCookie("lastViewAccount", String.valueOf(id), hsr);
         return "account/detail";
     }
 
-
     @GetMapping("/list.do")
-    public String f_selectAll(Model model) {
+    public String f_selectAll(Model model, @CookieValue(value = "lastViewAccount", defaultValue = "") String cookie1, @CookieValue(value = "myname", defaultValue = "이름이 없어요") String cookie2, HttpServletResponse hsr) {
         model.addAttribute("acclist", accService.selectAllAccounts());
+        model.addAttribute("lastViewAccount", cookie1);
+        model.addAttribute("myname", cookie2);
+        deleteCookie("lastViewAccount", hsr);
+        deleteCookie("myname", hsr);
         return "account/list";
     }
-
 
     @GetMapping("/thtest.do")
     public String retrieve(Model model) {
@@ -73,4 +82,19 @@ public class AccountController {
         return "account/thymeleaf_basic";   //templates/account/list.html로 forward
     }
 
+    private void setCookie(String name, String value, HttpServletResponse response) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge(60 * 60 * 2);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        response.addCookie(cookie);
+    }
+
+    private void deleteCookie(String name, HttpServletResponse response) {
+        Cookie cookie = new Cookie(name, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
 }

@@ -25,16 +25,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-aop")
     //template
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    //Layout Dialect 방식
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
     //MariaDB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
