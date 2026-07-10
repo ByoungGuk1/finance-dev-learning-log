@@ -4,14 +4,18 @@ package com.shinhan.bananaapp.controller;
 import com.shinhan.bananaapp.annotation.LoginRequired;
 import com.shinhan.bananaapp.di2.EmpDTO;
 import com.shinhan.bananaapp.dto.AccountDTO;
+import com.shinhan.bananaapp.dto.AccountSearchDTO;
 import com.shinhan.bananaapp.service.AccountService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 
 //사용자요청-->Controller-->Service-->Repository--->DB
@@ -19,12 +23,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //Thymeleaf는 서버 사이드 템플릿 엔진으로, HTML 파일을 브라우저에서 그대로 열어도 깨지지 않는다는 특징이 있습니다. (Natural Template)
 @Controller
 @RequestMapping(("/account"))
-@RequiredArgsConstructor
 public class AccountController {
 
-    // @Qualifier("shinhanAccount")
-    final AccountService accService;
     private final AccountService accountService;
+
+    public AccountController(@Qualifier("accountServiceImplUsingMyBatis") AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @PostMapping("/update.do")
     public String f_update(@ModelAttribute AccountDTO account, RedirectAttributes attr) {
@@ -50,21 +55,21 @@ public class AccountController {
 
     @GetMapping("/detail.do")
     public String f_detail(@RequestParam("id") Long id, Model model, HttpServletResponse hsr) {
-        model.addAttribute("account", accService.selectById(id));
+        model.addAttribute("account", accountService.selectById(id));
         setCookie("lastViewAccount", String.valueOf(id), hsr);
         return "account/detail";
     }
 
     @GetMapping("/{accId}")
     public String f_detail2(@PathVariable("accId") Long id, Model model, HttpServletResponse hsr) {
-        model.addAttribute("account", accService.selectById(id));
+        model.addAttribute("account", accountService.selectById(id));
         setCookie("lastViewAccount", String.valueOf(id), hsr);
         return "account/detail";
     }
 
     @GetMapping("/list.do")
     public String f_selectAll(Model model, @CookieValue(value = "lastViewAccount", defaultValue = "") String cookie1, @CookieValue(value = "myname", defaultValue = "이름이 없어요") String cookie2, HttpServletResponse hsr) {
-        model.addAttribute("acclist", accService.selectAllAccounts());
+        model.addAttribute("acclist", accountService.selectAllAccounts());
         model.addAttribute("lastViewAccount", cookie1);
         model.addAttribute("myname", cookie2);
         deleteCookie("lastViewAccount", hsr);
@@ -80,6 +85,23 @@ public class AccountController {
         model.addAttribute("comment1", "<h1>성실!!!!</h1>");
         model.addAttribute("comment2", "<script>alert('배고파');</script>");
         return "account/thymeleaf_basic";   //templates/account/list.html로 forward
+    }
+
+    @PostMapping("/transfer")
+    public String transfer(@RequestParam Long fromId, @RequestParam Long toId, @RequestParam Long amount) {
+        Boolean result = accountService.transaction(fromId, toId, amount);
+        return "redirect:list.do";
+    }
+
+    @GetMapping("/condition")
+    public String condition(@ModelAttribute AccountSearchDTO accountSearchDTO, Model model, HttpSession session) {
+        session.setAttribute("searchDTO", accountSearchDTO);
+        List<AccountDTO> result = accountService.selectByCondition(accountSearchDTO);
+        model.addAttribute("acclist", result);
+        model.addAttribute("lastViewAccount", 1);
+        model.addAttribute("myname", "");
+
+        return "account/list";
     }
 
     private void setCookie(String name, String value, HttpServletResponse response) {

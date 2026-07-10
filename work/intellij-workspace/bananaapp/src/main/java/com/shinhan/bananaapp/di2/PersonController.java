@@ -1,6 +1,7 @@
 package com.shinhan.bananaapp.di2;
 
 
+import com.shinhan.bananaapp.dto.EmpDTO;
 import com.shinhan.bananaapp.service.EmpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

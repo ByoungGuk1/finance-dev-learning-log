@@ -4,7 +4,7 @@ package com.shinhan.bananaapp.service;
 // 같은 타입이 여러개 존재하면 이름 구별(@Qualifier)
 
 
-import com.shinhan.bananaapp.di2.EmpDTO;
+import com.shinhan.bananaapp.dto.EmpDTO;
 import com.shinhan.bananaapp.repository.EmpRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -27,23 +27,31 @@ public class EmpService {
         return empRepo.selectById(id);
     }
 
-    public Boolean createEmp(EmpDTO empDTO) {
-        EmpDTO foundEmp = empRepo.selectById(empDTO.getEmpId());
+    public Integer createEmp(EmpDTO empDTO) {
+        EmpDTO foundEmp = empRepo.selectById(empDTO.getEmployeeId());
         if (foundEmp != null) {
-            return false;
+            return -1;
         }
         return empRepo.save(empDTO);
     }
 
-    public Boolean updateEmp(EmpDTO empDTO) {
-        EmpDTO foundEmp = empRepo.selectById(empDTO.getEmpId());
+    public Integer updateEmp(EmpDTO empDTO) {
+        EmpDTO foundEmp = empRepo.selectById(empDTO.getEmployeeId());
         if (foundEmp == null) {
-            return false;
+            return -1;
         }
         return empRepo.save(empDTO);
     }
 
-    public Boolean deleteEmp(int id) {
+    public Integer deleteEmp(int id) {
         return empRepo.deleteById(id);
+    }
+
+    public List<EmpDTO> selectByName(String empName) {
+        return empRepo.selectByName(empName);
+    }
+
+    public List<EmpDTO> selectByCondition(EmpDTO empDTO) {
+        return empRepo.findByCondition(empDTO);
     }
 }

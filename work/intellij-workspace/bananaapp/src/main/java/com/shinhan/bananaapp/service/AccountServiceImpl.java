@@ -1,6 +1,7 @@
 package com.shinhan.bananaapp.service;
 
 import com.shinhan.bananaapp.dto.AccountDTO;
+import com.shinhan.bananaapp.dto.AccountSearchDTO;
 import com.shinhan.bananaapp.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,13 @@ public class AccountServiceImpl implements AccountService {
 
     public Boolean deleteAccount(long id) {
         return accountRepository.deleteAccount(id);
+    }
+
+    public Boolean transaction(Long fromId, Long toId, Long amount) {
+        return false;
+    }
+
+    public List<AccountDTO> selectByCondition(AccountSearchDTO searchDTO) {
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package com.shinhan.bananaapp.service;
 
 import com.shinhan.bananaapp.dto.AccountDTO;
+import com.shinhan.bananaapp.dto.AccountSearchDTO;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface AccountService {
     Boolean updateAccount(AccountDTO accountDTO);
 
     Boolean deleteAccount(long id);
+
+    Boolean transaction(Long fromId, Long toId, Long amount);
+
+    List<AccountDTO> selectByCondition(AccountSearchDTO searchDTO);
 }
