@@ -51,7 +51,7 @@ public class MemberController {
         return "auth/mypage";
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout(HttpSession session) {
 //        session.removeAttribute("loginMember"); //세션의 해당 값 제거
         session.invalidate(); // 세션의 전체 정보 모두 삭제

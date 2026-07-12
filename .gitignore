@@ -9,6 +9,7 @@
 work/**/response/
 work/**/Servers/
 work/**/resources/
+!work/**/src/main/resources/
 work/**/doit-hcj-new-main
 
 !docs/

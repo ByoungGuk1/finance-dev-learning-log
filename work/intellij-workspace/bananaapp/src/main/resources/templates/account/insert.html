@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/default}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Document</title>
+</head>
+<body>
+<!-- header fragment로 교체 -->
+<!--<header th:replace="~{fragments/header :: siteHeader}"></header>-->
+
+<main layout:fragment="content">
+    <div class="form-wrap">
+        <!-- object를 사용하면 id, name, value자동
+             field는 object의 속성이다.
+         -->
+        <form method="post" th:action="@{/account/insert.do}" th:object="${account}">
+            <input placeholder="id" th:field="*{id}" type="text">
+            <input placeholder="계좌번호" th:field="*{accountNo}" type="text">
+            <input placeholder="예금주" th:field="*{ownerName}" type="text">
+            <input placeholder="초기 잔액" th:field="*{balance}" type="number">
+            <select th:field="*{accountType}">
+                <option value="SAVINGS">저축예금</option>
+                <option value="CHECKING">당좌예금</option>
+            </select>
+            <button type="submit">입력</button>
+        </form>
+    </div>
+
+    <a th:href="@{/account/list.do}">← 목록으로</a>
+</main>
+</body>
+</html>

@@ -5,6 +5,8 @@ import com.shinhan.bananaapp.dto.AccountDTO;
 import com.shinhan.bananaapp.service.AccountService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,29 +28,37 @@ public class AccountRestController {
 
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         boolean result = accService.deleteAccount(id);
-        return result ? "삭제성공" : "삭제실패";
+        return result
+                ? ResponseEntity.ok("삭제성공")
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("삭제실패");
     }
 
     @PostMapping
-    public String insert(@RequestBody AccountDTO acc) {
+    public ResponseEntity<String> insert(@RequestBody AccountDTO acc) {
         boolean result = accService.insertAccount(acc);
-        return result ? "입력성공" : "입력실패(이미존재하는지 확인)";
+        return result
+                ? ResponseEntity.status(HttpStatus.CREATED).body("입력성공")
+                : ResponseEntity.status(HttpStatus.CONFLICT).body("입력실패(이미존재하는지 확인)");
     }
 
     @PutMapping
-    public String update(@RequestBody AccountDTO acc) {
+    public ResponseEntity<String> update(@RequestBody AccountDTO acc) {
         boolean result = accService.updateAccount(acc);
-        return result ? "수정성공" : "수정실패";
+        return result
+                ? ResponseEntity.ok("수정성공")
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("수정실패");
     }
 
 
     //RestFul방식 , URL에 data가 들어옴
     @GetMapping("/{id}")
-    public AccountDTO selectById(@PathVariable("id") Long accId) {
+    public ResponseEntity<AccountDTO> selectById(@PathVariable("id") Long accId) {
         AccountDTO acc = accService.selectById(accId);
-        return acc;
+        return acc != null
+                ? ResponseEntity.ok(acc)
+                : ResponseEntity.notFound().build();
     }
 
     //JSP/Servlet==>SpringFramework===>Springboot

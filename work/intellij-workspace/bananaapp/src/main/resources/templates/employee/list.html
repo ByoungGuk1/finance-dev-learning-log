@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>list</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!--절대 경로 : / ==> localhost:port/-->
+    <!--상대 경로 : 현재경로/...... ==> localhost:post/employee-->
+</head>
+<body>
+<h1>list</h1>
+<div th:text="${msg}"></div>
+<a th:href="@{/employee/create}">신규 등록</a>
+<table>
+    <tr>
+        <th>id</th>
+        <th>이름</th>
+        <th>급여</th>
+        <th>작업</th>
+    </tr>
+    <tr th:each="emp:${empList}">
+        <td>[[${emp.empId}]]</td>
+        <td>[[${emp.empName}]]</td>
+        <td>[[${emp.salary}]]</td>
+        <td>
+            <a th:href="@{/employee/{id}(id=${emp.empId})}">상세(param)</a>
+            <form th:action="@{/employee/delete/{id}(id=${emp.empId})}" method="post">
+                <button type="submit">삭제</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${empList.size() == 0}">
+        <td colspan="4">등록된 회원 정보가 없습니다.</td>
+    </tr>
+</table>
+</body>
+</html>

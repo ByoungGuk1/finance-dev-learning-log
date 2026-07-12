@@ -30,7 +30,8 @@ public class LoginCheckFilter extends OncePerRequestFilter {
             "/favicon.ico",
             "/error",
             "/.well-known/",     // Chrome DevTools 자동 요청
-            "/swagger-ui/*"
+            "/swagger-ui/",
+            "/api-docs/"
     );
     @Autowired
     private MemberService memberService;

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>insert</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<h1>insert</h1>
+<div class="form-wrap">
+    <form method="post" th:action="@{/employee}" th:object="${empDTO}">
+        <input placeholder="id" th:field="*{employeeId}" type="text">
+        <input placeholder="이름" th:field="*{getFirstName()}" type="text">
+        <input placeholder="급여" th:field="*{salary}" type="number">
+        <button type="submit">수정</button>
+    </form>
+</div>
+
+<a th:href="@{/employee}">← 목록으로</a>
+
+</body>
+</html>

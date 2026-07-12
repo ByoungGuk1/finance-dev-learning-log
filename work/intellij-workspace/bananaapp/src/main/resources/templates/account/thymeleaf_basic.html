@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- namespace:이름공간, HTML기술과 thymeleaf기술을 구별,
+         정의시 값은 URL을 준다. URL은 이름으로 부적합하다.
+         그래서 접두사를 사용한다.
+     -->
+</head>
+<body>
+ <h1> Account 목록 </h1>
+ <p th:text="'안녕하세요' + ${myname}">이 부분은 의미없음</p>
+ <p>안녕하세요 ~~~ [[${myname}]] -- inline방식  </p>
+<ul>
+    <li th:text="${emp.empId}"></li>
+    <li th:text="${emp.empName}"></li>
+    <li th:text="${emp.salary}"></li>
+    <li>아이디는 [[${emp.empId}]]</li>
+    <li>empName는 [[${emp.empName}]]</li>
+    <li>salary는 [[${emp.salary}]]</li>
+    <li th:text="${comment1}"></li>
+    <li th:text="${comment2}"></li>
+
+    <li th:utext="${comment1}"></li>
+</ul>
+ <p th:utext="${comment2}"></p>
+
+</body>
+</html>

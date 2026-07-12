@@ -20,27 +20,39 @@ public class EmpRestController {
     @GetMapping("/delete.do")
     public ResponseEntity<?> deleteEmp(@RequestParam("empid") Integer empId) {
         Map<String, Integer> result = new HashMap<>();
-        result.put("result", empService.deleteEmp(empId));
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        int deletedCount = empService.deleteEmp(empId);
+        result.put("result", deletedCount);
+        return deletedCount > 0
+                ? ResponseEntity.ok(result)
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
     }
 
     @GetMapping("/detail.do")
     public ResponseEntity<?> getEmp(@RequestParam("empid") Integer empId) {
-        return ResponseEntity.ok(empService.selectById(empId));
+        EmpDTO employee = empService.selectById(empId);
+        return employee != null
+                ? ResponseEntity.ok(employee)
+                : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/detail.do")
     public ResponseEntity<?> addEmp(@ModelAttribute EmpDTO empDTO) {
         Map<String, Integer> result = new HashMap<>();
         System.out.println("input: " + empDTO.toString());
-        result.put("result", empService.updateEmp(empDTO));
+        int updatedCount = empService.updateEmp(empDTO);
+        result.put("result", updatedCount);
         System.out.println("output: " + result);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        return updatedCount > 0
+                ? ResponseEntity.ok(result)
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
     }
 
     @PostMapping("/insert.do")
     public ResponseEntity<?> insertEmp(@ModelAttribute EmpDTO empDTO) {
-        return ResponseEntity.ok(empService.createEmp(empDTO));
+        int createdCount = empService.createEmp(empDTO);
+        return createdCount > 0
+                ? ResponseEntity.status(HttpStatus.CREATED).body(createdCount)
+                : ResponseEntity.status(HttpStatus.CONFLICT).body(createdCount);
     }
 
     @GetMapping("/list.do")

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shinhan.bananaapp.mapper.EmpMapper">
+    <select id="findAll" resultType="com.shinhan.bananaapp.dto.EmpDTO">
+        SELECT * FROM employees ORDER BY employee_id DESC
+    </select>
+    <select id="findById" parameterType="int" resultType="EmpDTO">
+        SELECT * FROM employees WHERE employee_id= #{id}
+    </select>
+    <insert id="save" parameterType="EmpDTO">
+        INSERT
+        INTO employees(employee_id,first_name, last_name, email, phone_number, hire_date, job_id, salary,
+        commission_pct, manager_id, department_id)
+        VALUES (#{employeeId},
+        #{firstName},#{lastName},#{email},#{phoneNumber},#{hireDate},#{jobId},#{salary},#{commissionPct},#{managerId},#{departmentId})
+    </insert>
+    <delete id="delete" parameterType="int">
+        DELETE FROM employees WHERE employee_id = #{id}
+    </delete>
+    <!--    List<EmpDTO> findByCondition(EmpDTO empDTO);-->
+    <select id="findByCondition" parameterType="EmpDTO" resultType="EmpDTO">
+        select * from employees
+        where
+        DEPARTMENT_ID = #{departmentId}
+        and job_id = upper(#{jobId})
+        and salary >= #{salary}
+        and hire_date >= #{hireDate}
+    </select>
+    <select id="findByName" parameterType="String" resultType="EmpDTO">
+        SELECT * FROM employees
+        WHERE (first_name LIKE '%${firstName}%') OR (last_name LIKE '%${lastName}%')
+    </select>
+</mapper>

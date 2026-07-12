@@ -25,7 +25,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/favicon.ico",
                         "/.well-known/",
                         "/error",
-                        "/swagger-ui/*"
+                        "/swagger-ui/**",
+                        "/api-docs/**"
                 );
     }
 }

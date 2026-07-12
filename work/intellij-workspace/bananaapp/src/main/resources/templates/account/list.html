@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/default}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>계좌 목록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<!-- header fragment로 교체 -->
+<!--<header th:replace="~{fragments/header :: siteHeader}"></header>-->
+<!-- Flash 메시지 표시 -->
+<main layout:fragment="content">
+    <div class="alert" th:if="${msg}" th:text="${msg}"></div>
+
+    <a th:href="@{/account/insert.do}">신규입력</a>
+    <p th:text="${myname}"></p>
+    <div class="search-area">
+        <form action="/account/condition" class="search-form" method="get">
+            <div class="search-item">
+                <label for="ownerName">예금주</label>
+                <input id="ownerName" name="ownerName" placeholder="예금주" th:value="${session?.searchDTO?.ownerName}"
+                       type="text">
+            </div>
+            <div class="search-item">
+                <label for="minBalance">최소잔액</label>
+                <input id="minBalance" name="minBalance" th:value="${session?.searchDTO?.minBalance}" type="number">
+            </div>
+            <div class="search-item">
+                <label for="maxBalance">최대잔액</label>
+                <input id="maxBalance" name="maxBalance" th:value="${session?.searchDTO?.maxBalance}" type="number">
+            </div>
+            <div class="search-item">
+                <label for="sortBy">정렬</label>
+                <select id="sortBy" name="sortBy"
+                        th:selected="${session.searchDTO?.sortBy == null or session.searchDTO.sortBy == ''}">
+                    <option value="">선택</option>
+                    <option th:selected="${session.searchDTO?.sortBy == 'balance'}" value="balance">잔액순</option>
+                    <option th:selected="${session.searchDTO?.sortBy == 'owner_name'}" value="owner_name">예금주순</option>
+                    <option th:selected="${session.searchDTO?.sortBy == 'account_no'}" value="account_no">계좌번호순</option>
+                </select>
+            </div>
+            <button class="search-btn" type="submit">
+                조건조회
+            </button>
+        </form>
+    </div>
+    <div id="container">
+        <form action="/account/transfer" method="post">
+            <label>보내는 계좌(ID)</label>
+            <input name="fromId"
+                   placeholder="예 : 1"
+                   required
+                   type="number">
+            <label>받는 계좌(ID)</label>
+            <input name="toId"
+                   placeholder="예 : 2"
+                   required
+                   type="number">
+            <label>이체 금액</label>
+            <input name="amount"
+                   placeholder="예 : 50000"
+                   required
+                   type="number">
+            <button type="submit">이체하기</button>
+        </form>
+    </div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>계좌번호</th>
+            <th>예금주</th>
+            <th>잔액</th>
+            <th>관리</th>
+        </tr>
+        <tr th:each="acc : ${acclist}">
+            <td th:class="${
+            acc.id.toString().equals(lastViewAccount) ? 'text-danger' : ''
+            }" th:text="${acc.id}"></td>
+            <td th:class="${
+            acc.id.toString().equals(lastViewAccount) ? 'text-danger' : ''
+            }" th:text="${acc.accountNo}"></td>
+            <td th:class="${
+            acc.id.toString().equals(lastViewAccount) ? 'text-danger' : ''
+            }" th:text="${acc.ownerName}"></td>
+            <!-- 잔액 음수면 빨간색 -->
+            <td th:class="${acc.balance < 0 ? 'text-danger' : ''}"
+                th:text="${#numbers.formatInteger(acc.balance, 3, 'COMMA')}"></td>
+            <td>
+                <a th:href="@{/account/detail.do(id=${acc.id})}">상세1(param)</a>
+                <a th:href="@{/account/{id2}(id2=${acc.id})}">상세2(path)</a>
+            </td>
+        </tr>
+        <!-- 데이터 없을 때 -->
+        <tr th:if="${#lists.isEmpty(acclist)}">
+            <td colspan="4">등록된 계좌가 없습니다.</td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>

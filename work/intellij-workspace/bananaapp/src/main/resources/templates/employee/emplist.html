@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>사원 관리</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: center;
+        }
+
+        th {
+            background: #1F3864;
+            color: #fff;
+        }
+
+        input {
+            padding: 6px 10px;
+            margin: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 7px 16px;
+            margin: 4px;
+            border: none;
+            border-radius: 4px;
+            background: #2563eb;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #formBox {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            display: none;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(function () {
+            $("#btnAll").on("click", f_selectAll);
+            $("#btnNew").on("click", f_showForm);
+            $("#btnCancel").on("click", f_hideForm);
+            //이벤트위임 closest()
+            $("#empBody").on("click", ".btnEdit", f_detail);
+            $("#empBody").on("click", ".btnDel", f_delete);
+            $("#btnSave").on("click", f_insertUpdate);
+            $("#btnSearch").on("click", f_search);
+            $("#btnCondition").on("click", f_condition);
+
+            f_deptlist();
+            f_joblist();
+
+
+            //event call
+            $("#btnAll").click();
+        });
+        //기본경로는 http://localhost:9999
+        //contextPath : /appleproject
+        const cpath = "";
+
+        function f_condition() {
+            const deptid = jQuery("#dept_id2").val();
+            const jobid = $("#job_id2").val();
+            const salary = $("#salary2").val();
+            const hire_date = $("#hire_date2").val();
+            const obj = {deptid, jobid, salary, hire_date};
+            const url = cpath + "/api/emp/condition.do";
+            //`${cpath}/api/emp/condition.do`
+            $.ajax({
+                url: url,
+                type: "GET",
+                data: obj,
+                dataType: "json",
+                success: function (data) {
+                    renderData(data);
+                },
+                error: function () {
+                    alert("조건 조회 실패");
+                }
+            });
+
+
+        }
+
+        function f_joblist() {
+            $.ajax({
+                url: `${cpath}/api/job/list.do`,
+                type: "GET",
+                dataType: "json",
+                success: function (jobList) {
+                    let output = "";
+                    $.each(jobList, function (index, dept) {
+                        output += `<option>
+     	    		        ${dept.jobId}</option>`;
+                    });
+                    $("#job_id2").append(output);
+                },
+                error: function () {
+                    alert("조건 조회 실패");
+                }
+            });
+        }
+
+        function f_deptlist() {
+            $.ajax({
+                url: `${cpath}/api/dept/list.do`,
+                type: "GET",
+                dataType: "json",
+                success: function (deptList) {
+                    let output = "";
+                    $.each(deptList, function (index, dept) {
+                        output += `<option value="${dept.departmentId}">
+     	    		        ${dept.departmentName}</option>`;
+                    });
+                    $("#dept_id2").append(output);
+                },
+                error: function () {
+                    alert("조건 조회 실패");
+                }
+            });
+        }
+
+        function f_search() {
+            const fname = $("#searchName").val().trim();
+            if (!fname) {
+                alert("이름을 입력해주세요");
+                return;
+            }
+
+            $.ajax({
+                url: `${cpath}/api/emp/search.do`,
+                type: "GET",
+                data: {fname: fname},
+                dataType: "json",
+                success: function (data) {
+                    renderData(data);
+                },
+                error: function () {
+                    alert("조건 조회 실패");
+                }
+            });
+        }
+
+
+        function f_delete() {
+            const empid = $(this).data("empid");//data-empid
+            $.ajax({
+                url: `${cpath}/api/emp/delete.do`,
+                data: {"empid": empid},
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    alert(data.result + "건 삭제완료");
+                    $("#btnAll").click();
+                }
+            });
+        }
+
+        function f_insertUpdate() {
+            const emp1 = $("#myfrm").serialize(); //employe_id=100&first_name=kim&
+            const emp2 = $("#myfrm").serializeArray(); //[{name:"employee_id", value:100},{},{}]
+            const emp3 = {};  //{"employee_id":100}
+            $.each(emp2, function (index, item) {
+                emp3[item.name] = item.value;
+            });
+            console.log(emp1, emp2, emp3);
+
+            const job = $("#employee_id").attr("data-empid");
+            let url = `${cpath}/api/emp/`;
+            url += job ? "detail.do" : "insert.do";
+            $.ajax({
+                url: url,
+                data: emp3,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    $("#btnAll").click();
+                    $("#formBox").hide();
+                }
+            });
+        }
+
+        function f_detail() {
+            const empid = $(this).data("empid");
+            $.ajax({
+                url: `${cpath}/api/emp/detail.do`,
+                data: {"empid": empid},
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    renderFormBox(data);
+                }
+            });
+        }
+
+        function renderFormBox(emp) {
+            $("#employee_id").val(emp.employeeId);
+            $("#employee_id").attr("data-empid", emp.employeeId);
+            $("#first_name").val(emp.firstName);
+            $("#last_name").val(emp.lastName);
+            $("#email").val(emp.email);
+            $("#department_id").val(emp.departmentId);
+            $("#salary").val(emp.salary);
+            $("#hire_date").val(formatDate(emp.hireDate));
+            $("#job_id").val(emp.jobId);
+            $("#formBox").show();
+        }
+
+        function formatDate(dateStr) {
+            //6월 17, 2003  => ["6", "17", "2003"]
+            const nums = dateStr.match(/(\d+)/g);
+            const month = nums[1].padStart(2, "0"); //"06"
+            const day = nums[2].padStart(2, "0"); //"17"
+            const year = nums[2];
+            return `${year}-${month}-${day}`;
+        }
+
+        function f_hideForm() {
+            $("#formBox").hide();
+        }
+
+        function f_showForm() {
+            $("#employee_id").attr("data-empid", "");
+            $("#employee_id,#first_name,#last_name,#email,#job_id,#department_id,#salary, #hire_date").val("");
+            $("#formBox").show();
+        }
+
+        function f_selectAll() {
+            $.ajax({
+                url: `${cpath}/api/emp/list.do`,
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    renderData(data);
+                }
+            });
+        }
+
+        function renderData(empList) {
+            const tbody = $("#empBody");
+            tbody.empty();
+            if (empList.length === 0) {
+                tbody.append("<tr><td colspan='6'>조회한 데이터가 없습니다.</td></tr>");
+                return;
+            }
+            $.each(empList, function (index, emp) {
+                const empRow = `
+    		    <tr>
+    		      <td>${emp.employeeId}</td>
+    		      <td>${emp.firstName} ${emp.lastName}</td>
+    		      <td>${emp.jobId}</td>
+    		      <td>${emp.departmentId}</td>
+    		      <td>${emp.salary.toLocaleString()}</td>
+    		      <td>
+    		        <button class="btnEdit"
+    		           data-empid="${emp.employeeId}">detail</button>
+    		        <button class="btnDel" data-empid="${emp.employeeId}">del</button>
+    		      </td>
+    		    </tr>
+    		`;
+                tbody.append(empRow);
+            });
+
+        }
+    </script>
+</head>
+<body>
+
+<h2>🧑‍💼 사원 관리 (JSP + Servlet + jQuery Ajax)</h2>
+<p>SPA(Single Page Application)</p>
+<!-- 조회 영역 -->
+<div>
+    <button id="btnAll">전체 조회</button>
+    <input id="searchName" placeholder="이름 검색" type="text">
+    <button id="btnSearch">조건 조회</button>
+    <button id="btnNew" style="margin-top:12px; background:#16a34a;">+ 신규 입력</button>
+
+    <fieldset>
+        <legend>여러조건 조회하기</legend>
+        <label>부서선택:</label>
+        <select id="dept_id2">
+        </select>
+        <label>직책선택:</label>
+        <select id="job_id2">
+        </select>
+        <label>급여(>=):</label>
+        <input id="salary2" type="number" value="5000">
+        <label>입사일(>=):</label>
+        <input id="hire_date2" type="date">
+        <button id="btnCondition">여러조건조회</button>
+    </fieldset>
+</div>
+<!-- 입력/수정 폼 -->
+<div id="formBox">
+    <form id="myfrm">
+        <h3 id="formTitle">사원 입력</h3>
+        <input data-empid="" id="employee_id" name="employeeId" type="text"
+               value="">
+        <input id="first_name" name="firstName" placeholder="이름" type="text">
+        <input id="last_name" name="lastName" placeholder="성" type="text">
+        <input id="email" name="email" placeholder="email" type="text">
+        <input id="job_id" name="jobId" placeholder="직무(예:IT_PROG)" type="text">
+        <input id="department_id" name="departmentId" placeholder="부서번호" type="number">
+        <input id="salary" name="salary" placeholder="급여" type="number">
+        <input id="hire_date" name="hireDate" placeholder="입사일" type="date">
+    </form>
+    <br>
+    <button id="btnSave">저장(입력/수정)</button>
+    <button id="btnCancel" style="background:#6b7280;">취소</button>
+</div>
+<!-- 목록 테이블 -->
+<table id="empTable">
+    <thead>
+    <tr>
+        <th>사번</th>
+        <th>이름</th>
+        <th>직무</th>
+        <th>부서</th>
+        <th>급여</th>
+        <th>관리</th>
+    </tr>
+    </thead>
+    <tbody id="empBody">
+
+    </tbody>
+</table>
+
+</body>
+</html>
+
+
+
+
+

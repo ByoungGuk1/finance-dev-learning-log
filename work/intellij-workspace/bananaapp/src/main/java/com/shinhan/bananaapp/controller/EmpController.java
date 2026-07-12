@@ -35,10 +35,10 @@ public class EmpController {
     }
 
     @GetMapping("/{id}")
-    public EmpDTO selectOne(@PathVariable int id, Model model) {
+    public String selectOne(@PathVariable int id, Model model) {
         EmpDTO emp = empService.selectById(id);
         model.addAttribute("empDTO", emp);
-        return emp;
+        return "employee/detail";
     }
 
     @PostMapping
@@ -63,7 +63,7 @@ public class EmpController {
         return "redirect:/employee";
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable int id, RedirectAttributes attr) {
         Integer result = empService.deleteEmp(id);
         if (result >= 1) {

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+</head>
+<body>
+<h1>detail</h1>
+<div th:if="${empDTO != null}">
+    <a th:href="@{/employee/update/{id}(id=${empDTO.empId})}">수정</a>
+    <form th:action="@{/employee/delete/{id}(id=${empDTO.empId})}" method="post">
+        <button type="submit">삭제</button>
+    </form>
+</div>
+<div th:if="${empDTO != null}">
+    <div>
+        <span>사번 - </span>
+        <span>[[${empDTO.empId}]]</span>
+    </div>
+    <div>
+        <span>이름 - </span>
+        <span>[[${empDTO.empName}]]</span>
+    </div>
+    <div>
+        <span>급여 - </span>
+        <span>[[${empDTO.salary}]]</span>
+    </div>
+
+</div>
+
+</body>
+</html>

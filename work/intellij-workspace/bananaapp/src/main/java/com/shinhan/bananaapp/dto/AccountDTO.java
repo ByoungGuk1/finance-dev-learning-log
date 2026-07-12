@@ -19,7 +19,7 @@ public class AccountDTO {
     private String ownerName;   // 예금주
     private Long balance;       // 잔액
     private String accountType; // SAVINGS / CHECKING
-    private LocalDate createAt; // 생성일
+    private LocalDate createdAt; // 생성일
 
     @Builder.Default // 값이 없을 수도 있어서
     private List<AttachmentDTO> attachments = new ArrayList<>();

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+</head>
+<body>
+
+<div class="login-wrap">
+
+    <h2>로그인</h2>
+
+    <!-- 로그인 실패 메시지 (Flash Attribute) -->
+    <div class="error-msg" th:if="${error}" th:text="${error}"></div>
+
+    <!-- action: /login POST 요청 -->
+    <form method="post" th:action="@{/auth/login}">
+
+        <input name="email"
+               placeholder="이메일"
+               required
+               type="email"
+               value="test@test.com">
+
+        <input name="password"
+               placeholder="비밀번호"
+               required
+               type="password"
+               value="1234">
+
+        <button type="submit">로그인</button>
+
+        <!-- redirectURL을 hidden으로 폼에 포함 -->
+        <input name="redirectURL"
+               th:value="${param.redirectURL}"
+               type="hidden">
+
+    </form>
+
+    <div class="signup-link">
+        계정이 없으신가요? <a th:href="@{/auth/signup}">회원가입</a>
+    </div>
+</div>
+</body>
+</html>

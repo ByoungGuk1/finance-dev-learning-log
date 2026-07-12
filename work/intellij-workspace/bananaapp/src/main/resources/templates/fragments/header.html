@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:fragment="siteHeader">
+    <nav>
+        <a th:href="@{/}">신한은행 계좌관리</a>
+        <a th:href="@{/account/list.do}">계좌 목록</a>
+    </nav>
+</header>
+
+<header th:fragment="siteHeader2">
+    <nav>
+        <a th:href="@{/}">신한은행2 계좌관리</a>
+        <a th:href="@{/account/list.do}">계좌 목록2</a>
+    </nav>
+</header>
+
+</body>
+</html>

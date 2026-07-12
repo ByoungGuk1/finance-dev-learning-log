@@ -25,7 +25,7 @@ public class AccountRepository {
                 .ownerName("Hong3")
                 .balance(12000L)
                 .accountType("예금")
-                .createAt(LocalDate.now())
+                .createdAt(LocalDate.now())
                 .build();
         accounts.add(accountDTO);
         accounts.add(accountDTO1);
@@ -50,7 +50,7 @@ public class AccountRepository {
                 foundAcc.setOwnerName(accountDTO.getOwnerName().isEmpty() ? foundAcc.getOwnerName() : accountDTO.getOwnerName());
                 foundAcc.setBalance(accountDTO.getBalance() == 0L ? foundAcc.getBalance() : accountDTO.getBalance());
                 foundAcc.setAccountType(accountDTO.getAccountType().isEmpty() ? foundAcc.getAccountType() : accountDTO.getAccountType());
-//                foundAcc.setCreateAt(accountDTO.getCreateAt().toString().isEmpty() ? foundAcc.getCreateAt() : accountDTO.getCreateAt());
+//                foundAcc.setCreatedAt(accountDTO.getCreatedAt().toString().isEmpty() ? foundAcc.getCreatedAt() : accountDTO.getCreatedAt());
             }
             return true;
         } catch (Exception e) {

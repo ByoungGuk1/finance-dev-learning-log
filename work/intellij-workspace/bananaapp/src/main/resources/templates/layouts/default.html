@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title layout:title-pattern="$CONTENT_TITLE - 신한은행">기본 타이틀</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: siteHeader}"></header>
+<!-- 각 페이지의 콘텐츠가 여기에 삽입됨 -->
+<main layout:fragment="content"></main>
+<footer th:replace="~{fragments/footer :: siteFooter}"></footer>
+</body>
+</html>
