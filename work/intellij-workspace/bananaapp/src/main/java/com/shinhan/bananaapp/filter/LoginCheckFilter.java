@@ -29,7 +29,8 @@ public class LoginCheckFilter extends OncePerRequestFilter {
             "/images/",
             "/favicon.ico",
             "/error",
-            "/.well-known/"     // Chrome DevTools 자동 요청
+            "/.well-known/",     // Chrome DevTools 자동 요청
+            "/swagger-ui/*"
     );
     @Autowired
     private MemberService memberService;

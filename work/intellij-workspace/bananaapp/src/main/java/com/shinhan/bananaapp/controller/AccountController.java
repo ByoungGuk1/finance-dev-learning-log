@@ -5,16 +5,28 @@ import com.shinhan.bananaapp.annotation.LoginRequired;
 import com.shinhan.bananaapp.di2.EmpDTO;
 import com.shinhan.bananaapp.dto.AccountDTO;
 import com.shinhan.bananaapp.dto.AccountSearchDTO;
-import com.shinhan.bananaapp.service.AccountService;
+import com.shinhan.bananaapp.dto.AttachmentDTO;
+import com.shinhan.bananaapp.service.AccountServiceImplUsingMyBatis;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.List;
 
 
@@ -25,9 +37,9 @@ import java.util.List;
 @RequestMapping(("/account"))
 public class AccountController {
 
-    private final AccountService accountService;
+    private final AccountServiceImplUsingMyBatis accountService;
 
-    public AccountController(@Qualifier("accountServiceImplUsingMyBatis") AccountService accountService) {
+    public AccountController(@Qualifier("accountServiceImplUsingMyBatis") AccountServiceImplUsingMyBatis accountService) {
         this.accountService = accountService;
     }
 
@@ -55,16 +67,55 @@ public class AccountController {
 
     @GetMapping("/detail.do")
     public String f_detail(@RequestParam("id") Long id, Model model, HttpServletResponse hsr) {
-        model.addAttribute("account", accountService.selectById(id));
+//        model.addAttribute("account", accountService.selectById(id));
+//        model.addAttribute("account", accountService.findAllWithAttachmentFlat(id));
+        model.addAttribute("account", accountService.findByIdWithAttachment(id));
+
         setCookie("lastViewAccount", String.valueOf(id), hsr);
         return "account/detail";
     }
 
     @GetMapping("/{accId}")
     public String f_detail2(@PathVariable("accId") Long id, Model model, HttpServletResponse hsr) {
-        model.addAttribute("account", accountService.selectById(id));
+//        model.addAttribute("account", accountService.selectById(id));
+//        model.addAttribute("account", accountService.findAllWithAttachmentFlat(id));
+        model.addAttribute("account", accountService.findByIdWithAttachment(id));
+
         setCookie("lastViewAccount", String.valueOf(id), hsr);
         return "account/detail";
+    }
+
+    @PostMapping("/{id}/upload")
+    public String upload(@PathVariable Long id, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttrs) throws IOException {
+        accountService.uploadAttachment(id, file);
+        redirectAttrs.addFlashAttribute("msg", "파일이 업로드되었습니다.");
+        return "redirect:/account/" + id;
+    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> downloadAttachment(@PathVariable Long id, RedirectAttributes redirectAttrs) throws MalformedURLException {
+        // DB에서 파일 정보 조회
+        AttachmentDTO att = accountService.findAttachmentById(id);
+        // 파일 Resource 생성
+        Resource resource = new UrlResource(
+                Paths.get(accountService.getUploadDir(), att.getSavedFilename()).toUri()
+        );
+        if (!resource.exists())
+            throw new RuntimeException("파일을 찾을 수 없습니다.");
+        // 한글 파일명 인코딩
+        String encodedFilename = URLEncoder.encode(att.getOriginalFilename(), StandardCharsets.UTF_8).replace("+", "%20");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + encodedFilename + "\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+
+    @PostMapping("/attachment/delete/{attachmentId}")
+    public String deleteAttachment(@PathVariable Long attachmentId, @RequestParam Long accountId, RedirectAttributes redirectAttrs) throws IOException {
+        accountService.deleteAttachment(attachmentId);
+        redirectAttrs.addFlashAttribute("msg", "파일이 삭제되었습니다.");
+        return "redirect:/account/" + accountId;
     }
 
     @GetMapping("/list.do")

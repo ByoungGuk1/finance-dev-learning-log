@@ -17,7 +17,7 @@ public class AccountRepository {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setId(1L);
         accountDTO.setOwnerName("Hong");
-        AccountDTO accountDTO1 = new AccountDTO(2L, "000-111-222", "Hong2", 12000L, "", LocalDate.now());
+        AccountDTO accountDTO1 = new AccountDTO(2L, "000-111-222", "Hong2", 12000L, "", LocalDate.now(), null);
         accountDTO1.setAccountType("예금");
         AccountDTO accountDTO2 = AccountDTO.builder()
                 .id(3L)

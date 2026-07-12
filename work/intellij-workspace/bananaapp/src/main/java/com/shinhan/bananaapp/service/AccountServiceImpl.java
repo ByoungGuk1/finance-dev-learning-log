@@ -2,9 +2,11 @@ package com.shinhan.bananaapp.service;
 
 import com.shinhan.bananaapp.dto.AccountDTO;
 import com.shinhan.bananaapp.dto.AccountSearchDTO;
+import com.shinhan.bananaapp.dto.AccountWithAttachmentDTO;
 import com.shinhan.bananaapp.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -46,5 +48,16 @@ public class AccountServiceImpl implements AccountService {
 
     public List<AccountDTO> selectByCondition(AccountSearchDTO searchDTO) {
         return null;
+    }
+
+    public List<AccountWithAttachmentDTO> findAllWithAttachmentFlat(Long id) {
+        return null;
+    }
+
+    public AccountDTO findByIdWithAttachment(Long id) {
+        return null;
+    }
+
+    public void uploadAttachment(Long id, MultipartFile file) {
     }
 }

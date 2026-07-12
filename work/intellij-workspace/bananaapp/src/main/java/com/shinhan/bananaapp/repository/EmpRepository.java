@@ -25,6 +25,14 @@ public class EmpRepository {
     public Integer save(EmpDTO empDTO) {
         EmpDTO foundEmpDTO = selectById(empDTO.getEmployeeId());
         if (foundEmpDTO != null) {
+            foundEmpDTO.setDepartmentId(empDTO.getDepartmentId() != null ? empDTO.getDepartmentId() : null);
+            foundEmpDTO.setSalary(empDTO.getSalary() != null ? empDTO.getSalary() : null);
+            foundEmpDTO.setJobId(empDTO.getJobId() != null ? empDTO.getJobId() : null);
+            foundEmpDTO.setEmail(empDTO.getEmail() != null ? empDTO.getEmail() : null);
+            foundEmpDTO.setHireDate(empDTO.getHireDate() != null ? empDTO.getHireDate() : null);
+            foundEmpDTO.setCommissionPct(empDTO.getCommissionPct() != null ? empDTO.getCommissionPct() : null);
+            foundEmpDTO.setFirstName(empDTO.getFirstName() != null ? empDTO.getFirstName() : null);
+            foundEmpDTO.setLastName(empDTO.getLastName() != null ? empDTO.getLastName() : null);
             deleteById(foundEmpDTO.getEmployeeId());
         }
         return empMapper.save(empDTO);

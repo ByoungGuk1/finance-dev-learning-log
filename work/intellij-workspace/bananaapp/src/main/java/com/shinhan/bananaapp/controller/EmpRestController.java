@@ -30,7 +30,7 @@ public class EmpRestController {
     }
 
     @PostMapping("/detail.do")
-    public ResponseEntity<?> addEmp(@RequestBody EmpDTO empDTO) {
+    public ResponseEntity<?> addEmp(@ModelAttribute EmpDTO empDTO) {
         Map<String, Integer> result = new HashMap<>();
         System.out.println("input: " + empDTO.toString());
         result.put("result", empService.updateEmp(empDTO));
@@ -39,7 +39,7 @@ public class EmpRestController {
     }
 
     @PostMapping("/insert.do")
-    public ResponseEntity<?> insertEmp(@RequestBody EmpDTO empDTO) {
+    public ResponseEntity<?> insertEmp(@ModelAttribute EmpDTO empDTO) {
         return ResponseEntity.ok(empService.createEmp(empDTO));
     }
 
