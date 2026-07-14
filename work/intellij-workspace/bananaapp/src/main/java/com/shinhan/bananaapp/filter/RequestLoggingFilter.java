@@ -22,10 +22,10 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
 
 //        //크롬 개발자도구 열려있다면 :  Chrome DevTools가 자동으로 보내는 요청 display
 //        // Chrome DevTools 자동 요청 제외
-//        if (uri.startsWith("/.well-known")) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+        if (uri.startsWith("/.well-known")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         log.info("[REQUEST]  {} {}", method, uri);
         filterChain.doFilter(request, response);  // 다음 필터 or 서블릿으로 전달

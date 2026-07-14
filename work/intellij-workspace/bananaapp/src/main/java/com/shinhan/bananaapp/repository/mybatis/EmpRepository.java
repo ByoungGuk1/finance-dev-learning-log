@@ -1,4 +1,4 @@
-package com.shinhan.bananaapp.repository;
+package com.shinhan.bananaapp.repository.mybatis;
 
 import com.shinhan.bananaapp.dto.EmpDTO;
 import com.shinhan.bananaapp.mapper.EmpMapper;

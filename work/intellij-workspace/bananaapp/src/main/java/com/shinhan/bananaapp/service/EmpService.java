@@ -5,7 +5,7 @@ package com.shinhan.bananaapp.service;
 
 
 import com.shinhan.bananaapp.dto.EmpDTO;
-import com.shinhan.bananaapp.repository.EmpRepository;
+import com.shinhan.bananaapp.repository.mybatis.EmpRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

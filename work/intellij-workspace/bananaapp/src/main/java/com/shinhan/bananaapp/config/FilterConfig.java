@@ -1,6 +1,5 @@
 package com.shinhan.bananaapp.config;
 
-import com.shinhan.bananaapp.filter.EncodingFilter;
 import com.shinhan.bananaapp.filter.RequestLoggingFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -8,14 +7,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FilterConfig {
-    @Bean
-    public FilterRegistrationBean<EncodingFilter> encodingFilter() {
-        FilterRegistrationBean<EncodingFilter> bean = new FilterRegistrationBean<>();
-        bean.setFilter(new EncodingFilter());
-        bean.setOrder(2);
-        bean.addUrlPatterns("/auth/*");
-        return bean;
-    }
+//    @Bean
+//    public FilterRegistrationBean<EncodingFilter> encodingFilter() {
+//        FilterRegistrationBean<EncodingFilter> bean = new FilterRegistrationBean<>();
+//        bean.setFilter(new EncodingFilter());
+//        bean.setOrder(2);
+//        bean.addUrlPatterns("/auth/*");
+//        return bean;
+//    }
 
     @Bean
     public FilterRegistrationBean<RequestLoggingFilter> loggingFilter() {

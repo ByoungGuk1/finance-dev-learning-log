@@ -3,7 +3,7 @@ package com.shinhan.bananaapp.service;
 import com.shinhan.bananaapp.dto.AccountDTO;
 import com.shinhan.bananaapp.dto.AccountSearchDTO;
 import com.shinhan.bananaapp.dto.AccountWithAttachmentDTO;
-import com.shinhan.bananaapp.repository.AccountRepository;
+import com.shinhan.bananaapp.repository.mybatis.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

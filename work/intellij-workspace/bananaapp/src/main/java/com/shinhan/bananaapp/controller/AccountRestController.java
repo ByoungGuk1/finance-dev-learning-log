@@ -1,6 +1,7 @@
 package com.shinhan.bananaapp.controller;
 
 
+import com.shinhan.bananaapp.common.ApiResponse;
 import com.shinhan.bananaapp.dto.AccountDTO;
 import com.shinhan.bananaapp.service.AccountService;
 import jakarta.servlet.http.HttpSession;
@@ -22,7 +23,7 @@ public class AccountRestController {
 
     private final AccountService accService;
 
-    public AccountRestController(@Qualifier("shinhanAccount") AccountService accService) {
+    public AccountRestController(@Qualifier("accountServiceImplUsingMyBatis") AccountService accService) {
         this.accService = accService;
     }
 
@@ -56,15 +57,18 @@ public class AccountRestController {
     @GetMapping("/{id}")
     public ResponseEntity<AccountDTO> selectById(@PathVariable("id") Long accId) {
         AccountDTO acc = accService.selectById(accId);
-        return acc != null
-                ? ResponseEntity.ok(acc)
-                : ResponseEntity.notFound().build();
+//        return acc != null
+//                ? ResponseEntity.ok(acc)
+//                : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(acc);
     }
 
     //JSP/Servlet==>SpringFramework===>Springboot
     //RestFul방식은 주소가 /로 끝나면 안된다.
     @RequestMapping(value = "", method = RequestMethod.GET) //각각의 개별요청은 Method level작성
-    public List<AccountDTO> selectAll(HttpSession session) {
-        return accService.selectAllAccounts();
+    public ResponseEntity<?> selectAll(HttpSession session) {
+        List<AccountDTO> result = accService.selectAllAccounts();
+        ApiResponse<List<AccountDTO>> res = ApiResponse.ok(result);
+        return result != null ? ResponseEntity.ok(res) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

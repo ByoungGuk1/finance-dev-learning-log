@@ -1,7 +1,7 @@
 package com.shinhan.bananaapp.service;
 
 import com.shinhan.bananaapp.dto.JobDTO;
-import com.shinhan.bananaapp.repository.JobRepo;
+import com.shinhan.bananaapp.repository.mybatis.JobRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
