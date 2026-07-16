@@ -1,6 +1,8 @@
 package com.shinhan.bananaapp.controller.jpa;
 
+import com.shinhan.bananaapp.dto.jpa.BoardDTO;
 import com.shinhan.bananaapp.entity1.BoardEntity;
+import com.shinhan.bananaapp.service.jpa.Board2Service;
 import com.shinhan.bananaapp.service.jpa.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
   private final BoardService boardService;
+  private final Board2Service board2Service;
+
+  //board2
+  @GetMapping("/page")
+  public ResponseEntity<List<BoardDTO>> getAllBoards(@RequestParam int pageNumber) {
+    return ResponseEntity.ok().body(board2Service.selectAllBoards(pageNumber));
+  }
+
+
+  // board1
 
   @GetMapping
   public ResponseEntity<List<BoardEntity>> getBoardList() {
