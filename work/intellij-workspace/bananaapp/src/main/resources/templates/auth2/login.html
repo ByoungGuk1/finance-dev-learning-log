@@ -15,7 +15,7 @@
     <div class="error-msg" th:if="${error}" th:text="${error}"></div>
 
     <!-- action: /login POST 요청 -->
-    <form method="post" th:action="@{/auth/login}">
+    <form method="post" th:action="@{/templates/auth2/login}">
 
         <input name="email"
                placeholder="이메일"
@@ -39,7 +39,7 @@
     </form>
 
     <div class="signup-link">
-        계정이 없으신가요? <a th:href="@{/auth/signup}">회원가입</a>
+        계정이 없으신가요? <a th:href="@{/templates/auth2/signup}">회원가입</a>
     </div>
 </div>
 </body>

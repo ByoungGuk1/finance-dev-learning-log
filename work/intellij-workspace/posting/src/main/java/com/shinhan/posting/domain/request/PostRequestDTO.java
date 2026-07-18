@@ -1,4 +1,4 @@
-package com.shinhan.posting.dto.request;
+package com.shinhan.posting.domain.request;
 
 import lombok.*;
 

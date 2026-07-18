@@ -17,7 +17,7 @@ public class MemberEntity extends BaseEntity {
   @Id
   private String mid;           // 회원 ID (PK)
   private String mname;
-  private String mpassword;
+  private String mpassword;     //Spring Security는 암호화 되지 않은 비밀번호는 사용 불가
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private MemberRole mrole;

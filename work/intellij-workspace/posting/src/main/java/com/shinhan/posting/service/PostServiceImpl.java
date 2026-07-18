@@ -1,8 +1,8 @@
 package com.shinhan.posting.service;
 
-import com.shinhan.posting.dto.request.PostRequestDTO;
-import com.shinhan.posting.dto.response.CommentResponseDTO;
-import com.shinhan.posting.dto.response.PostResponseDTO;
+import com.shinhan.posting.domain.request.PostRequestDTO;
+import com.shinhan.posting.domain.response.CommentResponseDTO;
+import com.shinhan.posting.domain.response.PostResponseDTO;
 import com.shinhan.posting.entity.PostEntity;
 import com.shinhan.posting.exception.ResourceNotFoundException;
 import com.shinhan.posting.repository.PostRepository;

@@ -1,7 +1,7 @@
 package com.shinhan.posting.controller;
 
-import com.shinhan.posting.dto.request.PostRequestDTO;
-import com.shinhan.posting.dto.response.PostResponseDTO;
+import com.shinhan.posting.domain.request.PostRequestDTO;
+import com.shinhan.posting.domain.response.PostResponseDTO;
 import com.shinhan.posting.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

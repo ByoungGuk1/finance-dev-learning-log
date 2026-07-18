@@ -1,7 +1,7 @@
 package com.shinhan.posting.controller;
 
-import com.shinhan.posting.dto.request.CommentRequestDTO;
-import com.shinhan.posting.dto.response.CommentResponseDTO;
+import com.shinhan.posting.domain.request.CommentRequestDTO;
+import com.shinhan.posting.domain.response.CommentResponseDTO;
 import com.shinhan.posting.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

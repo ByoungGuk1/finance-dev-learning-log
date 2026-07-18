@@ -16,6 +16,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,137 +39,138 @@ import java.util.List;
 @RequestMapping(("/account"))
 public class AccountController {
 
-    private final AccountServiceImplUsingMyBatis accountService;
+  private final AccountServiceImplUsingMyBatis accountService;
 
-    public AccountController(@Qualifier("accountServiceImplUsingMyBatis") AccountServiceImplUsingMyBatis accountService) {
-        this.accountService = accountService;
-    }
+  public AccountController(@Qualifier("accountServiceImplUsingMyBatis") AccountServiceImplUsingMyBatis accountService) {
+    this.accountService = accountService;
+  }
 
-    @PostMapping("/update.do")
-    public String f_update(@ModelAttribute AccountDTO account, RedirectAttributes attr) {
-        boolean result = accountService.updateAccount(account);
-        attr.addFlashAttribute("msg", result + "건 수정되었습니다.");
-        return "redirect:list.do"; //재요청:browser로 내려가서 다시 조회
-    }
+  @PostMapping("/update.do")
+  public String f_update(@ModelAttribute AccountDTO account, RedirectAttributes attr) {
+    boolean result = accountService.updateAccount(account);
+    attr.addFlashAttribute("msg", result + "건 수정되었습니다.");
+    return "redirect:list.do"; //재요청:browser로 내려가서 다시 조회
+  }
 
-    @LoginRequired(role = "MANAGER")
-    @PostMapping("/insert.do")
-    public String f_insert(@ModelAttribute AccountDTO account, RedirectAttributes attr) {
-        boolean result = accountService.insertAccount(account);
-        attr.addFlashAttribute("msg", result + "건 입력되었습니다.");
-        return "redirect:list.do"; //재요청:browser로 내려가서 다시 조회
-    }
+  @LoginRequired(role = "MANAGER")
+  @PostMapping("/insert.do")
+  public String f_insert(@ModelAttribute AccountDTO account, RedirectAttributes attr) {
+    boolean result = accountService.insertAccount(account);
+    attr.addFlashAttribute("msg", result + "건 입력되었습니다.");
+    return "redirect:list.do"; //재요청:browser로 내려가서 다시 조회
+  }
 
-    @LoginRequired(role = "MANAGER")
-    @GetMapping("/insert.do")
-    public String insertGet(Model model) {
-        model.addAttribute("account", new AccountDTO());
-        return "account/insert";
-    }
+  @LoginRequired(role = "MANAGER")
+  @GetMapping("/insert.do")
+  public String insertGet(Model model) {
+    model.addAttribute("account", new AccountDTO());
+    return "account/insert";
+  }
 
-    @GetMapping("/detail.do")
-    public String f_detail(@RequestParam("id") Long id, Model model, HttpServletResponse hsr) {
+  @GetMapping("/detail.do")
+  public String f_detail(@RequestParam("id") Long id, Model model, HttpServletResponse hsr) {
 //        model.addAttribute("account", accountService.selectById(id));
 //        model.addAttribute("account", accountService.findAllWithAttachmentFlat(id));
-        model.addAttribute("account", accountService.findByIdWithAttachment(id));
+    model.addAttribute("account", accountService.findByIdWithAttachment(id));
 
-        setCookie("lastViewAccount", String.valueOf(id), hsr);
-        return "account/detail";
-    }
+    setCookie("lastViewAccount", String.valueOf(id), hsr);
+    return "account/detail";
+  }
 
-    @GetMapping("/{accId}")
-    public String f_detail2(@PathVariable("accId") Long id, Model model, HttpServletResponse hsr) {
+  @GetMapping("/{accId}")
+  public String f_detail2(@PathVariable("accId") Long id, Model model, HttpServletResponse hsr) {
 //        model.addAttribute("account", accountService.selectById(id));
 //        model.addAttribute("account", accountService.findAllWithAttachmentFlat(id));
-        model.addAttribute("account", accountService.findByIdWithAttachment(id));
+    model.addAttribute("account", accountService.findByIdWithAttachment(id));
 
-        setCookie("lastViewAccount", String.valueOf(id), hsr);
-        return "account/detail";
-    }
+    setCookie("lastViewAccount", String.valueOf(id), hsr);
+    return "account/detail";
+  }
 
-    @PostMapping("/{id}/upload")
-    public String upload(@PathVariable Long id, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttrs) throws IOException {
-        accountService.uploadAttachment(id, file);
-        redirectAttrs.addFlashAttribute("msg", "파일이 업로드되었습니다.");
-        return "redirect:/account/" + id;
-    }
+  @PostMapping("/{id}/upload")
+  public String upload(@PathVariable Long id, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttrs) throws IOException {
+    accountService.uploadAttachment(id, file);
+    redirectAttrs.addFlashAttribute("msg", "파일이 업로드되었습니다.");
+    return "redirect:/account/" + id;
+  }
 
-    @GetMapping("/download/{id}")
-    public ResponseEntity<Resource> downloadAttachment(@PathVariable Long id, RedirectAttributes redirectAttrs) throws MalformedURLException {
-        // DB에서 파일 정보 조회
-        AttachmentDTO att = accountService.findAttachmentById(id);
-        // 파일 Resource 생성
-        Resource resource = new UrlResource(
-                Paths.get(accountService.getUploadDir(), att.getSavedFilename()).toUri()
-        );
-        if (!resource.exists())
-            throw new RuntimeException("파일을 찾을 수 없습니다.");
-        // 한글 파일명 인코딩
-        String encodedFilename = URLEncoder.encode(att.getOriginalFilename(), StandardCharsets.UTF_8).replace("+", "%20");
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + encodedFilename + "\"")
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
-    }
+  @GetMapping("/download/{id}")
+  public ResponseEntity<Resource> downloadAttachment(@PathVariable Long id, RedirectAttributes redirectAttrs) throws MalformedURLException {
+    // DB에서 파일 정보 조회
+    AttachmentDTO att = accountService.findAttachmentById(id);
+    // 파일 Resource 생성
+    Resource resource = new UrlResource(
+        Paths.get(accountService.getUploadDir(), att.getSavedFilename()).toUri()
+    );
+    if (!resource.exists())
+      throw new RuntimeException("파일을 찾을 수 없습니다.");
+    // 한글 파일명 인코딩
+    String encodedFilename = URLEncoder.encode(att.getOriginalFilename(), StandardCharsets.UTF_8).replace("+", "%20");
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=\"" + encodedFilename + "\"")
+        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+        .body(resource);
+  }
 
-    @PostMapping("/attachment/delete/{attachmentId}")
-    public String deleteAttachment(@PathVariable Long attachmentId, @RequestParam Long accountId, RedirectAttributes redirectAttrs) throws IOException {
-        accountService.deleteAttachment(attachmentId);
-        redirectAttrs.addFlashAttribute("msg", "파일이 삭제되었습니다.");
-        return "redirect:/account/" + accountId;
-    }
+  @PostMapping("/attachment/delete/{attachmentId}")
+  public String deleteAttachment(@PathVariable Long attachmentId, @RequestParam Long accountId, RedirectAttributes redirectAttrs) throws IOException {
+    accountService.deleteAttachment(attachmentId);
+    redirectAttrs.addFlashAttribute("msg", "파일이 삭제되었습니다.");
+    return "redirect:/account/" + accountId;
+  }
 
-    @GetMapping("/list.do")
-    public String f_selectAll(Model model, @CookieValue(value = "lastViewAccount", defaultValue = "") String cookie1, @CookieValue(value = "myname", defaultValue = "이름이 없어요") String cookie2, HttpServletResponse hsr) {
-        model.addAttribute("acclist", accountService.selectAllAccounts());
-        model.addAttribute("lastViewAccount", cookie1);
-        model.addAttribute("myname", cookie2);
-        deleteCookie("lastViewAccount", hsr);
-        deleteCookie("myname", hsr);
-        return "account/list";
-    }
+  @GetMapping("/list.do")
+  public String f_selectAll(Model model, @CookieValue(value = "lastViewAccount", defaultValue = "") String cookie1, @CookieValue(value = "myname", defaultValue = "이름이 없어요") String cookie2, HttpServletResponse hsr, @AuthenticationPrincipal UserDetails user) {
+    model.addAttribute("acclist", accountService.selectAllAccounts());
+    model.addAttribute("lastViewAccount", cookie1);
+    model.addAttribute("myname", cookie2);
+    model.addAttribute("loginUser", user.getUsername());
+    deleteCookie("lastViewAccount", hsr);
+    deleteCookie("myname", hsr);
+    return "account/list";
+  }
 
-    @GetMapping("/thtest.do")
-    public String retrieve(Model model) {
-        //model : controller와 HTML간의 공유공간
-        model.addAttribute("myname", "jin");
-        model.addAttribute("emp", new EmpDTO(1, "병국", 1000L));
-        model.addAttribute("comment1", "<h1>성실!!!!</h1>");
-        model.addAttribute("comment2", "<script>alert('배고파');</script>");
-        return "account/thymeleaf_basic";   //templates/account/list.html로 forward
-    }
+  @GetMapping("/thtest.do")
+  public String retrieve(Model model) {
+    //model : controller와 HTML간의 공유공간
+    model.addAttribute("myname", "jin");
+    model.addAttribute("emp", new EmpDTO(1, "병국", 1000L));
+    model.addAttribute("comment1", "<h1>성실!!!!</h1>");
+    model.addAttribute("comment2", "<script>alert('배고파');</script>");
+    return "account/thymeleaf_basic";   //templates/account/list.html로 forward
+  }
 
-    @PostMapping("/transfer")
-    public String transfer(@RequestParam Long fromId, @RequestParam Long toId, @RequestParam Long amount) {
-        Boolean result = accountService.transaction(fromId, toId, amount);
-        return "redirect:list.do";
-    }
+  @PostMapping("/transfer")
+  public String transfer(@RequestParam Long fromId, @RequestParam Long toId, @RequestParam Long amount) {
+    Boolean result = accountService.transaction(fromId, toId, amount);
+    return "redirect:list.do";
+  }
 
-    @GetMapping("/condition")
-    public String condition(@ModelAttribute AccountSearchDTO accountSearchDTO, Model model, HttpSession session) {
-        session.setAttribute("searchDTO", accountSearchDTO);
-        List<AccountDTO> result = accountService.selectByCondition(accountSearchDTO);
-        model.addAttribute("acclist", result);
-        model.addAttribute("lastViewAccount", 1);
-        model.addAttribute("myname", "");
+  @GetMapping("/condition")
+  public String condition(@ModelAttribute AccountSearchDTO accountSearchDTO, Model model, HttpSession session) {
+    session.setAttribute("searchDTO", accountSearchDTO);
+    List<AccountDTO> result = accountService.selectByCondition(accountSearchDTO);
+    model.addAttribute("acclist", result);
+    model.addAttribute("lastViewAccount", 1);
+    model.addAttribute("myname", "");
 
-        return "account/list";
-    }
+    return "account/list";
+  }
 
-    private void setCookie(String name, String value, HttpServletResponse response) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setMaxAge(60 * 60 * 2);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
+  private void setCookie(String name, String value, HttpServletResponse response) {
+    Cookie cookie = new Cookie(name, value);
+    cookie.setMaxAge(60 * 60 * 2);
+    cookie.setPath("/");
+    cookie.setHttpOnly(true);
 
-        response.addCookie(cookie);
-    }
+    response.addCookie(cookie);
+  }
 
-    private void deleteCookie(String name, HttpServletResponse response) {
-        Cookie cookie = new Cookie(name, null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-    }
+  private void deleteCookie(String name, HttpServletResponse response) {
+    Cookie cookie = new Cookie(name, null);
+    cookie.setMaxAge(0);
+    cookie.setPath("/");
+    response.addCookie(cookie);
+  }
 }

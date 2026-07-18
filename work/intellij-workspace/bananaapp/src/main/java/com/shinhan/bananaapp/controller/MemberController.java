@@ -1,7 +1,7 @@
 package com.shinhan.bananaapp.controller;
 
 import com.shinhan.bananaapp.dto.MemberDTO;
-import com.shinhan.bananaapp.service.MemberService;
+import com.shinhan.bananaapp.service.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/auth")
 //@Slf4j
 public class MemberController {
-  private final MemberService memberService;
+  private final MemberServiceImpl memberService;
 
   @GetMapping("/login")
   public String login() {
