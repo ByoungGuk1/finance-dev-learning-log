@@ -11,9 +11,11 @@ work/**/Servers/
 work/**/resources/
 !work/**/src/main/resources/
 work/**/doit-hcj-new-main
+**/docs/concepts/
 
 !docs/
 !docs/**
+docs/concepts/
 
 !금융스터디/
 !금융스터디/**
@@ -50,6 +52,9 @@ work/**/drivers/**
 **/.idea/
 **/*.iml
 **/out/
+
+work/**/src/main/generated/
+work/**/src/test/generated/
 
 # VS Code
 **/.vscode/
