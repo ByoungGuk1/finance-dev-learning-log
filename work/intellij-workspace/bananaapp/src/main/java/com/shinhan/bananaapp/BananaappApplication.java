@@ -21,6 +21,6 @@ public class BananaappApplication {
 //        List<String> filters = List.of(context.getBeanNamesForType(Filter.class));
 //        filters.forEach(System.out::println);
     List<String> filters = List.of(context.getBeanNamesForType(FilterRegistrationBean.class));
-    filters.forEach(log::info);
+//    filters.forEach(log::info);
   }
 }

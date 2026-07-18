@@ -1,0 +1,12 @@
+package com.shinhan.posting.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class PageController {
+  @GetMapping({"/", "/posts/new", "/posts/{postId}", "/posts/{postId}/edit"})
+  public String index() {
+    return "html/index";
+  }
+}

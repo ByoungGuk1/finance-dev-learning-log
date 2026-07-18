@@ -1,4 +1,4 @@
-package com.shinhan.bananaapp.config;
+package com.shinhan.posting.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

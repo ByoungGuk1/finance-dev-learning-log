@@ -3,6 +3,7 @@ package com.shinhan.bananaapp.manytomany;
 import com.shinhan.bananaapp.entity2.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,12 @@ public class FreeBoardEntity extends BaseEntity {
 
   // mappedBy = FreeReplyEntity의 필드명 "board"
   // 메어있음 -> 참조하는 테이블에 column이 결정
+  @BatchSize(size = 2)
   @OneToMany(
       mappedBy = "board",
       cascade = CascadeType.ALL,
-      fetch = FetchType.LAZY)
+      fetch = FetchType.LAZY,
+      orphanRemoval = true
+  )
   private List<FreeReplyEntity> replyList = new ArrayList<>();
 }
