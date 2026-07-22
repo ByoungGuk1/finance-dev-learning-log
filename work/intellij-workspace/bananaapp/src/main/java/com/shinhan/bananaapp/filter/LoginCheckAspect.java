@@ -1,6 +1,6 @@
 //package com.shinhan.bananaapp.filter;
 //
-//import com.shinhan.bananaapp.annotation.LoginRequired;
+//import com.shinhan.bananaapp.filter.LoginRequired;
 //import com.shinhan.bananaapp.dto.MemberDTO;
 //import jakarta.servlet.http.HttpServletRequest;
 //import jakarta.servlet.http.HttpSession;

@@ -1,11 +1,11 @@
 package com.shinhan.bananaapp.controller;
 
 
-import com.shinhan.bananaapp.annotation.LoginRequired;
 import com.shinhan.bananaapp.di2.EmpDTO;
 import com.shinhan.bananaapp.dto.AccountDTO;
 import com.shinhan.bananaapp.dto.AccountSearchDTO;
 import com.shinhan.bananaapp.dto.AttachmentDTO;
+import com.shinhan.bananaapp.filter.LoginRequired;
 import com.shinhan.bananaapp.service.AccountServiceImplUsingMyBatis;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

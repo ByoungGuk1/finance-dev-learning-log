@@ -36,7 +36,7 @@ dependencies {
 
     // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.mariadb.jdbc:mariadb-java-client'
+//    implementation 'org.mariadb.jdbc:mariadb-java-client'
 
     // entity <-> DTO 자동 변환
     implementation 'org.modelmapper:modelmapper:3.2.0'
