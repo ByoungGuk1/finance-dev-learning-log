@@ -1,6 +1,8 @@
 package com.shinhan.bananaapp.security.jwt;
 
 import com.shinhan.bananaapp.entity3.MemberEntity;
+import com.shinhan.bananaapp.security.redis.AuthServiceLoginRedis;
+import com.shinhan.bananaapp.security.redis.RefreshTokenServiceRedis;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +20,14 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class LoginControllerJWT {
 
-  //    private final AuthServiceLoginRedis authServiceLogin;
-  private final RefreshTokenService refreshTokenService;
+  //Redis 저장
+  private final RefreshTokenServiceRedis refreshTokenService;
+  private final AuthServiceLoginRedis authServiceLogin;
+
+  //  private final RefreshTokenService refreshTokenService;
+  //  private final AuthServiceLogin authServiceLogin;
+  // RDB 저장
   private final ModelMapper modelMapper;
-  private final AuthServiceLogin authServiceLogin;
 
   // 로그인 → Access Token + Refresh Token 발급
   @PostMapping("/login")
