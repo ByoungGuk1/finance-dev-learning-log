@@ -2,7 +2,25 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.16'
     id 'io.spring.dependency-management' version '1.1.7'
+
+    //JaCoCo는 "내 테스트가 실제 코드를 얼마나 실행해봤는가"를 %로 측정해주는 도구
+    // Gradle에 JaCoCo 플러그인 적용 → 커버리지 측정 기능 활성화
+    // 테스트 실행(test) 후 → HTML 형태의 커버리지 리포트 생성
+    // build/reports/jacoco/test/html/index.html 에서 브라우저로 확인 가능
+    // 어떤 클래스, 어떤 라인이 테스트에 안 걸렸는지 빨간색으로 표시됨
+    id 'jacoco'
 }
+
+jacocoTestReport {
+    reports { html.required = true }
+    dependsOn test
+}
+jacocoTestCoverageVerification {
+    violationRules { rule { limit { minimum = 0.70 } } }
+    // Line Coverage 70% 미달 시 빌드 실패
+    // 70%가 실행됐다"는 뜻이지 "70%가 제대로 검증됐다"는 뜻이 아님
+}
+
 
 group = 'com.shinhan'
 version = '0.0.1-SNAPSHOT'
@@ -73,10 +91,27 @@ dependencies {
     // Spring Data Redis (Lettuce 클라이언트 포함)
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    // Spring Batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    // Actuator + Prometheus
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // JUnit5 + Mockito + AssertJ + MockMvc + TestRestTemplate 한 번에
+    /*
+        - spring-boot-starter-test 포함 라이브러리:
+        - JUnit 5  — 테스트 프레임워크
+        - Mockito  — Mock 객체 생성·검증
+        - AssertJ  — 가독성 높은 Assertion 라이브러리
+        - Spring Test — MockMvc, TestRestTemplate
+    */
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // @DataJpaTest 시 H2 인메모리 DB (MariaDB 없이 빠른 JPA 테스트)
+    testRuntimeOnly 'com.h2database:h2'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
@@ -84,13 +119,14 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy tasks.named('jacocoTestReport')
 }
 
-sourceSets {
-    main {
-        java {
-            // Q클래스 생성 경로를 소스로 인식
-            srcDirs += 'build/generated/sources/annotationProcessor/java/main'
-        }
-    }
-}
+//sourceSets {
+//    main {
+//        java {
+//            // Q클래스 생성 경로를 소스로 인식
+//            srcDirs += 'build/generated/sources/annotationProcessor/java/main'
+//        }
+//    }
+//}

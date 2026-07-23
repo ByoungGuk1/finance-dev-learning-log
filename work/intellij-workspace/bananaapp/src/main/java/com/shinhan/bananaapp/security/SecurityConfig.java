@@ -60,6 +60,7 @@ public class SecurityConfig {
                 "/webjars/**"
             ).permitAll()
             .requestMatchers("/actuator/**").permitAll()
+            .requestMatchers("/freeboard/**").authenticated()
             .anyRequest().authenticated()
         );
     return http.build();
