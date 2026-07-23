@@ -31,7 +31,7 @@ public class SecurityConfig {
       "/api-docs/**",
       "/swagger-resources/**",
       "/webjars/**",
-      "/swagger-ui.html"
+      "/swagger-ui.html", "/freeboard/**"
   };
 
   // Spring MVC 매핑 정보를 가진 Bean 주입
@@ -43,7 +43,7 @@ public class SecurityConfig {
   SecurityFilterChain apiSecurity(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
     http
         // .cors(cors -> cors.configurationSource(corsConfigurationSource))
-        .securityMatcher("/api/**")     // /api/** 경로만 이 체인 적용
+        .securityMatcher("/api/**"/*, "/freeboard/**"*/)     // /api/** 경로만 이 체인 적용
         .csrf(csrf -> csrf.disable())
         .formLogin(form -> form.disable())
         .httpBasic(basic -> basic.disable())
@@ -60,7 +60,6 @@ public class SecurityConfig {
                 "/webjars/**"
             ).permitAll()
             .requestMatchers("/actuator/**").permitAll()
-            .requestMatchers("/freeboard/**").authenticated()
             .anyRequest().authenticated()
         );
     return http.build();
