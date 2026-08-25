@@ -11,6 +11,7 @@ work/**/Servers/
 work/**/resources/
 !work/**/src/main/resources/
 work/**/doit-hcj-new-main
+work/git-practice/
 **/docs/concepts/
 
 !docs/
