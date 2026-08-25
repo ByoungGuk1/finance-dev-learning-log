@@ -1,5 +1,5 @@
 const person = { name: "MAX", age: 20, score: 99 };
-const person2 = { name: "tester", age: 21, socre: 88 };
+const person2 = { name: "tester", age: 21, score: 88 };
 
 // 익명함수, literal 형태, 매개변수X return 존재
 const f1 = function () {

@@ -1,4 +1,3 @@
-import { log } from "console";
 import f1, { person, person2, f2 } from "./section03.js";
 import { clean, baseData } from "./section04.js";
 
