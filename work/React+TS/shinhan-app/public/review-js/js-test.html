@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>자바스크립트 복습</title>
+  </head>
+  <script defer src="./section02.js"></script>
+  <body>
+    <h1>JS 복습</h1>
+    <div id="here">test</div>
+    <script src="./section01.js" type="text/javascript"></script>
+    <!-- type="module" 이라면 html이 로드 된 후 해당 스크립트 구분 실행 -->
+    <script>
+      console.log(`internal로 외부 js의 변수 사용 : ${v1}`);
+      console.dir(this);
+    </script>
+  </body>
+</html>
