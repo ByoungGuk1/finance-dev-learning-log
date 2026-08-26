@@ -1,10 +1,47 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { createRoot } from "react-dom/client";
+import "./index.css";
+// import {
+//   MyFuntionComp1,
+//   MyFuntionComp2,
+//   MyFuntionComp3,
+// } from "./section01/TestComponent01";
+// import { MyClassComp1, MyClassComp2 } from "./section01/TestComponent02";
+// import App3 from "./section01/App3";
+import Section02Start from "./section02/Section02Start";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// const element1 = <h1>hello</h1>;
+// const element2 = (
+//   <>
+//     <h3>hello</h3>
+//   </>
+// );
+// const score = 100;
+
+// 가상DOM
+// const virtualDOM = (
+//   <>
+//     {element1}
+//     {element2}
+//     <span>점수는 {score}</span>
+//     {/*속성 값은 반드시 따옴표 안에 작성*/}
+//     <input
+//       className="className"
+//       type="text"
+//       value="신한DS"
+//       style={{ backgroundColor: "pink", border: "none" }}
+//     />
+//     <MyFuntionComp1 />
+//     <MyFuntionComp2 />
+//     <MyFuntionComp3 />
+//     <MyClassComp1 />
+//     <MyClassComp2 />
+//   </>
+// );
+
+// 물리 DOM<div id = "root"></div>
+createRoot(document.getElementById("root")!).render(
+  <>
+    <Section02Start />
+    {/* <App3 /> */}
+  </>,
+);
