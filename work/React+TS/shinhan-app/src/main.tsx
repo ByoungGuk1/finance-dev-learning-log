@@ -8,6 +8,7 @@ import "./index.css";
 // import { MyClassComp1, MyClassComp2 } from "./section01/TestComponent02";
 // import App3 from "./section01/App3";
 import Section02Start from "./section02/Section02Start";
+// import LabComponent from "./lab/LabComponent";
 
 // const element1 = <h1>hello</h1>;
 // const element2 = (
@@ -41,6 +42,7 @@ import Section02Start from "./section02/Section02Start";
 // 물리 DOM<div id = "root"></div>
 createRoot(document.getElementById("root")!).render(
   <>
+    {/* <LabComponent /> */}
     <Section02Start />
     {/* <App3 /> */}
   </>,
