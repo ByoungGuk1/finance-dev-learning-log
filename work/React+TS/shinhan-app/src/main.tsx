@@ -7,7 +7,8 @@ import "./index.css";
 // } from "./section01/TestComponent01";
 // import { MyClassComp1, MyClassComp2 } from "./section01/TestComponent02";
 // import App3 from "./section01/App3";
-import Section02Start from "./section02/Section02Start";
+// import Section02Start from "./section02/Section02Start";
+import Section03Start from "./section03/Section03Start";
 // import LabComponent from "./lab/LabComponent";
 
 // const element1 = <h1>hello</h1>;
@@ -43,7 +44,8 @@ import Section02Start from "./section02/Section02Start";
 createRoot(document.getElementById("root")!).render(
   <>
     {/* <LabComponent /> */}
-    <Section02Start />
+    {/* <Section02Start /> */}
+    <Section03Start />
     {/* <App3 /> */}
   </>,
 );
