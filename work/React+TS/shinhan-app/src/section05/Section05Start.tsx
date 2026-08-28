@@ -5,6 +5,9 @@ import VarCompare from "./VarCompare";
 import Board from "./Board";
 import CounterUsingReducer from "./CounterUsingReduce";
 import UserFormUsingReduce from "./UserFormUsingReduce";
+import ParentComponent from "./ParentComponent";
+import SmartHome from "./SmartHome";
+import ExpensiveComponent from "./ExpensiveComponent";
 
 const Section05Start = () => {
   const [vision, setVision] = useState<boolean>(false);
@@ -12,7 +15,7 @@ const Section05Start = () => {
 
   return (
     <>
-      <>{nowVision ? <UserFormUsingReduce /> : ""}</>
+      <>{nowVision ? <ExpensiveComponent /> : ""}</>
       <button
         className="px-6 py-8 bg-violet-200 rounded-xl max-w-sm self-center"
         onClick={() => {
@@ -21,6 +24,9 @@ const Section05Start = () => {
       >
         이전 컴포넌트 {vision ? "off" : "on"}
       </button>
+      <>{vision ? <SmartHome /> : ""}</>
+      <>{vision ? <ParentComponent /> : ""}</>
+      <>{vision ? <UserFormUsingReduce /> : ""}</>
       <>{vision ? <CounterUsingReducer /> : ""}</>
       <>{vision ? <Board /> : ""}</>
       <>{vision ? <VarCompare /> : ""}</>

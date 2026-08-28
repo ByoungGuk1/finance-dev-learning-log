@@ -2,7 +2,9 @@
 // import Lab2 from "./day02/Lab2";
 // import Lab3 from "./day02/Lab3";
 // import AccountOpenForm from "./day04/lab1/AccountOpenForm";
-import AccountTransaction from "./day04/lab2/AccountTransaction";
+// import AccountTransaction from "./day04/lab2/AccountTransaction";
+import BranchDashBoard from "./day04/lab3/BranchDashBoard";
+import DepositCalculator from "./day04/lab4/DepositCalculator";
 
 const LabComponent = () => {
   return (
@@ -13,7 +15,9 @@ const LabComponent = () => {
     // </>
     <>
       {/* <AccountOpenForm /> */}
-      <AccountTransaction />
+      {/* <AccountTransaction /> */}
+      <BranchDashBoard />
+      <DepositCalculator />
     </>
   );
 };
