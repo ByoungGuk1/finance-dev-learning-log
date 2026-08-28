@@ -9,7 +9,8 @@ import "./index.css";
 // import App3 from "./section01/App3";
 // import Section02Start from "./section02/Section02Start";
 // import Section03Start from "./section03/Section03Start";
-import Section04Start from "./section04/Section04Start";
+// import Section04Start from "./section04/Section04Start";
+import Section05Start from "./section05/Section05Start";
 // import LabComponent from "./lab/LabComponent";
 
 // const element1 = <h1>hello</h1>;
@@ -47,7 +48,8 @@ createRoot(document.getElementById("root")!).render(
     {/* <LabComponent /> */}
     {/* <Section02Start /> */}
     {/* <Section03Start /> */}
-    <Section04Start />
+    {/* <Section04Start /> */}
+    <Section05Start />
     {/* <App3 /> */}
   </>,
 );
