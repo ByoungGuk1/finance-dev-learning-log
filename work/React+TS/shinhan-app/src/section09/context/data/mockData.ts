@@ -6,6 +6,7 @@ export const mockTodo: todoType[] = [
     content: "리액트 공부하기",
     isDone: false,
     createdDate: new Date().getTime(),
+    writer: "테스트 사용자",
   },
   {
     id: 1,

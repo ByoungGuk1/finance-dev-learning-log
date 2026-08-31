@@ -13,12 +13,13 @@ const TodoListApp = () => {
   const [todo, setTodo] = useState<todoType[]>(mockTodo);
   const idRef = useRef(3);
 
-  const onCreate = useCallback((content: string) => {
+  const onCreate = useCallback((content: string, writer: string) => {
     const newItem: todoType = {
       id: idRef.current,
       content,
       isDone: false,
       createdDate: new Date().getTime(),
+      writer: writer,
     };
 
     setTodo((prev) => [newItem, ...prev]);
@@ -26,7 +27,11 @@ const TodoListApp = () => {
   }, []);
 
   const onUpdate = useCallback(
-    (targetId: number, colname: "isDone" | "content", value?: string) => {
+    (
+      targetId: number,
+      colname: "isDone" | "content" | "writer",
+      value?: string,
+    ) => {
       console.log("수정~");
       setTodo((prev) =>
         prev.map((it) => {
@@ -35,6 +40,8 @@ const TodoListApp = () => {
               return { ...it, isDone: !it.isDone };
             } else if (colname === "content" && value) {
               return { ...it, content: value };
+            } else if (colname === "writer" && value) {
+              return { ...it, writer: value };
             }
           }
           return it;
