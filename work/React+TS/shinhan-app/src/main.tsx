@@ -11,7 +11,8 @@ import "./index.css";
 // import Section03Start from "./section03/Section03Start";
 // import Section04Start from "./section04/Section04Start";
 // import Section05Start from "./section05/Section05Start";
-import LabComponent from "./lab/LabComponent";
+// import LabComponent from "./lab/LabComponent";
+import Day05Start from "./day05/day05Start";
 
 // const element1 = <h1>hello</h1>;
 // const element2 = (
@@ -45,11 +46,12 @@ import LabComponent from "./lab/LabComponent";
 // 물리 DOM<div id = "root"></div>
 createRoot(document.getElementById("root")!).render(
   <>
-    <LabComponent />
+    {/* <LabComponent /> */}
     {/* <Section02Start /> */}
     {/* <Section03Start /> */}
     {/* <Section04Start /> */}
     {/* <Section05Start /> */}
+    <Day05Start />
     {/* <App3 /> */}
   </>,
 );
