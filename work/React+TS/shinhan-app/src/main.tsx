@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
+
 // import {
 //   MyFuntionComp1,
 //   MyFuntionComp2,
@@ -11,8 +12,11 @@ import "./index.css";
 // import Section03Start from "./section03/Section03Start";
 // import Section04Start from "./section04/Section04Start";
 // import Section05Start from "./section05/Section05Start";
+// import Day05Start from "./day05/day05Start";
+// import Section06Start from "./section06-propsdrilling/section06Start";
+// import Section07App from "./section07-context/pages/Section07App";
+import Section08Start from "./section08/Section08Start";
 // import LabComponent from "./lab/LabComponent";
-import Day05Start from "./day05/day05Start";
 
 // const element1 = <h1>hello</h1>;
 // const element2 = (
@@ -51,7 +55,10 @@ createRoot(document.getElementById("root")!).render(
     {/* <Section03Start /> */}
     {/* <Section04Start /> */}
     {/* <Section05Start /> */}
-    <Day05Start />
+    {/* <Day05Start /> */}
+    {/* <Section06Start /> */}
+    {/* <Section07App /> */}
+    <Section08Start />
     {/* <App3 /> */}
   </>,
 );
