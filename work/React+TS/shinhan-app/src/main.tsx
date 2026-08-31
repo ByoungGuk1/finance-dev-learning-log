@@ -15,7 +15,9 @@ import "./index.css";
 // import Day05Start from "./day05/day05Start";
 // import Section06Start from "./section06-propsdrilling/section06Start";
 // import Section07App from "./section07-context/pages/Section07App";
-import Section08Start from "./section08/Section08Start";
+// import Section08Start from "./section08/Section08Start";
+import TodoListApp from "./section09/context/components/TodoListApp";
+import TodoListApp_zustand from "./section09/zustand/components/TodoListApp-zustand";
 // import LabComponent from "./lab/LabComponent";
 
 // const element1 = <h1>hello</h1>;
@@ -58,7 +60,9 @@ createRoot(document.getElementById("root")!).render(
     {/* <Day05Start /> */}
     {/* <Section06Start /> */}
     {/* <Section07App /> */}
-    <Section08Start />
+    {/* <Section08Start /> */}
+    <TodoListApp />
+    <TodoListApp_zustand />
     {/* <App3 /> */}
   </>,
 );
