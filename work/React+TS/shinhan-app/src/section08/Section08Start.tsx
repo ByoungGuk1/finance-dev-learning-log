@@ -1,3 +1,4 @@
+import BoardZustand from "./BoardZustand";
 import BoardAfter from "./ContextSplit-After";
 import BoardBefore from "./ContextSplit-Before";
 
@@ -6,6 +7,7 @@ const Section08Start = () => {
     <>
       <BoardAfter />
       <BoardBefore />
+      <BoardZustand />
     </>
   );
 };
