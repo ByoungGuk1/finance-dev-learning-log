@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { useDebounce } from "../../section08_debounce/useDebounce";
+import { useDebounce } from "../../../section08/useDebounce";
 
 import TodoItem from "./TodoItem";
 import { useTodoStore } from "../types/todo";

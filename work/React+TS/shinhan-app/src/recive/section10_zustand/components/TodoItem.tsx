@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTodoStore, type todoType } from "../types/todo";
 
-import { useDebounce } from "../../section08_debounce/useDebounce";
+import { useDebounce } from "../../../section08/useDebounce";
 
 //Component에 속성전달
 function TodoItem({ id, content, isDone, createdDate }: todoType) {

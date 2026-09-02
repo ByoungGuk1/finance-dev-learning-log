@@ -5,7 +5,7 @@ import vite from "../assets/vite.svg";
 export default function LinkComponent() {
   return (
     <>
-      {/* ===== Sidebar ====  public폴더의 이미지는 경로 직접사용(그대로배포), 
+      {/* ===== Sidebar ====  public폴더의 이미지는 경로 직접사용(그대로배포),
         src폴더의 이미지는 import하여사용(build시 번들링됨)  */}
       <aside className="w-72 shrink-0 bg-slate-800 text-white flex flex-col p-4">
         {" "}
@@ -52,27 +52,6 @@ export default function LinkComponent() {
           </Link>
           <Link to="/board" className="sidebar-link">
             Board(param연습)
-          </Link>
-          <Link to="/song" className="sidebar-link">
-            Song병국
-          </Link>
-          <Link to="/chae" className="sidebar-link">
-            park채연
-          </Link>
-          <Link to="/eun" className="sidebar-link">
-            lee은정
-          </Link>
-          <Link to="/ye" className="sidebar-link">
-            yang예은
-          </Link>
-          <Link to="/zun" className="sidebar-link">
-            Kang현준
-          </Link>
-          <Link to="/suk" className="sidebar-link">
-            kim민석
-          </Link>
-          <Link to="/diary" className="sidebar-link">
-            Kang호원
           </Link>
         </nav>
         <div className="mt-auto text-xs text-gray-400">CSR / Router 실습</div>
