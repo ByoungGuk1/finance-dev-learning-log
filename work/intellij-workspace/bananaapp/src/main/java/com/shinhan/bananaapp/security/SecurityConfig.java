@@ -11,12 +11,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+  private final CorsConfigurationSource corsConfigurationSource;
 
   // 인증 없이 접근 가능한 경로 목록
   private final String[] WHITE_LIST = {
@@ -42,7 +45,7 @@ public class SecurityConfig {
   @Order(1)
   SecurityFilterChain apiSecurity(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
     http
-        // .cors(cors -> cors.configurationSource(corsConfigurationSource))
+        .cors(cors -> cors.configurationSource(corsConfigurationSource))
         .securityMatcher("/api/**"/*, "/freeboard/**"*/)     // /api/** 경로만 이 체인 적용
         .csrf(csrf -> csrf.disable())
         .formLogin(form -> form.disable())
@@ -54,6 +57,7 @@ public class SecurityConfig {
                 "/api/auth/login",
                 "/api/auth/refresh",
                 "/api/auth/joinProc",
+                "/api/freeboard/**",
                 "/swagger-ui/**",
                 "/api-docs/**",
                 "/swagger-resources/**",

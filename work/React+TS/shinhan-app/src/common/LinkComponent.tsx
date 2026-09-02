@@ -53,6 +53,9 @@ export default function LinkComponent() {
           <Link to="/board" className="sidebar-link">
             Board(param연습)
           </Link>
+          <Link to="/axios" className="sidebar-link">
+            Board(axios연습)
+          </Link>
         </nav>
         <div className="mt-auto text-xs text-gray-400">CSR / Router 실습</div>
       </aside>

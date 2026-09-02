@@ -13,6 +13,7 @@ import Lab1_AccountOpenForm from "@/section05/Section05Start";
 import Debounce_ProfileEditor from "@/section08/Section08Start";
 import Lab2_AccountTransaction from "@/lab/day04/lab2/AccountTransaction";
 import BoardHome from "@/recive/section12_boardParam/components/BoardHome";
+import BoardHomeAxios from "@/section13/components/BoardHomeAxios";
 
 export default function CommonRoutes() {
   return (
@@ -29,6 +30,7 @@ export default function CommonRoutes() {
         <Route path="/debounce" element={<Debounce_ProfileEditor />} />
         <Route path="/todo" element={<TodoListApp />} />
         <Route path="/board/*" element={<BoardHome />} />
+        <Route path="/axios/*" element={<BoardHomeAxios />} />
 
         {/* 로그인 필요한 라우트들을 여기 감싸서 묶음 */}
 
