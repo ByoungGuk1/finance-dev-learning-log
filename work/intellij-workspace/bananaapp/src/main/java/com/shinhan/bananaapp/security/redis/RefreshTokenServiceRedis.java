@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -88,7 +90,7 @@ public class RefreshTokenServiceRedis {
   // RefreshTokenService.java
 
 
-  public TokenResponse reissueAccessToken(String refreshToken) {
+  public Map<String, TokenResponse> reissueAccessToken(String refreshToken) {
 //                                       ↑
 //                              클라이언트가 보낸 토큰
 
@@ -120,7 +122,11 @@ public class RefreshTokenServiceRedis {
     // 6. Redis 교체 (Rotation)
     save(mid, newRefreshToken);
 
-    return new TokenResponse(newAccessToken, member);
+    Map<String, TokenResponse> result = new HashMap<>();
+    result.put("accessToken", new TokenResponse(newAccessToken, member));
+    result.put("refreshToken", new TokenResponse(newRefreshToken, member));
+
+    return result;
   }
 
   // 로그아웃 — 모든 토큰 삭제

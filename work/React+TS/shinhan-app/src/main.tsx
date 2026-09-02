@@ -5,14 +5,17 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import { BrowserRouter } from "react-router-dom";
 import StartApp from "./StartApp";
+import { AuthProvider } from "./auth/AuthProvider";
 
 //물리DOM   #root <div id="root"></div>
 createRoot(document.getElementById("root")!).render(
   <>
     <div className="flex h-screen bg-gray-100 ">
-      <BrowserRouter>
-        <StartApp />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <StartApp />
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   </>,
 );

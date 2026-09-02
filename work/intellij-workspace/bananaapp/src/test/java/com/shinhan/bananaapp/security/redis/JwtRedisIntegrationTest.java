@@ -76,7 +76,7 @@ class JwtRedisIntegrationTest {
         .mid("member1").mpassword("1234").build();
 
     // when
-    TokenResponse resp = authService.login(input);
+    TokenResponse resp = authService.login(input).get("accessToken");
 
     // then — AccessToken 확인
     assertNotNull(resp);
@@ -183,7 +183,7 @@ class JwtRedisIntegrationTest {
 
     // ── 3. 재발급 ─────────────────────────────────
     TokenResponse newResp =
-        refreshTokenService.reissueAccessToken(oldToken);
+        refreshTokenService.reissueAccessToken(oldToken).get("accessToken");
 
     assertNotNull(newResp.getAccessToken());
     System.out.println("새 AccessToken: " + newResp.getAccessToken());

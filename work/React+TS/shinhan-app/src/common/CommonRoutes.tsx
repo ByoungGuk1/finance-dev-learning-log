@@ -14,6 +14,8 @@ import Debounce_ProfileEditor from "@/section08/Section08Start";
 import Lab2_AccountTransaction from "@/lab/day04/lab2/AccountTransaction";
 import BoardHome from "@/recive/section12_boardParam/components/BoardHome";
 import BoardHomeAxios from "@/section13/components/BoardHomeAxios";
+import { AuthLayout } from "@/auth/components/AuthLayout";
+import AuthPage from "@/auth/AuthPage";
 
 export default function CommonRoutes() {
   return (
@@ -29,13 +31,15 @@ export default function CommonRoutes() {
         <Route path="/lab2" element={<Lab2_AccountTransaction />} />
         <Route path="/debounce" element={<Debounce_ProfileEditor />} />
         <Route path="/todo" element={<TodoListApp />} />
-        <Route path="/board/*" element={<BoardHome />} />
-        <Route path="/axios/*" element={<BoardHomeAxios />} />
 
-        {/* 로그인 필요한 라우트들을 여기 감싸서 묶음 */}
+        {/* 로그인하지 않아도 접근할 수 있는 로그인/회원가입 화면 */}
+        <Route path="/auth/*" element={<AuthPage />} />
 
-        {/* <Route path="/diary/*" element={<Day6Lab3App />} /> */}
-
+        {/* 로그인해야 접근할 수 있는 화면 */}
+        <Route element={<AuthLayout />}>
+          <Route path="/board/*" element={<BoardHome />} />
+          <Route path="/axios/*" element={<BoardHomeAxios />} />
+        </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
