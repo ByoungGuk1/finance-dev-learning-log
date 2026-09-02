@@ -1,68 +1,18 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-// import {
-//   MyFuntionComp1,
-//   MyFuntionComp2,
-//   MyFuntionComp3,
-// } from "./section01/TestComponent01";
-// import { MyClassComp1, MyClassComp2 } from "./section01/TestComponent02";
-// import App3 from "./section01/App3";
-// import Section02Start from "./section02/Section02Start";
-// import Section03Start from "./section03/Section03Start";
-// import Section04Start from "./section04/Section04Start";
-// import Section05Start from "./section05/Section05Start";
-// import Day05Start from "./day05/day05Start";
-// import Section06Start from "./section06-propsdrilling/section06Start";
-// import Section07App from "./section07-context/pages/Section07App";
-// import Section08Start from "./section08/Section08Start";
-import TodoListApp from "./section09/context/components/TodoListApp";
-import TodoListApp_zustand from "./section09/zustand/components/TodoListApp-zustand";
-// import LabComponent from "./lab/LabComponent";
+import { BrowserRouter } from "react-router-dom";
+import StartApp from "./StartApp";
 
-// const element1 = <h1>hello</h1>;
-// const element2 = (
-//   <>
-//     <h3>hello</h3>
-//   </>
-// );
-// const score = 100;
-
-// 가상DOM
-// const virtualDOM = (
-//   <>
-//     {element1}
-//     {element2}
-//     <span>점수는 {score}</span>
-//     {/*속성 값은 반드시 따옴표 안에 작성*/}
-//     <input
-//       className="className"
-//       type="text"
-//       value="신한DS"
-//       style={{ backgroundColor: "pink", border: "none" }}
-//     />
-//     <MyFuntionComp1 />
-//     <MyFuntionComp2 />
-//     <MyFuntionComp3 />
-//     <MyClassComp1 />
-//     <MyClassComp2 />
-//   </>
-// );
-
-// 물리 DOM<div id = "root"></div>
+//물리DOM   #root <div id="root"></div>
 createRoot(document.getElementById("root")!).render(
   <>
-    {/* <LabComponent /> */}
-    {/* <Section02Start /> */}
-    {/* <Section03Start /> */}
-    {/* <Section04Start /> */}
-    {/* <Section05Start /> */}
-    {/* <Day05Start /> */}
-    {/* <Section06Start /> */}
-    {/* <Section07App /> */}
-    {/* <Section08Start /> */}
-    <TodoListApp />
-    <TodoListApp_zustand />
-    {/* <App3 /> */}
+    <div className="flex h-screen bg-gray-100 ">
+      <BrowserRouter>
+        <StartApp />
+      </BrowserRouter>
+    </div>
   </>,
 );
