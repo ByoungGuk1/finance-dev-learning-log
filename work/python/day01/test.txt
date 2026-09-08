@@ -1,0 +1,22 @@
+[
+  {
+    "type": "입금",
+    "amount": 1000,
+    "balance": 2000
+  },
+  {
+    "type": "출금",
+    "amount": 500,
+    "balance": 1500
+  },
+  {
+    "type": "입금",
+    "amount": 1000,
+    "balance": 2500
+  },
+  {
+    "type": "출금",
+    "amount": 500,
+    "balance": 2000
+  }
+]
