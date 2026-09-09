@@ -11,3 +11,4 @@ fastmcp
 mcp
 notion-client
 langchain_mcp_adapters
+Matplotlib
